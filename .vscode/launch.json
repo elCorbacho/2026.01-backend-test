@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<examen>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ipss.web2.examen.Application",
+            "projectName": "examen",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+target/
+.idea/
+.vscode/
+.git/
+.gitignore
+mvnw
+mvnw.cmd
+*.iml
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Otros
+logs/
+*.log
