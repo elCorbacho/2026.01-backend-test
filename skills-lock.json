@@ -16,6 +16,11 @@
       "sourceType": "github",
       "computedHash": "d39261d192f6fb32426ea834b1d0444270f98fa299ada88842f2ed4072ad1c5e"
     },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
     "skill-creator": {
       "source": "microsoft/skills",
       "sourceType": "github",
