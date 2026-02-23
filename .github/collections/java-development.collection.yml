@@ -1,0 +1,24 @@
+id: java-development
+name: Java Development
+description: Comprehensive collection of prompts and instructions for Java development including Spring Boot, Quarkus, testing, documentation, and best practices.
+tags:
+  - java
+  - springboot
+  - quarkus
+  - jpa
+  - junit
+  - javadoc
+items:
+  - path: instructions/java.instructions.md
+    kind: instruction
+  - path: instructions/springboot.instructions.md
+    kind: instruction
+  - path: prompts/java-docs.prompt.md
+    kind: prompt
+  - path: prompts/java-junit.prompt.md
+    kind: prompt
+  - path: prompts/java-springboot.prompt.md
+    kind: prompt
+  - path: prompts/create-spring-boot-java-project.prompt.md
+    kind: prompt
+display: {}
