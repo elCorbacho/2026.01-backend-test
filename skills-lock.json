@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "agents-v2-py": {
+      "source": "microsoft/skills",
+      "sourceType": "github",
+      "computedHash": "62c90dd86eea01c857a1de1bcbd972479c97aa6894f2b2a5dd56fba90ed224c7"
+    },
+    "copilot-sdk": {
+      "source": "microsoft/skills",
+      "sourceType": "github",
+      "computedHash": "0e26306a3d7e09f0cc666d1ec874da0d500793eee50f99a1e8c55c81e0889ac6"
+    },
+    "skill-creator": {
+      "source": "microsoft/skills",
+      "sourceType": "github",
+      "computedHash": "0f49bc58414893e38ff80fc26f30ff446d631d22710a6d75134670616d8c5668"
+    }
+  }
+}
