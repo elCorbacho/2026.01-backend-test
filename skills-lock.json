@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "0e26306a3d7e09f0cc666d1ec874da0d500793eee50f99a1e8c55c81e0889ac6"
     },
+    "critical-code-reviewer": {
+      "source": "posit-dev/skills",
+      "sourceType": "github",
+      "computedHash": "d39261d192f6fb32426ea834b1d0444270f98fa299ada88842f2ed4072ad1c5e"
+    },
     "skill-creator": {
       "source": "microsoft/skills",
       "sourceType": "github",
