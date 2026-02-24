@@ -1,5 +1,19 @@
 # Guía para agentes de IA en este proyecto
 
+# My Project Documentation
+
+<memories hint="Manage via memory tool">
+<memory path="github/copilot/memories/preferences.txt">
+- Prefers TypeScript for new projects
+- Uses ESLint for code quality
+</memory>
+
+<memory path="/memories/context.txt">
+Project is a VS Code extension for AI agent memory management.
+</memory>
+</memories>
+
+
 ## Contexto y arquitectura
 - Proyecto: API REST Spring Boot 3.5.9 (Java 21) para gestionar **álbumes** y **láminas** de colección.
 - Capas principales:
