@@ -1,20 +1,225 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  ## Proyecto: Sistema de Gestión de Álbumes y Láminas
+  API REST desarrollada con Spring Boot 3.5.9 para gestionar álbumes de colección y sus láminas.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  ---
+
+  ## Stack Tecnológico
+  - **Lenguaje:** Java 21
+  - **Framework:** Spring Boot 3.5.9
+  - **Base de datos:** MySQL en AWS RDS (`db-ipss.cb2es8a2cxpo.us-east-2.rds.amazonaws.com:3306/web2_examen`)
+  - **ORM:** Spring Data JPA / Hibernate (ddl-auto=validate)
+  - **Validación:** Jakarta Validation (Bean Validation)
+  - **Documentación:** SpringDoc OpenAPI 2.8.5 (Swagger UI en `/swagger-ui.html`)
+  - **Monitoreo:** Spring Boot Actuator (`/actuator/health`, `/actuator/info`, `/actuator/metrics`)
+  - **Boilerplate:** Lombok (@Data, @Builder, @RequiredArgsConstructor, etc.)
+  - **Build:** Maven (wrapper incluido: `mvnw.cmd` / `mvnw`)
+  - **Puerto:** 8080
+
+  ---
+
+  ## Arquitectura y Patrones
+  - **Patrón:** MVC en capas (Controller → Service → Repository → Model)
+  - **DTOs & Mappers manuales:** No se usa MapStruct; los mappers son @Component manuales
+  - **Soft Delete:** Todos los recursos usan campo `is_active` (Boolean). Nunca se eliminan físicamente
+  - **JPA Auditing:** `@CreatedDate` y `@LastModifiedDate` automáticos en todas las entidades (habilitado con `@EnableJpaAuditing` en `JpaAuditingConfig`)
+  - **Respuesta envolvente genérica:** Todas las respuestas usan `ApiResponseDTO<T>` con campos: `success`, `message`, `data`, `errorCode`, `errors`, `timestamp`
+  - **Manejo de errores:** `GlobalExceptionHandler` (@RestControllerAdvice) centraliza todas las excepciones
+
+  ---
+
+  ## Estructura de Paquetes
+  ```
+  ipss.web2.examen
+  ├── Application.java                  # Entry point
+  ├── config/
+  │   ├── DataInitializer.java          # Datos iniciales (CommandLineRunner)
+  │   ├── JpaAuditingConfig.java        # @EnableJpaAuditing
+  │   └── WebConfig.java                # CORS y configuración web
+  ├── controllers/api/
+  │   ├── AlbumController.java          # /api/albums
+  │   ├── LaminaController.java         # /api/albums/{albumId}/catalogo
+  │   └── LaminaUserController.java     # /api/laminas
+  ├── dtos/                             # Request y Response DTOs
+  ├── exceptions/                       # Custom exceptions + GlobalExceptionHandler
+  ├── mappers/                          # AlbumMapper, LaminaMapper (manuales)
+  ├── models/                           # Entidades JPA
+  ├── repositories/                     # Spring Data JPA Repositories
+  └── services/                         # Lógica de negocio
+  ```
+
+  ---
+
+  ## Modelos / Entidades
+
+  ### Album (`tabla: album`)
+  | Campo         | Tipo          | Notas                          |
+  |---------------|---------------|--------------------------------|
+  | id            | Long (PK)     | AUTO_INCREMENT                 |
+  | nombre        | String        | NOT NULL                       |
+  | year          | Integer       | NOT NULL                       |
+  | descripcion   | String        | max 500 chars                  |
+  | createdAt     | LocalDateTime | @CreatedDate automático        |
+  | updatedAt     | LocalDateTime | @LastModifiedDate automático   |
+  | active        | Boolean       | default true (soft delete)     |
+  | laminas       | List<Lamina>  | @OneToMany, LAZY               |
+  | laminasCatalogo | List<LaminaCatalogo> | @OneToMany, LAZY      |
+
+  ### Lamina (`tabla: lamina`)
+  | Campo            | Tipo          | Notas                        |
+  |------------------|---------------|------------------------------|
+  | id               | Long (PK)     | AUTO_INCREMENT               |
+  | nombre           | String        | NOT NULL                     |
+  | imagen           | String        | nullable                     |
+  | fechaLanzamiento | LocalDate     | NOT NULL                     |
+  | tipoLamina       | String        | NOT NULL                     |
+  | createdAt        | LocalDateTime | @CreatedDate automático      |
+  | updatedAt        | LocalDateTime | @LastModifiedDate automático |
+  | active           | Boolean       | default true (soft delete)   |
+  | album            | Album         | @ManyToOne, FK album_id      |
+
+  ### LaminaCatalogo (`tabla: lamina_catalogo`)
+  - Mismos campos que Lamina
+  - Constraint UNIQUE: (album_id, nombre) — no puede haber dos láminas con el mismo nombre en el mismo álbum
+  - Representa el catálogo maestro de láminas posibles para un álbum
+
+  ---
+
+  ## DTOs Clave
+
+  ### AlbumRequestDTO
+  ```json
+  { "nombre": "string (2-100)", "year": 2024, "descripcion": "string (max 500)" }
+  ```
+
+  ### AlbumResponseDTO
+  ```json
+  { "id": 1, "nombre": "...", "year": 2024, "descripcion": "...", "createdAt": "...", "updatedAt": "..." }
+  ```
+
+  ### LaminaRequestDTO
+  ```json
+  { "albumId": 1, "nombre": "string", "imagen": "url (opcional)", "fechaLanzamiento": "2024-01-01", "tipoLamina": "string" }
+  ```
+  > `albumId` es opcional en carga masiva (viene del nivel superior), obligatorio en POST individual `/api/laminas`
+
+  ### LaminaCatalogoRequestDTO
+  ```json
+  { "nombre": "string", "imagen": "url (opcional)", "fechaLanzamiento": "2024-01-01", "tipoLamina": "string" }
+  ```
+
+  ### LaminaCargaResponseDTO
+  ```json
+  { "esRepetida": false, "estaEnCatalogo": true, "cantidadRepetidas": 1, "lamina": { ...LaminaResponseDTO } }
+  ```
+
+  ### LaminaCargueMasivoRequestDTO
+  ```json
+  { "albumId": 1, "laminas": [ ...LaminaRequestDTO[] ] }
+  ```
+
+  ### LaminaCargueMasivoResponseDTO
+  ```json
+  { "laminaId": 1, "nombre": "...", "esRepetida": false, "cantidadTotal": 1, "exitosa": true, "estado": "✓ AGREGADA (Nueva)" }
+  ```
+
+  ### LaminasEstadoDTO
+  ```json
+  {
+    "laminasPoseidas": [...],
+    "laminasFaltantes": [...],
+    "laminasRepetidas": { "nombre": 2 },
+    "totalLaminas": 10,
+    "laminasFaltantesTotal": 5,
+    "laminasRepetidasTotal": 2
+  }
+  ```
+
+  ### ApiResponseDTO<T> (envuelve TODAS las respuestas)
+  ```json
+  { "success": true, "message": "...", "data": T, "errorCode": null, "errors": null, "timestamp": "..." }
+  ```
+
+  ---
+
+  ## API Endpoints
+
+  ### Álbumes — `/api/albums`
+  | Método | Ruta              | Descripción                        | Status |
+  |--------|-------------------|------------------------------------|--------|
+  | POST   | /api/albums       | Crear álbum                        | 201    |
+  | GET    | /api/albums       | Listar álbumes activos             | 200    |
+  | GET    | /api/albums/{id}  | Obtener álbum por ID               | 200    |
+  | PUT    | /api/albums/{id}  | Actualizar álbum                   | 200    |
+  | DELETE | /api/albums/{id}  | Soft delete álbum                  | 200    |
+
+  ### Catálogo — `/api/albums/{albumId}/catalogo`
+  | Método | Ruta                                        | Descripción                          | Status |
+  |--------|---------------------------------------------|--------------------------------------|--------|
+  | POST   | /api/albums/{albumId}/catalogo              | Crear catálogo maestro (solo 1 vez)  | 201    |
+  | GET    | /api/albums/{albumId}/catalogo              | Ver catálogo completo                | 200    |
+  | GET    | /api/albums/{albumId}/catalogo/estado       | Ver estadísticas del álbum           | 200    |
+
+  ### Láminas — `/api/laminas`
+  | Método | Ruta                          | Descripción                                      | Status |
+  |--------|-------------------------------|--------------------------------------------------|--------|
+  | POST   | /api/laminas                  | Agregar lámina (valida catálogo, detecta repetidas) | 201 |
+  | POST   | /api/laminas/masivo           | Carga masiva de láminas                          | 201    |
+  | GET    | /api/laminas                  | Listar todas las láminas activas                 | 200    |
+  | GET    | /api/laminas/{id}             | Obtener lámina por ID                            | 200    |
+  | GET    | /api/laminas/album/{albumId}  | Láminas poseídas de un álbum                     | 200    |
+  | PUT    | /api/laminas/{id}             | Actualizar lámina                                | 200    |
+  | DELETE | /api/laminas/{id}             | Soft delete lámina                               | 200    |
+
+  ---
+
+  ## Reglas de Negocio Importantes
+  1. **Catálogo previo obligatorio:** No se puede agregar una lámina a un álbum sin haber creado primero su catálogo
+  2. **Validación contra catálogo:** Toda lámina agregada DEBE existir en el catálogo del álbum (por nombre, case-insensitive en masivo)
+  3. **Catálogo único por álbum:** Solo se puede crear el catálogo una vez por álbum (lanza RuntimeException si ya existe)
+  4. **Detección de repetidas:** El sistema detecta y reporta láminas duplicadas (misma lámina agregada más de una vez)
+  5. **Soft delete en cascada:** Al desactivar un álbum, sus láminas siguen en BD pero el álbum no aparece en listados
+  6. **Constraint único en catálogo:** (album_id, nombre) es UNIQUE en `lamina_catalogo`
+
+  ---
+
+  ## Manejo de Errores
+  | Excepción                        | HTTP | errorCode                  |
+  |----------------------------------|------|----------------------------|
+  | ResourceNotFoundException        | 404  | RESOURCE_NOT_FOUND         |
+  | InvalidOperationException        | 400  | INVALID_OPERATION          |
+  | MethodArgumentNotValidException  | 400  | VALIDATION_ERROR           |
+  | MethodArgumentTypeMismatchException | 400 | INVALID_PARAMETER_TYPE  |
+  | DataIntegrityViolationException  | 409  | DATA_INTEGRITY_VIOLATION   |
+  | NoHandlerFoundException          | 404  | ENDPOINT_NOT_FOUND         |
+  | EndpointNotFoundException        | 404  | INVALID_ENDPOINT           |
+  | RuntimeException                 | 400  | RUNTIME_ERROR / LAMINA_NOT_IN_CATALOG |
+  | Exception (genérica)             | 500  | INTERNAL_SERVER_ERROR      |
+
+  ---
+
+  ## Convenciones del Proyecto
+  - Nombres de métodos en español (crearAlbum, obtenerLaminasPorAlbum, eliminarLamina, etc.)
+  - Comentarios en español en todos los archivos
+  - Usar `@Transactional(readOnly = true)` en métodos de solo lectura
+  - Usar `@SuppressWarnings("null")` en servicios y controladores donde aplique
+  - Los mappers son clases @Component manuales (no MapStruct)
+  - Todos los endpoints retornan `ResponseEntity<ApiResponseDTO<T>>`
+  - Usar `@Builder` en modelos y DTOs donde aplique
+  - Lombok: @Data, @Builder, @NoArgsConstructor, @AllArgsConstructor, @RequiredArgsConstructor
+
+  ---
+
+  ## Colecciones de Testing
+  - Postman: `api-collections/18.web2.examen-postman.json`
+  - Bruno: `api-collections/18.web2.examen-bruno.json`
+  - 18 endpoints testeados con ejemplos de respuesta reales
+
+  ---
+
+  ## Repositorios Spring Data JPA
+  - `AlbumRepository`: findByActiveTrue()
+  - `LaminaRepository`: findByAlbumId(), findByActiveTrue(), findByAlbumAndActiveTrue(), findByAlbumAndNombreAndActiveTrue()
+  - `LaminaCatalogoRepository`: countByAlbumAndActiveTrue(), findByAlbumAndActiveTrue(), findByAlbumAndNombreAndActiveTrue()
