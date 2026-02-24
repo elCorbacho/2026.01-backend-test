@@ -1,68 +1,84 @@
 {
-	"servers": {
-		"com.supabase/mcp": {
-			"type": "stdio",
-			"command": "npx",
-			"args": [
-				"--project-ref",
-				"${input:project-ref}",
-				"--read-only",
-				"${input:read-only}",
-				"--features",
-				"${input:features}",
-				"--api-url",
-				"${input:api-url}",
-				"--registry",
-				"https://registry.npmjs.org",
-				"@supabase/mcp-server-supabase@0.6.3"
-			],
-			"env": {
-				"SUPABASE_ACCESS_TOKEN": "${input:SUPABASE_ACCESS_TOKEN}"
-			},
-			"gallery": "https://api.mcp.github.com",
-			"version": "0.6.3"
-		},
-		"awesome-copilot": {
-			"command": "docker",
-			"args": [
-				"run",
-				"-i",
-				"--rm",
-				"ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
-			],
-			"type": "stdio"
-		}
-	},
-	"inputs": [
-		{
-			"id": "project-ref",
-			"type": "promptString",
-			"description": "Supabase project reference ID",
-			"password": false
-		},
-		{
-			"id": "read-only",
-			"type": "promptString",
-			"description": "Enable read-only mode",
-			"password": false
-		},
-		{
-			"id": "features",
-			"type": "promptString",
-			"description": "Comma-separated list of features to enable",
-			"password": false
-		},
-		{
-			"id": "api-url",
-			"type": "promptString",
-			"description": "Custom API URL",
-			"password": false
-		},
-		{
-			"id": "SUPABASE_ACCESS_TOKEN",
-			"type": "promptString",
-			"description": "Personal access token for Supabase API",
-			"password": true
-		}
-	]
+  "servers": {
+    "com.supabase/mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--project-ref",
+        "${input:project-ref}",
+        "--read-only",
+        "${input:read-only}",
+        "--features",
+        "${input:features}",
+        "--api-url",
+        "${input:api-url}",
+        "--registry",
+        "https://registry.npmjs.org",
+        "@supabase/mcp-server-supabase@0.6.3"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${input:SUPABASE_ACCESS_TOKEN}"
+      },
+      "gallery": "https://api.mcp.github.com",
+      "version": "0.6.3"
+    },
+    "awesome-copilot": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
+      ],
+      "type": "stdio"
+    },
+    "contextstream": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "--prefer-online",
+        "-y",
+        "@contextstream/mcp-server@latest"
+      ],
+      "env": {
+        "CONTEXTSTREAM_API_URL": "https://api.contextstream.io",
+        "CONTEXTSTREAM_API_KEY": "cbiq_xWiRnYiKMuDX_e4Dr_0m9PLCfGSLMdak4DNrkgV3svI",
+        "CONTEXTSTREAM_CONTEXT_PACK": "false"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "project-ref",
+      "type": "promptString",
+      "description": "Supabase project reference ID",
+      "password": false
+    },
+    {
+      "id": "read-only",
+      "type": "promptString",
+      "description": "Enable read-only mode",
+      "password": false
+    },
+    {
+      "id": "features",
+      "type": "promptString",
+      "description": "Comma-separated list of features to enable",
+      "password": false
+    },
+    {
+      "id": "api-url",
+      "type": "promptString",
+      "description": "Custom API URL",
+      "password": false
+    },
+    {
+      "id": "SUPABASE_ACCESS_TOKEN",
+      "type": "promptString",
+      "description": "Personal access token for Supabase API",
+      "password": true
+    }
+  ]
 }
