@@ -3,463 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="API REST para gestión de álbumes y láminas de colección">
-    <title>API Álbumes y Láminas - Backend Test</title>
+    <meta name="description" content="Bienvenida a la API de Álbumes y Láminas">
+    <title>Bienvenida | API Álbumes y Láminas</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous"
+    >
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --success-color: #10b981;
-            --background: #f8fafc;
-            --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background-color: var(--background);
+            background: radial-gradient(circle at 20% 20%, #f0f4ff 0, #ffffff 40%), radial-gradient(circle at 80% 0%, #e8f7ff 0, #ffffff 35%);
+            color: #0f172a;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 3rem 2rem;
-            box-shadow: var(--shadow-lg);
+        .hero {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(99, 102, 241, 0.18));
+            border: 1px solid rgba(13, 110, 253, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(15, 23, 42, 0.15);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .pill {
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: rgba(255, 255, 255, 0.7);
+            color: #0f172a;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .subtitle {
-            font-size: 1.125rem;
-            opacity: 0.95;
-            font-weight: 300;
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
         }
 
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            font-size: 0.875rem;
-            margin-top: 1rem;
-            font-weight: 500;
-        }
-
-        main {
-            padding: 3rem 2rem;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-icon {
-            font-size: 1.75rem;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: var(--secondary-color);
-        }
-
-        .btn-secondary {
-            background: var(--text-secondary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--text-primary);
-        }
-
-        .endpoints {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-
-        .endpoints h2 {
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.75rem;
-        }
-
-        .endpoint-section {
-            margin-bottom: 2rem;
-        }
-
-        .endpoint-section h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-        }
-
-        .endpoint {
-            display: flex;
-            align-items: flex-start;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            background: var(--background);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .method {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
+        code {
+            color: #0f172a;
             font-weight: 600;
-            font-size: 0.875rem;
-            margin-right: 1rem;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .method.get { background: #dbeafe; color: #1e40af; }
-        .method.post { background: #dcfce7; color: #166534; }
-        .method.put { background: #fef3c7; color: #92400e; }
-        .method.delete { background: #fee2e2; color: #991b1b; }
-
-        .endpoint-path {
-            flex: 1;
-        }
-
-        .endpoint-path code {
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 1rem;
-        }
-
-        .endpoint-desc {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .feature {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--success-color);
-        }
-
-        .feature-content h3 {
-            color: var(--text-primary);
-            font-size: 1.125rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .feature-content p {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        footer {
-            background: var(--text-primary);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            opacity: 0.8;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .endpoint {
-                flex-direction: column;
-            }
-
-            .method {
-                margin-bottom: 0.5rem;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>🎴 API Álbumes y Láminas</h1>
-            <p class="subtitle">API REST para gestión de colecciones de álbumes y láminas</p>
-            <span class="badge">Spring Boot 3.5.9 | Java 21</span>
-        </div>
-    </header>
+    <div class="container py-4 py-md-5">
+        <header class="hero p-4 p-md-5 mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div>
+                    <div class="pill rounded-pill px-3 py-1 fw-semibold small text-uppercase mb-3">Spring Boot 3.5.9 · Java 21</div>
+                    <h1 class="display-5 fw-semibold mb-2">API Álbumes y Láminas</h1>
+                    <p class="lead mb-3">Bienvenido. Esta API REST gestiona colecciones de álbumes y láminas con buenas prácticas en capas, DTOs y manejo de errores consistente.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-primary" href="/swagger-ui.html">Abrir Swagger UI</a>
+                        <a class="btn btn-outline-dark" href="/v3/api-docs">Ver OpenAPI JSON</a>
+                        <a class="btn btn-outline-secondary" href="/actuator/health">Health Check</a>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-primary-subtle text-primary-emphasis fs-6">Disponible</span>
+                    <div class="mt-2 text-muted">Última actualización: 2026</div>
+                </div>
+            </div>
+        </header>
 
-    <main class="container">
-        <!-- Quick Access Cards -->
-        <section class="card-grid">
-            <article class="card">
-                <h2><span class="card-icon">📚</span> Documentación API</h2>
-                <p>Explora todos los endpoints disponibles con swagger-ui interactivo.</p>
-                <a href="/swagger-ui.html" class="btn">Abrir Swagger UI</a>
-            </article>
-
-            <article class="card">
-                <h2><span class="card-icon">📖</span> OpenAPI Spec</h2>
-                <p>Especificación OpenAPI 3.0 en formato JSON para integración.</p>
-                <a href="/v3/api-docs" class="btn btn-secondary">Ver API Docs</a>
-            </article>
-
-            <article class="card">
-                <h2><span class="card-icon">🔍</span> Estado del Servidor</h2>
-                <p>Verifica el estado y salud de la aplicación.</p>
-                <a href="/actuator/health" class="btn">Health Check</a>
-            </article>
-        </section>
-
-        <!-- Features -->
-        <section class="endpoints">
-            <h2>✨ Características Principales</h2>
-            <div class="features">
-                <div class="feature">
-                    <span class="feature-icon">✅</span>
-                    <div class="feature-content">
-                        <h3>Validación Jakarta</h3>
-                        <p>Validación robusta de datos con Jakarta Bean Validation</p>
+        <section class="row g-3 mb-4">
+            <div class="col-12 col-lg-4">
+                <div class="card card-hover h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📚</span>Documentación</h5>
+                        <p class="card-text text-secondary">Explora los endpoints interactivos y prueba las peticiones directamente desde Swagger.</p>
+                        <a class="btn btn-sm btn-primary" href="/swagger-ui.html">Ir a Swagger</a>
                     </div>
                 </div>
-                <div class="feature">
-                    <span class="feature-icon">🗑️</span>
-                    <div class="feature-content">
-                        <h3>Soft Delete</h3>
-                        <p>Eliminación lógica preservando histórico de datos</p>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="card card-hover h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📄</span>Especificación</h5>
+                        <p class="card-text text-secondary">Descarga o consume el documento OpenAPI 3.0 en formato JSON para integraciones.</p>
+                        <a class="btn btn-sm btn-outline-dark" href="/v3/api-docs">Ver JSON</a>
                     </div>
                 </div>
-                <div class="feature">
-                    <span class="feature-icon">⏱️</span>
-                    <div class="feature-content">
-                        <h3>Auditoría JPA</h3>
-                        <p>Timestamps automáticos de creación y actualización</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">🎯</span>
-                    <div class="feature-content">
-                        <h3>DTOs Tipados</h3>
-                        <p>Contratos claros con mappers dedicados</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">🔄</span>
-                    <div class="feature-content">
-                        <h3>Carga Masiva</h3>
-                        <p>Procesamiento batch de láminas con reportes detallados</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">🛡️</span>
-                    <div class="feature-content">
-                        <h3>Manejo de Errores</h3>
-                        <p>GlobalExceptionHandler centralizado y respuestas consistentes</p>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="card card-hover h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">🩺</span>Estado</h5>
+                        <p class="card-text text-secondary">Consulta rápidamente la salud del servicio y el estado de los componentes.</p>
+                        <a class="btn btn-sm btn-outline-secondary" href="/actuator/health">Health</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- API Endpoints -->
-        <section class="endpoints">
-            <h2>🔌 Endpoints Principales</h2>
-
-            <div class="endpoint-section">
-                <h3>Gestión de Álbumes</h3>
-                <div class="endpoint">
-                    <span class="method get">GET</span>
-                    <div class="endpoint-path">
-                        <code>/api/albums</code>
-                        <div class="endpoint-desc">Listar todos los álbumes activos</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method get">GET</span>
-                    <div class="endpoint-path">
-                        <code>/api/albums/{id}</code>
-                        <div class="endpoint-desc">Obtener detalles de un álbum específico</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method post">POST</span>
-                    <div class="endpoint-path">
-                        <code>/api/albums</code>
-                        <div class="endpoint-desc">Crear un nuevo álbum</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method put">PUT</span>
-                    <div class="endpoint-path">
-                        <code>/api/albums/{id}</code>
-                        <div class="endpoint-desc">Actualizar un álbum existente</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method delete">DELETE</span>
-                    <div class="endpoint-path">
-                        <code>/api/albums/{id}</code>
-                        <div class="endpoint-desc">Eliminar un álbum (soft delete)</div>
+        <section class="row g-3 mb-4">
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Endpoints rápidos</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fw-semibold">Álbumes</div>
+                                    <small class="text-muted">GET /api/albums · POST /api/albums</small>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary-emphasis">CRUD</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fw-semibold">Láminas</div>
+                                    <small class="text-muted">GET /api/laminas/album/{albumId}</small><br>
+                                    <small class="text-muted">POST /api/laminas · /masivo</small>
+                                </div>
+                                <span class="badge bg-success-subtle text-success-emphasis">Carga</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fw-semibold">Catálogo</div>
+                                    <small class="text-muted">GET /api/catalogo · POST /api/catalogo</small>
+                                </div>
+                                <span class="badge bg-info-subtle text-info-emphasis">Referencia</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-            <div class="endpoint-section">
-                <h3>Gestión de Láminas</h3>
-                <div class="endpoint">
-                    <span class="method get">GET</span>
-                    <div class="endpoint-path">
-                        <code>/api/laminas/album/{albumId}</code>
-                        <div class="endpoint-desc">Listar láminas de un álbum</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method get">GET</span>
-                    <div class="endpoint-path">
-                        <code>/api/laminas/album/{albumId}/estado</code>
-                        <div class="endpoint-desc">Obtener estado del álbum (conteo de láminas)</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method post">POST</span>
-                    <div class="endpoint-path">
-                        <code>/api/laminas</code>
-                        <div class="endpoint-desc">Agregar una lámina individual</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method post">POST</span>
-                    <div class="endpoint-path">
-                        <code>/api/laminas/masivo</code>
-                        <div class="endpoint-desc">Carga masiva de láminas con reporte detallado</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method delete">DELETE</span>
-                    <div class="endpoint-path">
-                        <code>/api/laminas/{id}</code>
-                        <div class="endpoint-desc">Eliminar una lámina (soft delete)</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-section">
-                <h3>Catálogo de Láminas</h3>
-                <div class="endpoint">
-                    <span class="method get">GET</span>
-                    <div class="endpoint-path">
-                        <code>/api/catalogo</code>
-                        <div class="endpoint-desc">Listar catálogo completo de láminas disponibles</div>
-                    </div>
-                </div>
-                <div class="endpoint">
-                    <span class="method post">POST</span>
-                    <div class="endpoint-path">
-                        <code>/api/catalogo</code>
-                        <div class="endpoint-desc">Crear entrada en catálogo de láminas</div>
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Pilares de la API</h5>
+                        <div class="row g-2">
+                            <div class="col-12 col-sm-6">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="fw-semibold mb-1">Validación</div>
+                                    <small class="text-muted">DTOs con Jakarta Validation.</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="fw-semibold mb-1">Manejo de errores</div>
+                                    <small class="text-muted">GlobalExceptionHandler y mensajes consistentes.</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="fw-semibold mb-1">Soft delete</div>
+                                    <small class="text-muted">Recursos con flag active.</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="fw-semibold mb-1">Auditoría</div>
+                                    <small class="text-muted">createdAt y updatedAt automáticos.</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Additional Info -->
-        <section class="card">
-            <h2>ℹ️ Información Técnica</h2>
-            <p style="margin-bottom: 1rem;">Esta API REST sigue las mejores prácticas de arquitectura en capas:</p>
-            <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 1.8;">
-                <li><strong>Controllers:</strong> Endpoints REST con respuestas estandarizadas usando ApiResponseDTO</li>
-                <li><strong>Services:</strong> Lógica de negocio y reglas de dominio</li>
-                <li><strong>Repositories:</strong> Acceso a datos con Spring Data JPA</li>
-                <li><strong>DTOs + Mappers:</strong> Contratos de entrada/salida con mapeo explícito</li>
-                <li><strong>Exception Handling:</strong> Manejo centralizado con GlobalExceptionHandler</li>
-            </ul>
+        <section class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Cómo empezar</h5>
+                <ol class="mb-3 text-secondary">
+                    <li>Abre Swagger UI y prueba las operaciones básicas (crear álbum, listar láminas).</li>
+                    <li>Consulta el JSON OpenAPI y genera clientes o documentación interna.</li>
+                    <li>Usa los endpoints de health para monitoreo y despliegues.</li>
+                </ol>
+                <p class="mb-0 text-muted">Toda respuesta se entrega en ApiResponseDTO con campos success, message, data y timestamp.</p>
+            </div>
         </section>
-    </main>
 
-    <footer>
-        <div class="container">
-            <p>API Álbumes y Láminas | Backend Test 2026 | Desarrollado con Spring Boot 3.5.9 & Java 21</p>
-        </div>
-    </footer>
+        <footer class="text-center text-muted pb-3">
+            API Álbumes y Láminas · Backend Test 2026 · Spring Boot 3.5.9
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
