@@ -45,16 +45,18 @@
 
 // SEQUENTIAL THINKING SERVER
 // gestiona el pensamiento secuencial, lo que permite a los modelos de lenguaje generar respuestas más coherentes y relevantes al considerar la información en un orden lógico.
-		"sequential-thinking": {
-			"command": "npx",
-			"args": [
-				"-y",
-				"@modelcontextprotocol/server-sequential-thinking"
-			]
-		},
+
+		// "sequential-thinking": {
+		// 	"command": "npx",
+		// 	"args": [
+		// 		"-y",
+		// 		"@modelcontextprotocol/server-sequential-thinking"
+		// 	]
+		// },
 
 // CONTEXT 7 SERVER
 // permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas.
+
 		"context7": {
 			"type": "http",
 			"url": "https://mcp.context7.com/mcp",
@@ -82,21 +84,21 @@
 // contextstream server
 // permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas. Proporciona una API simple para acceder a información contextual, lo que facilita la construcción de aplicaciones inteligentes que pueden proporcionar respuestas más relevantes y precisas.
 
-		"contextstream": {
-			"type": "stdio",
-			"command": "cmd",
-			"args": [
-				"/c",
-				"npx",
-				"--prefer-online",
-				"-y",
-				"@contextstream/mcp-server@latest"
-			],
-			"env": {
-				"CONTEXTSTREAM_API_URL": "https://api.contextstream.io",
-				"CONTEXTSTREAM_API_KEY": "cbiq_xWiRnYiKMuDX_e4Dr_0m9PLCfGSLMdak4DNrkgV3svI",
-				"CONTEXTSTREAM_CONTEXT_PACK": "false"
-			}
-		}
+		// "contextstream": {
+		// 	"type": "stdio",
+		// 	"command": "cmd",
+		// 	"args": [
+		// 		"/c",
+		// 		"npx",
+		// 		"--prefer-online",
+		// 		"-y",
+		// 		"@contextstream/mcp-server@latest"
+		// 	],
+		// 	"env": {
+		// 		"CONTEXTSTREAM_API_URL": "https://api.contextstream.io",
+		// 		"CONTEXTSTREAM_API_KEY": "cbiq_xWiRnYiKMuDX_e4Dr_0m9PLCfGSLMdak4DNrkgV3svI",
+		// 		"CONTEXTSTREAM_CONTEXT_PACK": "false"
+		// 	}
+		// }
 	}
 }
