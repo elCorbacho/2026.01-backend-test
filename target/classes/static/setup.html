@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía rápida de montaje · Álbumes y Láminas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0b1021;
+            --panel: rgba(255, 255, 255, 0.06);
+            --card: rgba(255, 255, 255, 0.1);
+            --stroke: rgba(255, 255, 255, 0.18);
+            --primary: #10b981;
+            --primary-strong: #0ea472;
+            --accent: #f59e0b;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Space Grotesk", "Segoe UI", sans-serif;
+            background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.14), transparent 32%),
+                        radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.16), transparent 34%),
+                        radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 36%),
+                        var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .shell {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 28px 20px 40px;
+        }
+
+        header {
+            background: var(--panel);
+            border: 1px solid var(--stroke);
+            border-radius: 20px;
+            padding: 18px 20px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 26px 60px rgba(0, 0, 0, 0.28);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.14);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            font-size: 12px;
+        }
+
+        h1 {
+            margin: 10px 0 6px;
+            font-size: clamp(28px, 4vw, 38px);
+            letter-spacing: -0.02em;
+        }
+
+        p.lead { margin: 0; color: var(--muted); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--stroke);
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+        }
+
+        .card h2 { margin: 0 0 10px; font-size: 18px; }
+        .card p, .card li, .card small { color: var(--muted); }
+
+        ul, ol { padding-left: 20px; }
+        li + li { margin-top: 6px; }
+
+        code, pre {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--stroke);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: "JetBrains Mono", "Fira Code", monospace;
+        }
+
+        pre {
+            padding: 12px;
+            overflow-x: auto;
+            margin: 10px 0 0;
+        }
+
+        a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .stack { display: grid; gap: 10px; margin-top: 10px; }
+        .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .pill {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--stroke);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        @media (max-width: 640px) { .shell { padding: 22px 16px 32px; } }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header>
+            <div class="badge">Setup rápido</div>
+            <h1>Cómo montar la aplicación</h1>
+            <p class="lead">Pasos mínimos para levantar el backend de Álbumes y Láminas en local.</p>
+            <div class="pill-row">
+                <div class="pill">Java 21</div>
+                <div class="pill">Spring Boot 3.5.9</div>
+                <div class="pill">Maven Wrapper</div>
+            </div>
+        </header>
+
+        <div class="grid" style="margin-top: 18px;">
+            <div class="card">
+                <h2>Prerrequisitos</h2>
+                <ul>
+                    <li>Java 21 instalado y en el PATH.</li>
+                    <li>Maven (usa el wrapper incluido: <code>mvnw</code>).</li>
+                    <li>Opcional: MySQL/MariaDB si quieres conectar a una base propia.</li>
+                    <li>Puerto libre 8080 (configurable vía <code>server.port</code>).</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Comandos esenciales</h2>
+                <div class="stack">
+                    <div>
+                        <strong>Clonar y construir</strong>
+                        <pre>git clone &lt;repo-url&gt;
+cd 2026.01-backend-test
+# Windows
+.\mvnw.cmd clean install
+# Linux/Mac
+./mvnw clean install</pre>
+                    </div>
+                    <div>
+                        <strong>Ejecutar la app</strong>
+                        <pre># Windows
+.\mvnw.cmd spring-boot:run
+# Linux/Mac
+./mvnw spring-boot:run</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Config rápida (application.properties)</h2>
+                <p class="muted">Ajusta credenciales de BD o el puerto si lo necesitas:</p>
+                <pre>spring.datasource.url=jdbc:mysql://localhost:3306/albumes
+spring.datasource.username=usuario
+spring.datasource.password=clave
+server.port=8080</pre>
+                <small>Si no usas BD local, apunta <code>spring.datasource.url</code> a tu instancia remota.</small>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Verificación</h2>
+                <ol>
+                    <li>Abre <a href="/swagger-ui.html">/swagger-ui.html</a> para probar endpoints.</li>
+                    <li>Confirma salud en <a href="/actuator/health">/actuator/health</a>.</li>
+                    <li>Revisa logs: la app debería iniciar en ~2-3s tras el build.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h2>URLs útiles</h2>
+                <ul>
+                    <li>API base: <code>http://localhost:8080</code></li>
+                    <li>Swagger UI: <a href="/swagger-ui.html">/swagger-ui.html</a></li>
+                    <li>OpenAPI JSON: <a href="/v3/api-docs">/v3/api-docs</a></li>
+                    <li>Health: <a href="/actuator/health">/actuator/health</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -23,6 +23,7 @@
 - Album module: DTOs (`AlbumRequestDTO`, `AlbumBasicResponseDTO`, etc.), mapper, repository, service, controller; soft delete operations.
 - Lamina module: DTOs/mappers/services for single and bulk catalog operations; uses catalog validation before inserts; soft delete support.
 - Auditing config: `JpaAuditingConfig` enabling `@CreatedDate` / `@LastModifiedDate`; `DataInitializer` seeds baseline data.
+- Setup web page: `src/main/resources/static/setup.html` resume cómo montar la app con prerrequisitos, comandos y URLs clave.
 
 ## Patterns
 - Soft delete pattern: mark `active = false` instead of physical delete; queries prefer `findBy...ActiveTrue`.
