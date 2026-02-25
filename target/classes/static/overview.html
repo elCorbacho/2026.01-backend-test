@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,238 +7,231 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0f172a;
-            --panel: #111827;
-            --card: #0b1221;
-            --stroke: #1f2937;
-            --primary: #22c55e;
-            --accent: #f59e0b;
-            --text: #e2e8f0;
-            --muted: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: "Inter", system-ui, -apple-system, sans-serif;
-            background: radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.09), transparent 32%),
-                        radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.12), transparent 38%),
-                        var(--bg);
-            color: var(--text);
+            background: radial-gradient(circle at 20% 20%, rgba(34,197,94,.08), transparent 32%),
+                        radial-gradient(circle at 80% 0%,  rgba(245,158,11,.10), transparent 38%),
+                        #0f172a;
         }
-
-        header {
-            padding: 32px 24px 8px;
-            max-width: 1080px;
-            margin: 0 auto;
-        }
-
-        main {
-            padding: 8px 24px 48px;
-            max-width: 1080px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            margin: 0 0 6px;
-            font-size: clamp(28px, 4vw, 36px);
-            letter-spacing: -0.02em;
-        }
-
-        p.lead {
-            margin: 0;
-            color: var(--muted);
-        }
-
-        .pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 18px 0 0;
-        }
-
-        .pill {
-            border: 1px solid var(--stroke);
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text);
-            border-radius: 999px;
-            padding: 8px 14px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin: 18px 0 28px;
-        }
-
         .card {
-            background: var(--card);
-            border: 1px solid var(--stroke);
-            border-radius: 14px;
-            padding: 16px 16px 18px;
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.32);
+            background: #111827;
+            border-color: #1f2937;
+            border-radius: .875rem;
         }
-
-        .card h3 {
-            margin: 0 0 10px;
-            font-size: 18px;
-        }
-
-        .card p,
-        .card li,
-        .card small {
-            color: var(--muted);
-        }
-
-        .list {
-            display: grid;
-            gap: 8px;
-            padding: 0;
-            margin: 10px 0 0;
-            list-style: none;
-        }
-
         .list-item {
-            border: 1px solid var(--stroke);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
-            border-radius: 10px;
+            background: rgba(255,255,255,.03);
+            border: 1px solid #1f2937;
+            border-radius: .625rem;
+            padding: .75rem 1rem;
         }
-
-        .muted { color: var(--muted); }
-        .accent { color: var(--accent); }
-        .primary { color: var(--primary); }
-
-        code {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 2px 6px;
-            border-radius: 6px;
-            border: 1px solid var(--stroke);
-        }
-
-        .stacked {
-            display: grid;
-            gap: 12px;
-            margin: 14px 0 0;
-        }
-
-        .badge {
+        .hero-badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 8px;
-            background: rgba(34, 197, 94, 0.14);
-            color: var(--primary);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            font-size: 12px;
+            padding: .3rem .75rem;
+            border-radius: 999px;
+            background: rgba(34,197,94,.14);
+            color: #22c55e;
+            border: 1px solid rgba(34,197,94,.3);
+            font-size: .78rem;
             font-weight: 700;
-            letter-spacing: 0.01em;
         }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
+        .pill {
+            border: 1px solid #1f2937;
+            background: rgba(255,255,255,.04);
+            border-radius: 999px;
+            padding: .4rem .875rem;
             font-weight: 600;
+            font-size: .85rem;
         }
-
-        a:hover { text-decoration: underline; }
-
-        @media (max-width: 640px) {
-            header, main { padding-left: 16px; padding-right: 16px; }
+        pre {
+            background: rgba(255,255,255,.03);
+            border: 1px solid #1f2937;
+            border-radius: .625rem;
+            padding: .875rem;
+            overflow-x: auto;
+            font-size: .82rem;
+            color: #e2e8f0;
         }
+        code {
+            background: rgba(255,255,255,.07);
+            padding: .1rem .35rem;
+            border-radius: .35rem;
+            border: 1px solid #1f2937;
+            font-size: .85em;
+        }
+        a { color: #22c55e; font-weight: 600; }
+        a:hover { color: #4ade80; }
+        .text-accent { color: #f59e0b; }
+        .text-primary-light { color: #22c55e !important; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="badge">Vista rápida</div>
-        <h1>Cómo funciona la API Álbumes y Láminas</h1>
-        <p class="lead">Backend Spring Boot 3.5.9 (Java 21) con controladores finos, servicios de dominio y DTOs validados.</p>
-        <div class="pill-row">
-            <div class="pill">Arquitectura en capas</div>
-            <div class="pill">DTOs + Mappers</div>
-            <div class="pill">Soft delete & Auditoría</div>
-            <div class="pill">ApiResponseDTO uniforme</div>
+
+<div class="container py-4 py-md-5" style="max-width: 1080px;">
+
+    <!-- ── HERO ── -->
+    <div class="mb-4">
+        <span class="hero-badge mb-3 d-inline-block">Vista rápida</span>
+        <h1 class="fw-bold mb-2" style="font-size: clamp(1.75rem,4vw,2.25rem); letter-spacing: -.02em;">
+            Cómo funciona la API Álbumes y Láminas
+        </h1>
+        <p class="text-secondary mb-4">Backend Spring Boot 3.5.9 (Java 21) con controladores finos, servicios de dominio y DTOs validados.</p>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+            <span class="pill"><i class="bi bi-layers me-1 text-primary-light"></i>Arquitectura en capas</span>
+            <span class="pill"><i class="bi bi-arrow-left-right me-1 text-primary-light"></i>DTOs + Mappers</span>
+            <span class="pill"><i class="bi bi-trash3 me-1 text-primary-light"></i>Soft delete &amp; Auditoría</span>
+            <span class="pill"><i class="bi bi-check2-all me-1 text-primary-light"></i>ApiResponseDTO uniforme</span>
         </div>
-    </header>
-
-    <main>
-        <div class="grid">
-            <div class="card">
-                <h3>Cómo usarla</h3>
-                <ol class="stacked muted">
-                    <li>Inicia la app y abre <a href="/swagger-ui.html">Swagger UI</a> para probar los endpoints.</li>
-                    <li>Usa <code>/api/albums</code> para crear y listar álbumes.</li>
-                    <li>Agrega láminas con <code>/api/laminas</code> o carga masiva en <code>/api/laminas/masivo</code>.</li>
-                    <li>Consulta estado de colección en <code>/api/albums/{albumId}/catalogo/estado</code>.</li>
-                    <li>Monitorea salud en <a href="/actuator/health">/actuator/health</a>.</li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Arquitectura</h3>
-                <ul class="list">
-                    <li class="list-item"><strong>Controladores API</strong> → orquestan peticiones y devuelven ApiResponseDTO.</li>
-                    <li class="list-item"><strong>Servicios</strong> → reglas de dominio (validación de catálogo, duplicados, estado).</li>
-                    <li class="list-item"><strong>Repositorios</strong> → Spring Data JPA con filtros por <code>active=true</code>.</li>
-                    <li class="list-item"><strong>DTOs + Mappers</strong> → entrada/salida tipada; nada de entidades en respuestas.</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>Contratos de respuesta</h3>
-                <p class="muted">Todas las respuestas usan <code>ApiResponseDTO</code>:</p>
-                <pre style="background: rgba(255,255,255,0.03); border: 1px solid var(--stroke); border-radius: 10px; padding: 10px; overflow-x: auto; color: var(--text);">{
-  "success": true,
-  "message": "OK",
-  "data": { ... },
-  "timestamp": "2026-02-25T12:00:00Z"
-}</pre>
-                <small class="muted">Errores manejados por <code>GlobalExceptionHandler</code> con mensajes consistentes.</small>
-            </div>
+        <div class="mt-3">
+            <a class="btn btn-success btn-sm fw-semibold me-2" href="/">
+                <i class="bi bi-house me-1"></i>Inicio
+            </a>
+            <a class="btn btn-outline-secondary btn-sm fw-semibold me-2" href="/swagger-ui.html">
+                <i class="bi bi-journal-code me-1"></i>Swagger UI
+            </a>
+            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/actuator/health">
+                <i class="bi bi-heart-pulse me-1"></i>Health
+            </a>
         </div>
+    </div>
 
-        <div class="grid">
-            <div class="card">
-                <h3>Endpoints clave</h3>
-                <ul class="list">
-                    <li class="list-item"><strong>Álbumes</strong> · <code>GET/POST /api/albums</code>, <code>GET/PUT/DELETE /api/albums/{id}</code></li>
-                    <li class="list-item"><strong>Láminas</strong> · <code>POST /api/laminas</code>, <code>POST /api/laminas/masivo</code>, <code>GET /api/laminas/album/{albumId}</code></li>
-                    <li class="list-item"><strong>Catálogo</strong> · <code>POST /api/albums/{albumId}/catalogo</code>, <code>GET /api/albums/{albumId}/catalogo</code></li>
-                    <li class="list-item"><strong>Estado</strong> · <code>GET /api/albums/{albumId}/catalogo/estado</code> (poseídas, faltantes, repetidas)</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>Reglas y patrones</h3>
-                <ul class="list">
-                    <li class="list-item">Validación con Jakarta en DTOs de entrada.</li>
-                    <li class="list-item">Soft delete: flag <code>active</code> en lugar de borrado físico.</li>
-                    <li class="list-item">Auditoría automática: <code>createdAt</code> y <code>updatedAt</code>.</li>
-                    <li class="list-item">Excepciones de dominio: <code>ResourceNotFoundException</code>, <code>InvalidOperationException</code>.</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>Recursos rápidos</h3>
-                <div class="stacked">
-                    <div class="list-item">📑 <a href="/swagger-ui.html">Swagger UI</a> (UI interactiva)</div>
-                    <div class="list-item">🧾 <a href="/v3/api-docs">OpenAPI JSON</a> (especificación)</div>
-                    <div class="list-item">🩺 <a href="/actuator/health">/actuator/health</a> (salud)</div>
+    <!-- ── FILA 1: Cómo usar + Arquitectura + Contratos ── -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-play-circle-fill text-success me-2"></i>Cómo usarla</h5>
+                    <ol class="text-secondary ps-3 mb-0" style="line-height:2; font-size:.88rem;">
+                        <li>Inicia la app y abre <a href="/swagger-ui.html">Swagger UI</a>.</li>
+                        <li>Usa <code>/api/albums</code> para crear y listar álbumes.</li>
+                        <li>Agrega láminas con <code>/api/laminas</code> o carga masiva en <code>/api/laminas/masivo</code>.</li>
+                        <li>Consulta estado en <code>/api/albums/{albumId}/catalogo/estado</code>.</li>
+                        <li>Monitorea salud en <a href="/actuator/health">/actuator/health</a>.</li>
+                    </ol>
                 </div>
             </div>
         </div>
-
-        <div class="card" style="margin-top: 8px;">
-            <h3>Flujo mínimo</h3>
-            <p class="muted">1) Crea un álbum → 2) Genera catálogo maestro → 3) Agrega láminas (individual o masivo) → 4) Consulta estado y estadísticas.</p>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-diagram-3-fill text-warning me-2"></i>Arquitectura</h5>
+                    <div class="d-grid gap-2">
+                        <div class="list-item small"><strong class="text-light">Controladores API</strong><span class="text-secondary ms-1">→ orquestan y devuelven ApiResponseDTO.</span></div>
+                        <div class="list-item small"><strong class="text-light">Servicios</strong><span class="text-secondary ms-1">→ reglas de dominio, validaciones y lógica.</span></div>
+                        <div class="list-item small"><strong class="text-light">Repositorios</strong><span class="text-secondary ms-1">→ Spring Data JPA con filtros <code>active=true</code>.</span></div>
+                        <div class="list-item small"><strong class="text-light">DTOs + Mappers</strong><span class="text-secondary ms-1">→ E/S tipada; nada de entidades en respuestas.</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-braces-asterisk text-info me-2"></i>Contratos de respuesta</h5>
+                    <p class="text-secondary small mb-2">Todas las respuestas usan <code>ApiResponseDTO</code>:</p>
+                    <pre class="mb-2">{
+  "success": true,
+  "message": "OK",
+  "data": { ... },
+  "timestamp": "..."
+}</pre>
+                    <small class="text-secondary">Errores manejados por <code>GlobalExceptionHandler</code> con mensajes consistentes.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── FILA 2: Endpoints + Reglas + Recursos ── -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Endpoints clave</h5>
+                    <div class="d-grid gap-2">
+                        <div class="list-item small">
+                            <span class="fw-semibold text-light">Álbumes</span><br>
+                            <span class="text-secondary"><code>GET/POST /api/albums</code></span><br>
+                            <span class="text-secondary"><code>GET/PUT/DELETE /api/albums/{id}</code></span>
+                        </div>
+                        <div class="list-item small">
+                            <span class="fw-semibold text-light">Láminas</span><br>
+                            <span class="text-secondary"><code>POST /api/laminas</code>, <code>/masivo</code></span><br>
+                            <span class="text-secondary"><code>GET /api/laminas/album/{albumId}</code></span>
+                        </div>
+                        <div class="list-item small">
+                            <span class="fw-semibold text-light">Catálogo &amp; Estado</span><br>
+                            <span class="text-secondary"><code>POST/GET /api/albums/{albumId}/catalogo</code></span><br>
+                            <span class="text-secondary"><code>GET .../catalogo/estado</code></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-shield-check-fill text-success me-2"></i>Reglas y patrones</h5>
+                    <div class="d-grid gap-2">
+                        <div class="list-item small text-secondary"><i class="bi bi-check-circle-fill text-success me-2"></i>Validación con Jakarta en DTOs de entrada.</div>
+                        <div class="list-item small text-secondary"><i class="bi bi-trash3-fill text-warning me-2"></i>Soft delete: flag <code>active</code> en lugar de borrado físico.</div>
+                        <div class="list-item small text-secondary"><i class="bi bi-clock-fill text-info me-2"></i>Auditoría automática: <code>createdAt</code> y <code>updatedAt</code>.</div>
+                        <div class="list-item small text-secondary"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Excepciones de dominio tipadas y centralizadas.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3"><i class="bi bi-collection-fill text-primary-light me-2"></i>Recursos rápidos</h5>
+                    <div class="d-grid gap-2">
+                        <a href="/swagger-ui.html" class="list-item text-decoration-none d-flex align-items-center gap-2">
+                            <i class="bi bi-journal-code fs-5 text-success"></i>
+                            <div>
+                                <div class="fw-semibold text-light">Swagger UI</div>
+                                <small class="text-secondary">Interfaz interactiva de la API</small>
+                            </div>
+                        </a>
+                        <a href="/v3/api-docs" class="list-item text-decoration-none d-flex align-items-center gap-2">
+                            <i class="bi bi-braces fs-5 text-warning"></i>
+                            <div>
+                                <div class="fw-semibold text-light">OpenAPI JSON</div>
+                                <small class="text-secondary">Especificación descargable</small>
+                            </div>
+                        </a>
+                        <a href="/actuator/health" class="list-item text-decoration-none d-flex align-items-center gap-2">
+                            <i class="bi bi-heart-pulse fs-5 text-danger"></i>
+                            <div>
+                                <div class="fw-semibold text-light">/actuator/health</div>
+                                <small class="text-secondary">Estado del servicio</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── FLUJO MÍNIMO ── -->
+    <div class="card border-success border-opacity-25">
+        <div class="card-body px-4 py-3">
+            <h6 class="fw-semibold mb-2 text-primary-light"><i class="bi bi-signpost-2-fill me-2"></i>Flujo mínimo</h6>
+            <div class="d-flex flex-wrap align-items-center gap-2 text-secondary" style="font-size:.88rem;">
+                <span class="badge bg-success bg-opacity-25 text-success fw-semibold px-2">1</span> Crea un álbum
+                <i class="bi bi-arrow-right text-muted"></i>
+                <span class="badge bg-success bg-opacity-25 text-success fw-semibold px-2">2</span> Genera catálogo maestro
+                <i class="bi bi-arrow-right text-muted"></i>
+                <span class="badge bg-success bg-opacity-25 text-success fw-semibold px-2">3</span> Agrega láminas (individual o masivo)
+                <i class="bi bi-arrow-right text-muted"></i>
+                <span class="badge bg-success bg-opacity-25 text-success fw-semibold px-2">4</span> Consulta estado y estadísticas
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

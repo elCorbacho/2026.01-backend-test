@@ -1,325 +1,231 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bienvenida a la API de Álbumes y Láminas">
-    <title>Bienvenida | API Álbumes y Láminas</title>
+    <title>API Álbumes y Láminas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous"
-    >
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        crossorigin="anonymous"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0b1021;
-            --panel: rgba(255, 255, 255, 0.06);
-            --card: rgba(255, 255, 255, 0.12);
-            --stroke: rgba(255, 255, 255, 0.18);
-            --primary: #10b981;
-            --primary-strong: #0ea472;
-            --accent: #f59e0b;
-            --text: #e5e7eb;
-            --muted: #94a3b8;
-            --blur: blur(18px);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Space Grotesk", "Segoe UI", sans-serif;
-            background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.14), transparent 32%),
-                        radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.16), transparent 34%),
-                        radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 36%),
-                        var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        .page-shell {
-            position: relative;
-            isolation: isolate;
-        }
-
-        .glass {
-            background: var(--panel);
-            border: 1px solid var(--stroke);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
-            backdrop-filter: var(--blur);
-            border-radius: 24px;
-        }
-
-        .hero {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.2), transparent 40%),
-                        radial-gradient(circle at 20% 60%, rgba(245, 158, 11, 0.15), transparent 45%);
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .pill {
-            border: 1px solid var(--stroke);
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-        }
-
-        .pill i {
-            color: var(--primary);
-        }
-
-        .btn-modern {
-            border-radius: 12px;
-            border: 1px solid transparent;
-            font-weight: 600;
-            padding: 0.7rem 1.1rem;
-            transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-        }
-
-        .btn-modern-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-            color: #05140e;
-            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.35);
-        }
-
-        .btn-modern-ghost {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: var(--stroke);
-            color: var(--text);
-        }
-
-        .btn-modern:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
-        }
-
-        .card-hover {
-            background: var(--card);
-            border: 1px solid var(--stroke);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-6px);
-            border-color: rgba(16, 185, 129, 0.35);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
-        }
-
-        .card-title {
-            color: #ffffff;
-        }
-
-        .card-text,
-        .text-secondary {
-            color: var(--muted) !important;
-        }
-
-        .list-group-item {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--stroke);
-            color: var(--text);
-        }
-
-        .list-group-item .text-muted {
-            color: var(--muted) !important;
-        }
-
-        .pill-grid .border {
-            border-color: var(--stroke) !important;
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        code {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        footer {
-            color: var(--muted);
-        }
-
-        .badge-modern {
-            background: rgba(16, 185, 129, 0.12);
-            color: var(--primary);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            border-radius: 999px;
-        }
-
-        .floating-dots {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
-            background-size: 18px 18px;
-            opacity: 0.35;
-            mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-in {
-            animation: fadeUp 0.4s ease both;
-        }
+        body { font-family: "Inter", system-ui, -apple-system, sans-serif; background-color: #f8f9fa; }
+        .hero { background: linear-gradient(135deg, #0d6e3f 0%, #198754 60%, #20c997 100%); border-radius: 1rem; }
+        .card { border: 1px solid #dee2e6; border-radius: .875rem; transition: box-shadow .2s, transform .2s; }
+        .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.10); transform: translateY(-2px); }
+        .badge-stack { display: flex; flex-wrap: wrap; gap: .4rem; }
+        .method-badge { font-size: .7rem; font-weight: 700; letter-spacing: .03em; padding: .2rem .55rem; border-radius: .4rem; }
+        .method-get  { background: #dbeafe; color: #1d4ed8; }
+        .method-post { background: #dcfce7; color: #15803d; }
+        .method-put  { background: #fef9c3; color: #92400e; }
+        .method-del  { background: #fee2e2; color: #b91c1c; }
+        .endpoint-row td { vertical-align: middle; padding: .6rem .5rem; }
+        .endpoint-row td:first-child { font-weight: 600; }
+        .endpoint-row td small { display: block; color: #6c757d; font-size: .78rem; }
+        .pillar-icon { width: 2.25rem; height: 2.25rem; border-radius: .6rem; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        footer { border-top: 1px solid #dee2e6; }
+        code { background: #e9ecef; padding: .1rem .35rem; border-radius: .3rem; font-size: .85em; }
     </style>
 </head>
 <body>
-    <div class="page-shell container py-4 py-md-5 position-relative">
-        <div class="floating-dots"></div>
-        <header class="hero glass p-4 p-md-5 mb-4 animate-in">
-            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-                <div>
-                    <div class="pill rounded-pill px-3 py-1 fw-semibold small text-uppercase mb-3 d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-lightning-charge-fill"></i> Spring Boot 3.5.9 · Java 21
-                    </div>
-                    <h1 class="display-5 fw-semibold mb-2 text-white">API Álbumes y Láminas</h1>
-                    <p class="lead mb-3 text-secondary">API REST para colecciones con arquitectura en capas, DTOs dedicados y manejo de errores consistente.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a class="btn btn-modern btn-modern-primary" href="/swagger-ui.html">Abrir Swagger UI</a>
-                        <a class="btn btn-modern btn-modern-ghost" href="/v3/api-docs">Ver OpenAPI JSON</a>
-                        <a class="btn btn-modern btn-modern-ghost" href="/actuator/health">Health Check</a>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <span class="badge badge-modern fs-6">Disponible</span>
-                    <div class="mt-2 text-muted">Última actualización: 2026</div>
-                </div>
-            </div>
-        </header>
 
-        <section class="row g-3 mb-4 animate-in" style="animation-delay: 80ms;">
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📚</span>Documentación</h5>
-                        <p class="card-text">Explora endpoints interactivos y prueba peticiones directamente desde Swagger.</p>
-                        <a class="btn btn-modern btn-modern-primary btn-sm" href="/swagger-ui.html">Ir a Swagger</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📄</span>Especificación</h5>
-                        <p class="card-text">Descarga o consume el documento OpenAPI 3.0 en formato JSON para integraciones.</p>
-                        <a class="btn btn-modern btn-modern-ghost btn-sm" href="/v3/api-docs">Ver JSON</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">🩺</span>Estado</h5>
-                        <p class="card-text">Consulta la salud del servicio y el estado de los componentes.</p>
-                        <a class="btn btn-modern btn-modern-ghost btn-sm" href="/actuator/health">Health</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="container py-4" style="max-width: 900px;">
 
-        <section class="row g-3 mb-4 animate-in" style="animation-delay: 140ms;">
-            <div class="col-12 col-lg-6">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">Endpoints rápidos</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Álbumes</div>
-                                    <small class="text-muted">GET /api/albums · POST /api/albums</small>
-                                </div>
-                                <span class="badge bg-primary-subtle text-primary-emphasis">CRUD</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Láminas</div>
-                                    <small class="text-muted">GET /api/laminas/album/{albumId}</small><br>
-                                    <small class="text-muted">POST /api/laminas · /masivo</small>
-                                </div>
-                                <span class="badge bg-success-subtle text-success-emphasis">Carga</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Catálogo</div>
-                                    <small class="text-muted">GET /api/catalogo · POST /api/catalogo</small>
-                                </div>
-                                <span class="badge bg-info-subtle text-info-emphasis">Referencia</span>
-                            </li>
-                        </ul>
+    <!-- ── HERO ── -->
+    <div class="hero text-white p-4 p-md-5 mb-4">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="badge bg-white text-success fw-semibold">
+                <i class="bi bi-circle-fill me-1" style="font-size:.55rem;"></i> Disponible
+            </span>
+            <span class="badge bg-white bg-opacity-25 text-white">Spring Boot 3.5.9</span>
+            <span class="badge bg-white bg-opacity-25 text-white">Java 21</span>
+        </div>
+        <h1 class="fw-bold mb-2" style="font-size: clamp(1.6rem, 4vw, 2.25rem);">API Álbumes y Láminas</h1>
+        <p class="mb-4 opacity-75" style="max-width: 560px;">
+            API REST para colecciones con arquitectura en capas, DTOs dedicados y manejo de errores consistente.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-light fw-semibold" href="/swagger-ui.html">
+                <i class="bi bi-journal-code me-1"></i>Swagger UI
+            </a>
+            <a class="btn btn-outline-light fw-semibold" href="/v3/api-docs">
+                <i class="bi bi-braces me-1"></i>OpenAPI JSON
+            </a>
+            <a class="btn btn-outline-light fw-semibold" href="/actuator/health">
+                <i class="bi bi-heart-pulse me-1"></i>Health Check
+            </a>
+            <a class="btn btn-outline-light fw-semibold" href="/overview.html">
+                <i class="bi bi-map me-1"></i>Ver Overview
+            </a>
+        </div>
+    </div>
+
+    <!-- ── CARDS ACCESO RÁPIDO ── -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="pillar-icon bg-success bg-opacity-10 text-success"><i class="bi bi-journal-code"></i></span>
+                        <h6 class="card-title mb-0 fw-semibold">Documentación</h6>
                     </div>
+                    <p class="card-text text-muted small mb-3">Explora endpoints interactivos y prueba peticiones desde Swagger.</p>
+                    <a class="btn btn-success btn-sm fw-semibold" href="/swagger-ui.html">Ir a Swagger</a>
                 </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">Pilares de la API</h5>
-                        <div class="row g-2 pill-grid">
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Validación</div>
-                                    <small class="text-muted">DTOs con Jakarta Validation.</small>
+        </div>
+        <div class="col-sm-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="pillar-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-braces"></i></span>
+                        <h6 class="card-title mb-0 fw-semibold">Especificación</h6>
+                    </div>
+                    <p class="card-text text-muted small mb-3">Descarga el documento OpenAPI 3.0 en JSON para integraciones.</p>
+                    <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/v3/api-docs">Ver JSON</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="pillar-icon bg-danger bg-opacity-10 text-danger"><i class="bi bi-heart-pulse"></i></span>
+                        <h6 class="card-title mb-0 fw-semibold">Estado</h6>
+                    </div>
+                    <p class="card-text text-muted small mb-3">Consulta la salud del servicio y sus componentes via Actuator.</p>
+                    <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/actuator/health">Health</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ENDPOINTS + PILARES ── -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-transparent fw-semibold border-bottom-0 pt-3 pb-0">
+                    <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Endpoints rápidos
+                </div>
+                <div class="card-body pt-2 px-3 pb-3">
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            <tr class="endpoint-row">
+                                <td>
+                                    Álbumes
+                                    <small><code>/api/albums</code></small>
+                                </td>
+                                <td class="text-end">
+                                    <div class="badge-stack justify-content-end">
+                                        <span class="method-badge method-get">GET</span>
+                                        <span class="method-badge method-post">POST</span>
+                                        <span class="method-badge method-put">PUT</span>
+                                        <span class="method-badge method-del">DEL</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="endpoint-row">
+                                <td>
+                                    Láminas
+                                    <small><code>/api/laminas</code> &middot; <code>/masivo</code></small>
+                                </td>
+                                <td class="text-end">
+                                    <div class="badge-stack justify-content-end">
+                                        <span class="method-badge method-get">GET</span>
+                                        <span class="method-badge method-post">POST</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="endpoint-row border-bottom-0">
+                                <td>
+                                    Catálogo
+                                    <small><code>/api/albums/{id}/catalogo</code></small>
+                                </td>
+                                <td class="text-end">
+                                    <div class="badge-stack justify-content-end">
+                                        <span class="method-badge method-get">GET</span>
+                                        <span class="method-badge method-post">POST</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-transparent fw-semibold border-bottom-0 pt-3 pb-0">
+                    <i class="bi bi-shield-check-fill text-success me-1"></i>Pilares de la API
+                </div>
+                <div class="card-body pt-2">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light">
+                                <span class="pillar-icon bg-success bg-opacity-10 text-success mt-1"><i class="bi bi-check2-circle"></i></span>
+                                <div>
+                                    <div class="fw-semibold small">Validación</div>
+                                    <div class="text-muted" style="font-size:.78rem;">DTOs con Jakarta Validation.</div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Manejo de errores</div>
-                                    <small class="text-muted">GlobalExceptionHandler y mensajes consistentes.</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light">
+                                <span class="pillar-icon bg-danger bg-opacity-10 text-danger mt-1"><i class="bi bi-shield-exclamation"></i></span>
+                                <div>
+                                    <div class="fw-semibold small">Errores</div>
+                                    <div class="text-muted" style="font-size:.78rem;">GlobalExceptionHandler centralizado.</div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Soft delete</div>
-                                    <small class="text-muted">Recursos con flag active.</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light">
+                                <span class="pillar-icon bg-warning bg-opacity-10 text-warning mt-1"><i class="bi bi-trash3"></i></span>
+                                <div>
+                                    <div class="fw-semibold small">Soft Delete</div>
+                                    <div class="text-muted" style="font-size:.78rem;">Flag <code>active</code> en entidades.</div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Auditoría</div>
-                                    <small class="text-muted">createdAt y updatedAt automáticos.</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light">
+                                <span class="pillar-icon bg-info bg-opacity-10 text-info mt-1"><i class="bi bi-clock-history"></i></span>
+                                <div>
+                                    <div class="fw-semibold small">Auditoría</div>
+                                    <div class="text-muted" style="font-size:.78rem;"><code>createdAt</code> &amp; <code>updatedAt</code>.</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="card card-hover mb-4 animate-in" style="animation-delay: 200ms;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Cómo empezar</h5>
-                <ol class="mb-3 text-secondary">
-                    <li>Abre Swagger UI y prueba las operaciones básicas (crear álbum, listar láminas).</li>
-                    <li>Consulta el JSON OpenAPI y genera clientes o documentación interna.</li>
-                    <li>Usa los endpoints de health para monitoreo y despliegues.</li>
-                </ol>
-                <p class="mb-0 text-muted">Toda respuesta se entrega en ApiResponseDTO con campos success, message, data y timestamp.</p>
-            </div>
-        </section>
-
-        <footer class="text-center text-muted pb-3">
-            API Álbumes y Láminas · Backend Test 2026 · Spring Boot 3.5.9
-        </footer>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- ── CÓMO EMPEZAR ── -->
+    <div class="card mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-semibold mb-3"><i class="bi bi-rocket-takeoff-fill text-success me-2"></i>Cómo empezar</h5>
+            <ol class="mb-3 text-muted" style="line-height: 2; font-size: .92rem;">
+                <li>Abre <a href="/swagger-ui.html" class="text-success fw-semibold">Swagger UI</a> y prueba las operaciones básicas (crear álbum, listar láminas).</li>
+                <li>Consulta el <a href="/v3/api-docs" class="text-success fw-semibold">JSON OpenAPI</a> y genera clientes o documentación interna.</li>
+                <li>Usa los endpoints de <a href="/actuator/health" class="text-success fw-semibold">health</a> para monitoreo y despliegues.</li>
+            </ol>
+            <div class="alert border-0 py-2 px-3 mb-0 d-flex align-items-center gap-2" style="background:#f0fdf4; font-size:.88rem;">
+                <i class="bi bi-info-circle-fill text-success"></i>
+                Toda respuesta se entrega en <code>ApiResponseDTO</code> con campos <code>success</code>, <code>message</code>, <code>data</code> y <code>timestamp</code>.
+            </div>
+        </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="text-center text-muted py-3" style="font-size: .8rem;">
+        API Álbumes y Láminas &middot; Backend Test 2026 &middot; Spring Boot 3.5.9
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
