@@ -24,6 +24,8 @@
 - Lamina module: DTOs/mappers/services for single and bulk catalog operations; uses catalog validation before inserts; soft delete support.
 - Auditing config: `JpaAuditingConfig` enabling `@CreatedDate` / `@LastModifiedDate`; `DataInitializer` seeds baseline data.
 - Setup web page: `src/main/resources/static/setup.html` resume cómo montar la app con prerrequisitos, comandos y URLs clave.
+- Unified landing: `src/main/resources/static/index.html` concentra overview API, setup y estructura de datos en una sola vista.
+- Legacy static pages (`setup.html`, `overview.html`, `db-estructura.html`) ahora redirigen a la landing unificada.
 
 ## Patterns
 - Soft delete pattern: mark `active = false` instead of physical delete; queries prefer `findBy...ActiveTrue`.

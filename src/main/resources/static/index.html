@@ -1,329 +1,571 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bienvenida a la API de Álbumes y Láminas">
-    <title>Bienvenida | API Álbumes y Láminas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous"
-    >
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        crossorigin="anonymous"
-    >
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Landing unificada — API de Álbumes y Láminas · Spring Boot 3.5.9 · Java 21" />
+    <title>API Álbumes y Láminas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <style>
-        :root {
-            --bg: #0b1021;
-            --panel: rgba(255, 255, 255, 0.06);
-            --card: rgba(255, 255, 255, 0.12);
-            --stroke: rgba(255, 255, 255, 0.18);
-            --primary: #10b981;
-            --primary-strong: #0ea472;
-            --accent: #f59e0b;
-            --text: #e5e7eb;
-            --muted: #94a3b8;
-            --blur: blur(18px);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Space Grotesk", "Segoe UI", sans-serif;
-            background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.14), transparent 32%),
-                        radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.16), transparent 34%),
-                        radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 36%),
-                        var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        .page-shell {
-            position: relative;
-            isolation: isolate;
-        }
-
-        .glass {
-            background: var(--panel);
-            border: 1px solid var(--stroke);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
-            backdrop-filter: var(--blur);
-            border-radius: 24px;
-        }
-
-        .hero {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.2), transparent 40%),
-                        radial-gradient(circle at 20% 60%, rgba(245, 158, 11, 0.15), transparent 45%);
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .pill {
-            border: 1px solid var(--stroke);
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-        }
-
-        .pill i {
-            color: var(--primary);
-        }
-
-        .btn-modern {
-            border-radius: 12px;
-            border: 1px solid transparent;
-            font-weight: 600;
-            padding: 0.7rem 1.1rem;
-            transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-        }
-
-        .btn-modern-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-            color: #05140e;
-            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.35);
-        }
-
-        .btn-modern-ghost {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: var(--stroke);
-            color: var(--text);
-        }
-
-        .btn-modern:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
-        }
-
-        .card-hover {
-            background: var(--card);
-            border: 1px solid var(--stroke);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-6px);
-            border-color: rgba(16, 185, 129, 0.35);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
-        }
-
-        .card-title {
-            color: #ffffff;
-        }
-
-        .card-text,
-        .text-secondary {
-            color: var(--muted) !important;
-        }
-
-        .list-group-item {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--stroke);
-            color: var(--text);
-        }
-
-        .list-group-item .text-muted {
-            color: var(--muted) !important;
-        }
-
-        .pill-grid .border {
-            border-color: var(--stroke) !important;
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        code {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        footer {
-            color: var(--muted);
-        }
-
-        .badge-modern {
-            background: rgba(16, 185, 129, 0.12);
-            color: var(--primary);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            border-radius: 999px;
-        }
-
-        .floating-dots {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
-            background-size: 18px 18px;
-            opacity: 0.35;
-            mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-in {
-            animation: fadeUp 0.4s ease both;
-        }
+        :root{--primary:#10b981;--primary-d:#0ea472;--accent:#f59e0b;--stroke:rgba(255,255,255,.14);--card-bg:rgba(255,255,255,.06);--muted:#94a3b8;}
+        body{font-family:"Space Grotesk","Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 18% 18%,rgba(16,185,129,.13),transparent 30%),radial-gradient(circle at 82% 4%,rgba(245,158,11,.15),transparent 30%),radial-gradient(circle at 52% 82%,rgba(59,130,246,.09),transparent 30%),#0b1221;min-height:100vh;}
+        code,pre{font-family:"JetBrains Mono","Fira Code",monospace;}
+        a{color:var(--primary);}
+        #scroll-progress{position:fixed;top:0;left:0;z-index:9999;height:3px;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .1s linear;}
+        #mainNav{backdrop-filter:blur(14px);background:rgba(11,18,33,.82)!important;border-bottom:1px solid var(--stroke);}
+        .navbar-brand .dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 0 0 5px rgba(16,185,129,.14);margin-right:8px;vertical-align:middle;}
+        .nav-link{color:var(--muted)!important;font-weight:600;font-size:.9rem;}
+        .nav-link:hover,.nav-link.active{color:#fff!important;}
+        .nav-link.active{border-bottom:2px solid var(--primary);}
+        .btn-emerald{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#041a10;font-weight:700;border:none;box-shadow:0 10px 26px rgba(16,185,129,.32);}
+        .btn-emerald:hover{filter:brightness(1.08);color:#041a10;transform:translateY(-1px);}
+        .btn-outline-dim{border:1px solid var(--stroke);color:#e5e7eb;background:rgba(255,255,255,.05);font-weight:600;}
+        .btn-outline-dim:hover{border-color:var(--primary);color:#fff;transform:translateY(-1px);}
+        #hero-section{background:var(--card-bg);border:1px solid var(--stroke);border-radius:22px;position:relative;overflow:hidden;}
+        #hero-section::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 18%,rgba(16,185,129,.18),transparent 36%),radial-gradient(circle at 10% 55%,rgba(245,158,11,.14),transparent 40%);}
+        .hero-inner{position:relative;z-index:1;}
+        .tech-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--stroke);background:rgba(255,255,255,.08);border-radius:999px;padding:6px 14px;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+        #health-dot{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block;transition:background .4s;}
+        #health-dot.up{background:var(--primary);box-shadow:0 0 0 4px rgba(16,185,129,.22);}
+        #health-dot.down{background:#ef4444;}
+        .stat-card{background:var(--card-bg);border:1px solid var(--stroke);border-radius:16px;text-align:center;padding:20px 12px;transition:transform .18s,border-color .18s;}
+        .stat-card:hover{transform:translateY(-4px);border-color:rgba(16,185,129,.36);}
+        .stat-num{font-size:2rem;font-weight:700;color:var(--primary);}
+        .stat-lbl{font-size:.8rem;color:var(--muted);font-weight:600;}
+        .sec-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:10px;border:1px solid rgba(16,185,129,.38);background:rgba(16,185,129,.1);color:var(--primary);font-weight:700;font-size:.78rem;letter-spacing:.04em;}
+        .g-card{background:var(--card-bg);border:1px solid var(--stroke);border-radius:16px;padding:20px 22px;box-shadow:0 16px 40px rgba(0,0,0,.28);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
+        .g-card:hover{transform:translateY(-4px);border-color:rgba(16,185,129,.3);box-shadow:0 22px 52px rgba(0,0,0,.34);}
+        .code-wrap{position:relative;margin-top:12px;}
+        .code-wrap pre{background:rgba(0,0,0,.38);border:1px solid var(--stroke);border-radius:12px;padding:14px 16px;margin:0;overflow-x:auto;font-size:.83rem;color:#e5e7eb;}
+        .btn-copy{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid var(--stroke);color:var(--muted);border-radius:8px;padding:3px 9px;font-size:.75rem;cursor:pointer;transition:background .15s,color .15s;}
+        .btn-copy:hover{background:rgba(16,185,129,.22);color:#fff;}
+        .btn-copy.copied{background:rgba(16,185,129,.35);color:var(--primary);}
+        .ptag{display:inline-block;padding:5px 11px;border-radius:10px;border:1px solid var(--stroke);background:rgba(255,255,255,.06);font-size:.78rem;font-weight:600;color:#d1d5db;transition:border-color .15s;}
+        .ptag:hover{border-color:var(--primary);}
+        .ptag.pk{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.08);color:#fbbf24;}
+        .ptag.fk{border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.08);color:#93c5fd;}
+        .ptag.audit{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.08);color:#c4b5fd;}
+        .ptag.soft{border-color:rgba(52,211,153,.5);background:rgba(52,211,153,.08);color:#6ee7b7;}
+        .db-tabs .nav-link{background:rgba(255,255,255,.05);border:1px solid var(--stroke)!important;border-radius:10px!important;color:var(--muted)!important;font-weight:600;margin-right:6px;transition:all .15s;margin-bottom:6px;}
+        .db-tabs .nav-link.active{background:rgba(16,185,129,.14)!important;border-color:rgba(16,185,129,.5)!important;color:var(--primary)!important;}
+        .rel-table{border-collapse:collapse;width:100%;font-size:.88rem;}
+        .rel-table th{background:rgba(255,255,255,.06);color:#e5e7eb;font-weight:700;}
+        .rel-table th,.rel-table td{border:1px solid var(--stroke);padding:10px 14px;color:var(--muted);}
+        .rel-table tr:hover td{background:rgba(16,185,129,.05);}
+        .card-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-weight:700;font-size:.85rem;background:rgba(16,185,129,.14);color:var(--primary);border:1px solid rgba(16,185,129,.35);flex-shrink:0;}
+        .accordion-item{background:var(--card-bg)!important;border:1px solid var(--stroke)!important;border-radius:14px!important;margin-bottom:8px;overflow:hidden;}
+        .accordion-button{background:var(--card-bg)!important;color:#e5e7eb!important;font-weight:700;border-radius:14px!important;box-shadow:none!important;}
+        .accordion-button:not(.collapsed){background:rgba(16,185,129,.1)!important;color:var(--primary)!important;}
+        .accordion-button::after{filter:invert(1) brightness(.7);}
+        .accordion-body{color:var(--muted);}
+        #backTop{position:fixed;bottom:28px;right:28px;z-index:500;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-d));border:none;color:#041a10;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 8px 22px rgba(16,185,129,.36);}
+        #backTop.show{opacity:1;pointer-events:all;}
+        #backTop:hover{transform:translateY(-3px);}
+        .toast-container{z-index:9999;}
+        .sec-divider{border-top:1px solid rgba(255,255,255,.07);}
+        .offcanvas{background:#0f1929;border-left:1px solid var(--stroke)!important;}
+        @media(max-width:768px){.stat-num{font-size:1.6rem;}}
     </style>
 </head>
 <body>
-    <div class="page-shell container py-4 py-md-5 position-relative">
-        <div class="floating-dots"></div>
-        <header class="hero glass p-4 p-md-5 mb-4 animate-in">
-            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-                <div>
-                    <div class="pill rounded-pill px-3 py-1 fw-semibold small text-uppercase mb-3 d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-lightning-charge-fill"></i> Spring Boot 3.5.9 · Java 21
-                    </div>
-                    <h1 class="display-5 fw-semibold mb-2 text-white">API Álbumes y Láminas</h1>
-                    <p class="lead mb-3 text-secondary">API REST para colecciones con arquitectura en capas, DTOs dedicados y manejo de errores consistente.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a class="btn btn-modern btn-modern-primary" href="/swagger-ui.html">Abrir Swagger UI</a>
-                        <a class="btn btn-modern btn-modern-ghost" href="/v3/api-docs">Ver OpenAPI JSON</a>
-                        <a class="btn btn-modern btn-modern-ghost" href="/actuator/health">Health Check</a>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <span class="badge badge-modern fs-6">Disponible</span>
-                    <div class="mt-2 text-muted">Última actualización: 2026</div>
-                </div>
-            </div>
-        </header>
+<div id="scroll-progress"></div>
 
-        <section class="row g-3 mb-4 animate-in" style="animation-delay: 80ms;">
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📚</span>Documentación</h5>
-                        <p class="card-text">Explora endpoints interactivos y prueba peticiones directamente desde Swagger.</p>
-                        <a class="btn btn-modern btn-modern-primary btn-sm" href="/swagger-ui.html">Ir a Swagger</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">📄</span>Especificación</h5>
-                        <p class="card-text">Descarga o consume el documento OpenAPI 3.0 en formato JSON para integraciones.</p>
-                        <a class="btn btn-modern btn-modern-ghost btn-sm" href="/v3/api-docs">Ver JSON</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center gap-2 mb-2"><span class="fs-4">🩺</span>Estado</h5>
-                        <p class="card-text">Consulta la salud del servicio y el estado de los componentes.</p>
-                        <a class="btn btn-modern btn-modern-ghost btn-sm" href="/actuator/health">Health</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="row g-3 mb-4 animate-in" style="animation-delay: 140ms;">
-            <div class="col-12 col-lg-6">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">Endpoints rápidos</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Álbumes</div>
-                                    <small class="text-muted">GET /api/albums · POST /api/albums</small>
-                                </div>
-                                <span class="badge bg-primary-subtle text-primary-emphasis">CRUD</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Láminas</div>
-                                    <small class="text-muted">GET /api/laminas/album/{albumId}</small><br>
-                                    <small class="text-muted">POST /api/laminas · /masivo</small>
-                                </div>
-                                <span class="badge bg-success-subtle text-success-emphasis">Carga</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="fw-semibold">Catálogo</div>
-                                    <small class="text-muted">GET /api/catalogo · POST /api/catalogo</small>
-                                </div>
-                                <span class="badge bg-info-subtle text-info-emphasis">Referencia</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div class="card card-hover h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">Pilares de la API</h5>
-                        <div class="row g-2 pill-grid">
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Validación</div>
-                                    <small class="text-muted">DTOs con Jakarta Validation.</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Manejo de errores</div>
-                                    <small class="text-muted">GlobalExceptionHandler y mensajes consistentes.</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Soft delete</div>
-                                    <small class="text-muted">Recursos con flag active.</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="border rounded p-3 h-100">
-                                    <div class="fw-semibold mb-1">Auditoría</div>
-                                    <small class="text-muted">createdAt y updatedAt automáticos.</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="card card-hover mb-4 animate-in" style="animation-delay: 200ms;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Cómo empezar</h5>
-                <ol class="mb-3 text-secondary">
-                    <li>Abre Swagger UI y prueba las operaciones básicas (crear álbum, listar láminas).</li>
-                    <li>Consulta el JSON OpenAPI y genera clientes o documentación interna.</li>
-                    <li>Usa los endpoints de health para monitoreo y despliegues.</li>
-                </ol>
-                <div class="d-flex flex-wrap gap-2 mb-2">
-                    <a class="btn btn-modern btn-modern-primary btn-sm" href="/setup.html">Guía rápida de montaje</a>
-                    <a class="btn btn-modern btn-modern-ghost btn-sm" href="/swagger-ui.html">Abrir Swagger</a>
-                </div>
-                <p class="mb-0 text-muted">Toda respuesta se entrega en ApiResponseDTO con campos success, message, data y timestamp.</p>
-            </div>
-        </section>
-
-        <footer class="text-center text-muted pb-3">
-            API Álbumes y Láminas · Backend Test 2026 · Spring Boot 3.5.9
-        </footer>
+<!-- NAVBAR -->
+<nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-white" href="#inicio"><span class="dot"></span>&#193;lbumes &amp; L&#225;minas API</a>
+        <div class="collapse navbar-collapse" id="navbarDesktop">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link px-3" href="#overview">API</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="#setup">Setup</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="#datos">Base de datos</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="#recursos">Recursos</a></li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a class="btn btn-emerald btn-sm d-none d-lg-inline-flex" href="/swagger-ui.html"><i class="bi bi-box-arrow-up-right me-1"></i>Swagger UI</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"><i class="bi bi-list fs-4 text-white"></i></button>
+        </div>
     </div>
+</nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- OFFCANVAS MOBILE -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+    <div class="offcanvas-header border-bottom border-white border-opacity-10">
+        <span class="fw-bold text-white">Navegaci&#243;n</span>
+        <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column gap-2 pt-4">
+        <a href="#overview" class="btn btn-outline-dim" data-bs-dismiss="offcanvas"><i class="bi bi-lightning-charge me-2"></i>API Overview</a>
+        <a href="#setup"    class="btn btn-outline-dim" data-bs-dismiss="offcanvas"><i class="bi bi-terminal me-2"></i>Setup</a>
+        <a href="#datos"    class="btn btn-outline-dim" data-bs-dismiss="offcanvas"><i class="bi bi-database me-2"></i>Base de datos</a>
+        <a href="#recursos" class="btn btn-outline-dim" data-bs-dismiss="offcanvas"><i class="bi bi-link-45deg me-2"></i>Recursos</a>
+        <hr class="border-white border-opacity-10" />
+        <a href="/swagger-ui.html" class="btn btn-emerald"><i class="bi bi-box-arrow-up-right me-2"></i>Abrir Swagger</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="container pt-4 pb-2" id="inicio">
+    <div id="hero-section" class="p-4 p-md-5 mb-4">
+        <div class="hero-inner">
+            <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+                <span class="tech-badge"><i class="bi bi-server text-success"></i>Spring Boot 3.5.9 &middot; Java 21</span>
+                <span class="tech-badge"><span id="health-dot"></span>&nbsp;<span id="health-label">Verificando&#8230;</span></span>
+            </div>
+            <h1 class="fw-bold mb-2" style="font-size:clamp(2rem,5vw,3rem);letter-spacing:-.02em;">API &#193;lbumes y L&#225;minas</h1>
+            <p class="text-secondary mb-4" style="max-width:680px;">Landing &#250;nica con todo lo necesario: resumen de arquitectura, gu&#237;a de montaje, estructura de base de datos y enlaces clave.</p>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <a class="btn btn-emerald" href="/swagger-ui.html"><i class="bi bi-play-circle me-1"></i>Abrir Swagger</a>
+                <a class="btn btn-outline-dim" href="/v3/api-docs"><i class="bi bi-braces me-1"></i>OpenAPI JSON</a>
+                <a class="btn btn-outline-dim" href="/actuator/health"><i class="bi bi-activity me-1"></i>Health Check</a>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="ptag"><i class="bi bi-layers me-1"></i>Arquitectura en capas</span>
+                <span class="ptag"><i class="bi bi-arrows-collapse me-1"></i>DTOs + Mappers</span>
+                <span class="ptag soft"><i class="bi bi-trash me-1"></i>Soft delete</span>
+                <span class="ptag audit"><i class="bi bi-clock-history me-1"></i>Auditor&#237;a JPA</span>
+                <span class="ptag"><i class="bi bi-shield-check me-1"></i>Jakarta Validation</span>
+                <span class="ptag"><i class="bi bi-bug me-1"></i>GlobalExceptionHandler</span>
+            </div>
+        </div>
+    </div>
+    <!-- STATS -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num" data-count="3">0</div><div class="stat-lbl">Entidades JPA</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num" data-count="12">0</div><div class="stat-lbl">Endpoints REST</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num" data-count="6">0</div><div class="stat-lbl">Capas de arquitectura</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num" data-count="21">0</div><div class="stat-lbl">Java version</div></div></div>
+    </div>
+</div>
+
+<!-- SEC: API OVERVIEW -->
+<div class="container sec-divider pt-4 pb-2" id="overview">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <span class="sec-badge"><i class="bi bi-lightning-charge-fill"></i>API</span>
+        <h2 class="mb-0 fs-4 fw-bold">Resumen r&#225;pido</h2>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="d-flex align-items-center gap-2 mb-2"><span style="font-size:1.5rem">📚</span><h5 class="mb-0 fw-bold">Documentaci&#243;n</h5></div>
+                <p class="text-secondary flex-grow-1">Explora y prueba todos los endpoints en Swagger UI directamente desde el browser.</p>
+                <a class="btn btn-emerald btn-sm mt-2" href="/swagger-ui.html"><i class="bi bi-box-arrow-up-right me-1"></i>Ir a Swagger</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="d-flex align-items-center gap-2 mb-2"><span style="font-size:1.5rem">📄</span><h5 class="mb-0 fw-bold">Especificaci&#243;n</h5></div>
+                <p class="text-secondary flex-grow-1">OpenAPI 3.0 en JSON para generar SDKs, clientes o contract tests autom&#225;ticos.</p>
+                <a class="btn btn-outline-dim btn-sm mt-2" href="/v3/api-docs"><i class="bi bi-download me-1"></i>Ver JSON</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="d-flex align-items-center gap-2 mb-2"><span style="font-size:1.5rem">🩺</span><h5 class="mb-0 fw-bold">Estado del servicio</h5></div>
+                <p class="text-secondary flex-grow-1">Consulta la salud del servicio y readiness desde Spring Actuator.</p>
+                <a class="btn btn-outline-dim btn-sm mt-2" href="/actuator/health"><i class="bi bi-activity me-1"></i>Ver health</a>
+            </div>
+        </div>
+    </div>
+    <div class="g-card mb-5">
+        <h5 class="fw-bold mb-3">Pilares y contrato de respuesta</h5>
+        <div class="row g-4">
+            <div class="col-12 col-lg-6">
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                    <li class="d-flex align-items-start gap-2"><i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i><span><strong>Validaci&#243;n</strong> con anotaciones Jakarta en cada DTO de entrada.</span></li>
+                    <li class="d-flex align-items-start gap-2"><i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i><span><strong>Servicios transaccionales</strong> con <code>@Transactional</code> y <code>readOnly=true</code> en lecturas.</span></li>
+                    <li class="d-flex align-items-start gap-2"><i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i><span><strong>GlobalExceptionHandler</strong>: <code>ResourceNotFoundException</code>, <code>InvalidOperationException</code>.</span></li>
+                    <li class="d-flex align-items-start gap-2"><i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i><span><strong>Soft delete</strong> con campo <code>active</code> &mdash; nunca se borra una fila f&#237;sicamente.</span></li>
+                    <li class="d-flex align-items-start gap-2"><i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i><span><strong>Auditor&#237;a JPA</strong> autom&#225;tica v&#237;a <code>@CreatedDate</code> / <code>@LastModifiedDate</code>.</span></li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-6">
+                <p class="text-secondary mb-1 fw-semibold">Todas las respuestas usan <code>ApiResponseDTO</code>:</p>
+                <div class="code-wrap">
+                    <pre id="pre-apiresp">{
+  "success":   true,
+  "message":   "OK",
+  "data":      { ... },
+  "timestamp": "2026-02-25T12:00:00Z"
+}</pre>
+                    <button class="btn-copy" onclick="copyCode('pre-apiresp',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEC: SETUP -->
+<div class="container sec-divider pt-4 pb-2" id="setup">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <span class="sec-badge"><i class="bi bi-terminal-fill"></i>Setup</span>
+        <h2 class="mb-0 fs-4 fw-bold">Gu&#237;a r&#225;pida de montaje</h2>
+    </div>
+    <div class="row g-2 mb-4">
+        <div class="col-6 col-md-3"><div class="g-card text-center py-3"><div class="card-num mx-auto mb-2">1</div><div class="fw-bold small">Prerrequisitos</div></div></div>
+        <div class="col-6 col-md-3"><div class="g-card text-center py-3"><div class="card-num mx-auto mb-2">2</div><div class="fw-bold small">Clonar e instalar</div></div></div>
+        <div class="col-6 col-md-3"><div class="g-card text-center py-3"><div class="card-num mx-auto mb-2">3</div><div class="fw-bold small">Configurar BD</div></div></div>
+        <div class="col-6 col-md-3"><div class="g-card text-center py-3"><div class="card-num mx-auto mb-2">4</div><div class="fw-bold small">Verificar</div></div></div>
+    </div>
+    <div class="accordion mb-5" id="setupAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                    <span class="card-num me-3">1</span>Prerrequisitos
+                </button>
+            </h2>
+            <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#setupAccordion">
+                <div class="accordion-body">
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                        <li><i class="bi bi-check2 text-success me-2"></i><strong>Java 21</strong> en el PATH.</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Maven wrapper (<code>mvnw</code> / <code>mvnw.cmd</code>) incluido en el repo.</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Puerto <strong>8080</strong> libre (configurable en <code>application.properties</code>).</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Opcional: <strong>MySQL / MariaDB</strong> si conectas a base de datos propia.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                    <span class="card-num me-3">2</span>Clonar y arrancar
+                </button>
+            </h2>
+            <div id="step2" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                <div class="accordion-body">
+                    <div class="code-wrap">
+                        <pre id="pre-clone">git clone &lt;repo-url&gt;
+cd 2026.01-backend-test
+
+# Windows
+./mvnw.cmd clean install
+./mvnw.cmd spring-boot:run
+
+# Linux / Mac
+./mvnw clean install
+./mvnw spring-boot:run</pre>
+                        <button class="btn-copy" onclick="copyCode('pre-clone',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                    <span class="card-num me-3">3</span>Configurar base de datos
+                </button>
+            </h2>
+            <div id="step3" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                <div class="accordion-body">
+                    <p class="mb-2">Edita <code>src/main/resources/application.properties</code>:</p>
+                    <div class="code-wrap">
+                        <pre id="pre-props">spring.datasource.url=jdbc:mysql://localhost:3306/albumes
+spring.datasource.username=usuario
+spring.datasource.password=clave
+server.port=8080</pre>
+                        <button class="btn-copy" onclick="copyCode('pre-props',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4">
+                    <span class="card-num me-3">4</span>Verificar el arranque
+                </button>
+            </h2>
+            <div id="step4" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                <div class="accordion-body">
+                    <ol class="d-flex flex-column gap-2 mb-0">
+                        <li>Swagger UI &#8594; <a href="/swagger-ui.html">/swagger-ui.html</a></li>
+                        <li>Health check &#8594; <a href="/actuator/health">/actuator/health</a></li>
+                        <li>OpenAPI JSON &#8594; <a href="/v3/api-docs">/v3/api-docs</a></li>
+                        <li>Arranque en <strong>~2-3 segundos</strong> tras el build.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEC: BASE DE DATOS -->
+<div class="container sec-divider pt-4 pb-2" id="datos">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <span class="sec-badge"><i class="bi bi-database-fill"></i>Datos</span>
+        <h2 class="mb-0 fs-4 fw-bold">Estructura de la base de datos</h2>
+    </div>
+    <ul class="nav db-tabs mb-3 flex-wrap" id="dbTabs" role="tablist">
+        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-album" type="button"><i class="bi bi-collection me-1"></i>Album</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-lamina" type="button"><i class="bi bi-image me-1"></i>Lamina</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-catalogo" type="button"><i class="bi bi-journal-text me-1"></i>LaminaCatalogo</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rel" type="button"><i class="bi bi-diagram-2 me-1"></i>Relaciones</button></li>
+    </ul>
+    <div class="tab-content mb-5">
+        <!-- Album -->
+        <div class="tab-pane fade show active" id="tab-album" role="tabpanel">
+            <div class="g-card">
+                <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-collection fs-5 text-success"></i><h5 class="mb-0 fw-bold">Album</h5></div>
+                <p class="text-secondary mb-3">Contexto de colecci&#243;n: t&#237;tulo, a&#241;o y descripci&#243;n.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="ptag pk"><i class="bi bi-key me-1"></i>PK id</span>
+                    <span class="ptag">nombre <span class="text-danger">*</span></span>
+                    <span class="ptag">year</span>
+                    <span class="ptag">descripcion</span>
+                    <span class="ptag soft">active</span>
+                    <span class="ptag audit">created_at</span>
+                    <span class="ptag audit">updated_at</span>
+                </div>
+                <div class="code-wrap">
+                    <pre id="pre-album">@Entity
+public class Album {
+    @Id @GeneratedValue Long id;
+    @NotBlank String nombre;
+    Integer year;
+    String descripcion;
+    Boolean active = true;          // soft delete
+    @CreatedDate LocalDateTime createdAt;
+    @LastModifiedDate LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "album", cascade = ALL, fetch = LAZY)
+    List&lt;Lamina&gt; laminas;
+}</pre>
+                    <button class="btn-copy" onclick="copyCode('pre-album',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                </div>
+            </div>
+        </div>
+        <!-- Lamina -->
+        <div class="tab-pane fade" id="tab-lamina" role="tabpanel">
+            <div class="g-card">
+                <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-image fs-5 text-success"></i><h5 class="mb-0 fw-bold">Lamina</h5></div>
+                <p class="text-secondary mb-3">L&#225;minas reales del usuario, ligadas a un &#225;lbum espec&#237;fico.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="ptag pk"><i class="bi bi-key me-1"></i>PK id</span>
+                    <span class="ptag fk"><i class="bi bi-link me-1"></i>FK album_id</span>
+                    <span class="ptag">nombre</span>
+                    <span class="ptag">imagen (opcional)</span>
+                    <span class="ptag">fecha_lanzamiento</span>
+                    <span class="ptag">tipo_lamina</span>
+                    <span class="ptag soft">active</span>
+                    <span class="ptag audit">created_at</span>
+                    <span class="ptag audit">updated_at</span>
+                </div>
+                <div class="code-wrap">
+                    <pre id="pre-lamina">@Entity
+public class Lamina {
+    @Id @GeneratedValue Long id;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "album_id", nullable = false)
+    Album album;
+    String nombre;
+    String imagen;
+    LocalDate fechaLanzamiento;
+    String tipoLamina;
+    Boolean active = true;
+    @CreatedDate LocalDateTime createdAt;
+    @LastModifiedDate LocalDateTime updatedAt;
+}</pre>
+                    <button class="btn-copy" onclick="copyCode('pre-lamina',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                </div>
+            </div>
+        </div>
+        <!-- LaminaCatalogo -->
+        <div class="tab-pane fade" id="tab-catalogo" role="tabpanel">
+            <div class="g-card">
+                <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-journal-text fs-5 text-success"></i><h5 class="mb-0 fw-bold">LaminaCatalogo</h5></div>
+                <p class="text-secondary mb-3">Cat&#225;logo maestro de l&#225;minas por &#225;lbum, con unicidad en nombre dentro del mismo &#225;lbum.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="ptag pk"><i class="bi bi-key me-1"></i>PK id</span>
+                    <span class="ptag fk"><i class="bi bi-link me-1"></i>FK album_id</span>
+                    <span class="ptag">nombre (unique por &#225;lbum)</span>
+                    <span class="ptag">imagen (opcional)</span>
+                    <span class="ptag">fecha_lanzamiento</span>
+                    <span class="ptag">tipo_lamina</span>
+                    <span class="ptag soft">active</span>
+                    <span class="ptag audit">created_at</span>
+                    <span class="ptag audit">updated_at</span>
+                </div>
+                <div class="code-wrap">
+                    <pre id="pre-cat">@Entity
+@Table(uniqueConstraints = @UniqueConstraint(
+    columnNames = {"album_id", "nombre"}))
+public class LaminaCatalogo {
+    @Id @GeneratedValue Long id;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "album_id", nullable = false)
+    Album album;
+    @NotBlank String nombre;
+    String imagen;
+    LocalDate fechaLanzamiento;
+    String tipoLamina;
+    Boolean active = true;
+    @CreatedDate LocalDateTime createdAt;
+    @LastModifiedDate LocalDateTime updatedAt;
+}</pre>
+                    <button class="btn-copy" onclick="copyCode('pre-cat',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                </div>
+            </div>
+        </div>
+        <!-- Relaciones -->
+        <div class="tab-pane fade" id="tab-rel" role="tabpanel">
+            <div class="g-card">
+                <h5 class="fw-bold mb-3"><i class="bi bi-diagram-2 me-2 text-success"></i>Diagrama de relaciones</h5>
+                <div class="table-responsive">
+                    <table class="rel-table">
+                        <thead><tr><th>Entidad origen</th><th>Entidad destino</th><th>Cardinalidad</th><th>Detalles</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Album</strong></td>
+                                <td>Lamina</td>
+                                <td><span class="badge bg-success-subtle text-success border border-success-subtle">1 &#8594; N</span></td>
+                                <td><code>album_id</code> obligatoria &middot; cascade ALL &middot; fetch LAZY</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Album</strong></td>
+                                <td>LaminaCatalogo</td>
+                                <td><span class="badge bg-success-subtle text-success border border-success-subtle">1 &#8594; N</span></td>
+                                <td>Constraint &#250;nico <code>(album_id, nombre)</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <span class="ptag soft"><i class="bi bi-trash me-1"></i>Soft delete: is_active</span>
+                    <span class="ptag audit"><i class="bi bi-clock-history me-1"></i>Auditor&#237;a: created_at / updated_at</span>
+                    <span class="ptag"><i class="bi bi-x-circle me-1"></i>Nunca se borra f&#237;sicamente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEC: RECURSOS -->
+<div class="container sec-divider pt-4 pb-5" id="recursos">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <span class="sec-badge"><i class="bi bi-link-45deg"></i>Recursos</span>
+        <h2 class="mb-0 fs-4 fw-bold">Enlaces &#250;tiles</h2>
+    </div>
+    <div class="row g-3">
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="fs-3 mb-2">&#9889;</div>
+                <h5 class="fw-bold mb-1">Swagger UI</h5>
+                <p class="text-secondary flex-grow-1">Interface interactiva para probar todos los endpoints con formularios.</p>
+                <a class="btn btn-emerald btn-sm mt-2" href="/swagger-ui.html"><i class="bi bi-play-circle me-1"></i>Abrir</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="fs-3 mb-2">📦</div>
+                <h5 class="fw-bold mb-1">OpenAPI JSON</h5>
+                <p class="text-secondary flex-grow-1">Especificaci&#243;n completa en formato machine-readable para SDKs y clientes.</p>
+                <a class="btn btn-outline-dim btn-sm mt-2" href="/v3/api-docs"><i class="bi bi-braces me-1"></i>Descargar</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="g-card h-100 d-flex flex-column">
+                <div class="fs-3 mb-2">🩺</div>
+                <h5 class="fw-bold mb-1">Health &amp; Actuator</h5>
+                <p class="text-secondary flex-grow-1">Monitorea el estado del servicio y m&#233;tricas de Spring Actuator.</p>
+                <a class="btn btn-outline-dim btn-sm mt-2" href="/actuator/health"><i class="bi bi-activity me-1"></i>Ver health</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="sec-divider text-center text-secondary py-4">
+    <div class="container"><small>API &#193;lbumes y L&#225;minas &middot; Backend Test 2026 &middot; Spring Boot 3.5.9 &middot; Java 21</small></div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="backTop" title="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="bi bi-arrow-up"></i></button>
+
+<!-- TOAST -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x pb-3">
+    <div id="copyToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="polite">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold"><i class="bi bi-check2 me-2"></i>Copiado al portapapeles</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+(function(){
+  // Scroll progress
+  var prog = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function(){
+      var tot = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (window.scrollY / tot * 100) + '%';
+  }, {passive:true});
+
+  // Back to top
+  var btt = document.getElementById('backTop');
+  window.addEventListener('scroll', function(){ btt.classList.toggle('show', window.scrollY > 400); }, {passive:true});
+
+  // Active nav via IntersectionObserver
+  var navLinks = document.querySelectorAll('#navbarDesktop .nav-link');
+  var secs = ['overview','setup','datos','recursos'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+          if(e.isIntersecting){
+              navLinks.forEach(function(l){ l.classList.remove('active'); });
+              var m = document.querySelector('#navbarDesktop a[href="#'+e.target.id+'"]');
+              if(m) m.classList.add('active');
+          }
+      });
+  }, { rootMargin: '-50% 0px -45% 0px' });
+  secs.forEach(function(s){ io.observe(s); });
+
+  // Copy to clipboard
+  var toast = new bootstrap.Toast(document.getElementById('copyToast'), { delay: 2200 });
+  window.copyCode = function(id, btn){
+      navigator.clipboard.writeText(document.getElementById(id).innerText).then(function(){
+          btn.classList.add('copied');
+          btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copiado';
+          toast.show();
+          setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = '<i class="bi bi-copy me-1"></i>Copiar'; }, 2500);
+      });
+  };
+
+  // Animated counters
+  function animate(){
+      document.querySelectorAll('[data-count]').forEach(function(el){
+          var t = +el.dataset.count, c = 0, step = Math.ceil(t/30);
+          var tmr = setInterval(function(){ c = Math.min(c+step,t); el.textContent = c; if(c>=t) clearInterval(tmr); }, 40);
+      });
+  }
+  var cRow = document.querySelector('[data-count]');
+  if(cRow){
+      var cio = new IntersectionObserver(function(e){ if(e[0].isIntersecting){ animate(); cio.disconnect(); } }, { threshold: 0.4 });
+      cio.observe(cRow.closest('.row'));
+  }
+
+  // Health check
+  (function(){
+      var dot = document.getElementById('health-dot');
+      var lbl = document.getElementById('health-label');
+      fetch('/actuator/health').then(function(r){ return r.json(); }).then(function(j){
+          var up = j && j.status === 'UP';
+          dot.className = up ? 'up' : 'down';
+          lbl.textContent = up ? 'Servicio UP' : 'Servicio DOWN';
+      }).catch(function(){ dot.className = 'down'; lbl.textContent = 'Sin respuesta'; });
+  })();
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+          var t = document.querySelector(a.getAttribute('href'));
+          if(t){ e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+  });
+})();
+</script>
 </body>
 </html>
