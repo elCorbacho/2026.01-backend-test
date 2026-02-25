@@ -1,8 +1,46 @@
-# Guía para agentes de IA en este proyecto
 
-# My Project Documentation
+# Proyecto: API REST Spring Boot 3.5 — Álbumes y Láminas
 
-<memories hint="Manage via memory tool">
+## Arquitectura
+- Controllers → Services → Repositories → Entities
+- `dtos` + `mappers`: nunca exponer entidades JPA directamente
+- `exceptions`: `GlobalExceptionHandler` centralizado
+- Soft delete con campo `active` + auditoría (`createdAt`, `updatedAt`)
+
+## Flujo de una feature (en orden)
+1. Entidad en `models` (con `active`, `createdAt`, `updatedAt`)
+2. Repositorio con métodos derivados (`findByActiveTrue`)
+3. DTOs con validación Jakarta (`@NotBlank`, `@Size`, `@Min`)
+4. Mapper con `toEntity`, `toResponseDTO`, `updateEntity`
+5. Servicio con lógica de negocio (nunca devuelve entidades)
+6. Controlador delgado, solo DTOs, siempre `ApiResponseDTO<T>`
+
+## Reglas clave
+- Todas las respuestas: `ApiResponseDTO<T>` con `success`, `message`, `data`, `timestamp`
+- `@Valid` en todos los `@RequestBody`
+- `@Transactional(readOnly = true)` en lecturas
+- Lanzar `ResourceNotFoundException` (nunca retornar `null`)
+- `InvalidOperationException` para reglas de negocio incumplidas
+- Cero lógica de negocio en controladores
+
+## Qué NO hacer
+- No exponer entidades JPA en respuestas
+- No acceder a repositorios desde controladores
+- No borrar filas físicamente (usar soft delete)
+- No romper el contrato de `ApiResponseDTO`
+
+
+
+
+
+
+
+
+<!-- # Guía para agentes de IA en este proyecto
+
+# My Project Documentation -->
+
+<!-- <memories hint="Manage via memory tool">
 <memory path="github/copilot/memories/preferences.txt">
 - Prefers TypeScript for new projects
 - Uses ESLint for code quality
@@ -11,9 +49,9 @@
 <memory path="/memories/context.txt">
 Project is a VS Code extension for AI agent memory management.
 </memory>
-</memories>
+</memories> -->
 
-
+<!-- 
 ## Memory — Engram Persistent Memory
 
 You have access to Engram persistent memory via MCP tools:
@@ -45,10 +83,10 @@ mi-proyecto/
 │   └── mcp.json                    ← configuración del servidor MCP
 ├── .github/
 │   └── copilot-instructions.md     ← instrucciones de memoria para Copilot
-└── ...
+└── ... -->
 
 
-## Contexto y arquitectura
+<!-- ## Contexto y arquitectura
 - Proyecto: API REST Spring Boot 3.5.9 (Java 21) para gestionar **álbumes** y **láminas** de colección.
 - Capas principales:
   - `controllers/api`: controladores REST finos, sólo orquestan peticiones y respuestas.
@@ -123,4 +161,4 @@ mi-proyecto/
 - No acceder a repositorios desde controladores.
 - No lanzar excepciones genéricas si existe ya una excepción de dominio adecuada.
 - No romper el contrato de `ApiResponseDTO` (los clientes esperan su estructura actual).
-
+ -->
