@@ -36,6 +36,11 @@
       "sourceType": "github",
       "computedHash": "e8a86a044d852af96262352424070bfe791a7421a0e246fa6c16465b25071930"
     },
+    "java-spring-boot": {
+      "source": "pluginagentmarketplace/custom-plugin-java",
+      "sourceType": "github",
+      "computedHash": "c1d1523ec6ead1de3c7efd73e7a6041af983ef0dc38ae2050f75c6375ba6b7ae"
+    },
     "postgresql-table-design": {
       "source": "wshobson/agents",
       "sourceType": "github",
