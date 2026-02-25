@@ -63,6 +63,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- base de datos embebida H2 (desarrollo local) -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
