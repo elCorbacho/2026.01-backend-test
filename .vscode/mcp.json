@@ -32,6 +32,17 @@
 		}
 	],
 	"servers": {
+
+
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-886f2b65-707a-4755-b844-e6c9e03ea839"
+      }
+    },
+
+		
 		"awesome-copilot": {
 			"command": "docker",
 			"args": [
@@ -42,6 +53,10 @@
 			],
 			"type": "stdio"
 		},
+
+
+
+
 		"contextstream": {
 			"type": "stdio",
 			"command": "cmd",
