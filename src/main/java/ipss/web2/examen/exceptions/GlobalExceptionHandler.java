@@ -182,37 +182,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    // Maneja excepciones de tiempo de ejecución genéricas (400/404)
+    // Maneja excepciones de tiempo de ejecución genéricas no cubiertas por handlers específicos (400)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleRuntimeException(
             RuntimeException ex, WebRequest request) {
         
-        log.error("RuntimeException capturada: {}", ex.getMessage(), ex);
-        
-        // Determinar si es un error de lámina no en catálogo
-        String message = ex.getMessage();
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String errorCode = "RUNTIME_ERROR";
-        
-        if (message != null && message.contains("NO existe en el catálogo")) {
-            errorCode = "LAMINA_NOT_IN_CATALOG";
-            status = HttpStatus.BAD_REQUEST;
-        } else if (message != null && message.contains("no encontrado")) {
-            errorCode = "RESOURCE_NOT_FOUND";
-            status = HttpStatus.NOT_FOUND;
-        } else if (message != null && message.contains("obligatorio")) {
-            errorCode = "VALIDATION_ERROR";
-            status = HttpStatus.BAD_REQUEST;
-        }
+        log.error("RuntimeException no manejada: {}", ex.getMessage(), ex);
         
         ApiResponseDTO<Object> response = ApiResponseDTO.builder()
             .success(false)
-            .message(message != null ? message : "Error en tiempo de ejecución")
-            .errorCode(errorCode)
+            .message(ex.getMessage() != null ? ex.getMessage() : "Error en tiempo de ejecución")
+            .errorCode("RUNTIME_ERROR")
             .timestamp(LocalDateTime.now())
             .build();
         
-        return ResponseEntity.status(status).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     
     // Maneja excepciones genéricas no capturadas (500)

@@ -137,7 +137,7 @@ public class LaminaService {
         // Calcular totales
         int totalLaminas = laminasPoseidas.size();
         int laminasFaltantesTotal = laminasFaltantes.size();
-        int laminasRepetidastotal = laminasRepetidas.values().stream()
+        int laminasRepetidasTotal = laminasRepetidas.values().stream()
             .mapToInt(Integer::intValue)
             .sum();
         
@@ -145,7 +145,7 @@ public class LaminaService {
             .map(laminaMapper::toResponseDTO)
             .collect(Collectors.toList());
         
-        return new LaminasEstadoDTO(laminasDTO, laminasFaltantes, laminasRepetidas, totalLaminas, laminasFaltantesTotal, laminasRepetidastotal);
+        return new LaminasEstadoDTO(laminasDTO, laminasFaltantes, laminasRepetidas, totalLaminas, laminasFaltantesTotal, laminasRepetidasTotal);
     }
     
     // Obtener catálogo de láminas para un álbum
@@ -187,7 +187,7 @@ public class LaminaService {
     // Obtener láminas por álbum
     @Transactional(readOnly = true)
     public List<LaminaResponseDTO> obtenerLaminasPorAlbum(Long albumId) {
-        return laminaRepository.findByAlbumId(albumId)
+        return laminaRepository.findByAlbumIdAndActiveTrue(albumId)
                 .stream()
                 .map(laminaMapper::toResponseDTO)
                 .collect(Collectors.toList());

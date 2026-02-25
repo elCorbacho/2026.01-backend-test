@@ -11,7 +11,7 @@ import java.util.List;
 // Repositorio para la entidad Lámina
 @Repository
 public interface LaminaRepository extends JpaRepository<Lamina, Long> {
-    List<Lamina> findByAlbumId(Long albumId);
+    List<Lamina> findByAlbumIdAndActiveTrue(Long albumId);
     List<Lamina> findByActiveTrue();
     List<Lamina> findByAlbumAndActiveTrue(Album album);
     List<Lamina> findByAlbumAndNombreAndActiveTrue(Album album, String nombre);

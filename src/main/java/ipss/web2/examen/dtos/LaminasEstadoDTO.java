@@ -11,5 +11,5 @@ public record LaminasEstadoDTO(
     Map<String, Integer> laminasRepetidas,
     Integer totalLaminas,
     Integer laminasFaltantesTotal,
-    Integer laminasRepetidastotal
+    Integer laminasRepetidasTotal
 ) {}

@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 // Controlador REST para gestión de Álbumes - /api/albums
@@ -26,13 +25,8 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<AlbumResponseDTO>> crearAlbum(
             @Valid @RequestBody AlbumRequestDTO requestDTO) {
         AlbumResponseDTO response = albumService.crearAlbum(requestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            ApiResponseDTO.<AlbumResponseDTO>builder()
-                .success(true)
-                .message("Álbum creado exitosamente")
-                .data(response)
-                .timestamp(LocalDateTime.now())
-                .build());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponseDTO.created(response, "Álbum creado exitosamente"));
     }
     
     // GET /api/albums/{id} - Obtener álbum por ID
@@ -40,26 +34,14 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<AlbumResponseDTO>> obtenerAlbumPorId(
             @PathVariable Long id) {
         AlbumResponseDTO response = albumService.obtenerAlbumPorId(id);
-        return ResponseEntity.ok(
-            ApiResponseDTO.<AlbumResponseDTO>builder()
-                .success(true)
-                .message("Álbum recuperado exitosamente")
-                .data(response)
-                .timestamp(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbum recuperado exitosamente"));
     }
     
     // GET /api/albums - Listar todos los álbumes
     @GetMapping
     public ResponseEntity<ApiResponseDTO<List<AlbumResponseDTO>>> obtenerTodosLosAlbumes() {
         List<AlbumResponseDTO> response = albumService.obtenerTodosLosAlbums();
-        return ResponseEntity.ok(
-            ApiResponseDTO.<List<AlbumResponseDTO>>builder()
-                .success(true)
-                .message("Álbumes recuperados exitosamente")
-                .data(response)
-                .timestamp(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbumes recuperados exitosamente"));
     }
     
     // PUT /api/albums/{id} - Actualizar álbum
@@ -68,25 +50,13 @@ public class AlbumController {
             @PathVariable Long id,
             @Valid @RequestBody AlbumRequestDTO requestDTO) {
         AlbumResponseDTO response = albumService.actualizarAlbum(id, requestDTO);
-        return ResponseEntity.ok(
-            ApiResponseDTO.<AlbumResponseDTO>builder()
-                .success(true)
-                .message("Álbum actualizado correctamente")
-                .data(response)
-                .timestamp(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbum actualizado correctamente"));
     }
     
     // DELETE /api/albums/{id} - Eliminar álbum (soft delete)
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDTO<String>> eliminarAlbum(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDTO<Void>> eliminarAlbum(@PathVariable Long id) {
         albumService.eliminarAlbum(id);
-        return ResponseEntity.ok(
-            ApiResponseDTO.<String>builder()
-                .success(true)
-                .message("Álbum eliminado correctamente")
-                .data("Álbum con ID: " + id + " ha sido marcado como inactivo")
-                .timestamp(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ApiResponseDTO.ok("Álbum con ID: " + id + " ha sido marcado como inactivo"));
     }
 }

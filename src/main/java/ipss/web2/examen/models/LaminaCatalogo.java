@@ -29,7 +29,7 @@ public class LaminaCatalogo {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "imagen", nullable = true)
+    @Column(name = "imagen")
     private String imagen;
 
     @Column(name = "fecha_lanzamiento", nullable = false)
@@ -39,7 +39,7 @@ public class LaminaCatalogo {
     private String tipoLamina;
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
