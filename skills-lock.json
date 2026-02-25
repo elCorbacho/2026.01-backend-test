@@ -21,10 +21,20 @@
       "sourceType": "github",
       "computedHash": "25872a21881a950edc3db1f3329664d60405d539660ce05b3265db2de06a7dfd"
     },
+    "frontend-code-review": {
+      "source": "langgenius/dify",
+      "sourceType": "github",
+      "computedHash": "affbe67082bd8329d044657752f998bdd4d388dd05ca6250f4f9af7d2b642586"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "github-issue-creator": {
+      "source": "microsoft/skills",
+      "sourceType": "github",
+      "computedHash": "e8a86a044d852af96262352424070bfe791a7421a0e246fa6c16465b25071930"
     },
     "postgresql-table-design": {
       "source": "wshobson/agents",
