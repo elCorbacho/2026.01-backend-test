@@ -1,33 +1,33 @@
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\Application.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\config\DataInitializer.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\config\JpaAuditingConfig.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\config\WebConfig.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\controllers\api\AlbumController.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\controllers\api\LaminaController.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\controllers\api\LaminaUserController.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\AlbumBasicResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\AlbumRequestDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\AlbumResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\ApiResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaCargaResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaCargueMasivoRequestDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaCargueMasivoResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaCatalogoRequestDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaCatalogoResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaRequestDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminaResponseDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\dtos\LaminasEstadoDTO.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\exceptions\EndpointNotFoundException.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\exceptions\GlobalExceptionHandler.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\exceptions\InvalidOperationException.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\exceptions\ResourceNotFoundException.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\mappers\AlbumMapper.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\mappers\LaminaMapper.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\models\Album.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\models\Lamina.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\models\LaminaCatalogo.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\repositories\AlbumRepository.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\repositories\LaminaCatalogoRepository.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\repositories\LaminaRepository.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\services\AlbumService.java
-C:\Users\histo\OneDrive\Escritorio\examen web 2\17.web2-examen\src\main\java\ipss\web2\examen\services\LaminaService.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\Application.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\config\DataInitializer.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\config\JpaAuditingConfig.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\config\WebConfig.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\AlbumController.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\LaminaController.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\LaminaUserController.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\AlbumBasicResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\AlbumRequestDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\AlbumResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\ApiResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaCargaResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaCargueMasivoRequestDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaCargueMasivoResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaCatalogoRequestDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaCatalogoResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaRequestDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminaResponseDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\dtos\LaminasEstadoDTO.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\exceptions\EndpointNotFoundException.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\exceptions\GlobalExceptionHandler.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\exceptions\InvalidOperationException.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\exceptions\ResourceNotFoundException.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\mappers\AlbumMapper.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\mappers\LaminaMapper.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\Album.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\Lamina.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\LaminaCatalogo.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\repositories\AlbumRepository.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\repositories\LaminaCatalogoRepository.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\repositories\LaminaRepository.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\services\AlbumService.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\services\LaminaService.java
