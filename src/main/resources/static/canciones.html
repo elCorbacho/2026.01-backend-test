@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canciones — API Álbumes y Láminas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #10b981; --primary-d: #059669; --primary-glow: rgba(16,185,129,.22);
+            --accent: #f59e0b; --stroke: rgba(255,255,255,.11); --card-bg: rgba(255,255,255,.055);
+            --muted: #94a3b8; --surface: #0b1221; --radius: 16px;
+        }
+        body {
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            background: radial-gradient(ellipse 70% 40% at 15% 10%, rgba(16,185,129,.11), transparent),
+                        radial-gradient(ellipse 60% 35% at 85% 5%,  rgba(245,158,11,.13), transparent),
+                        var(--surface);
+            min-height: 100vh;
+        }
+        body::before {
+            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        /* ── Transiciones globales al cambiar tema ── */
+        body, #mainNav, .g-card, .modal-content, .form-control, .form-select,
+        .cancion-table th, .cancion-table td, .btn-outline-dim {
+            transition: background .35s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+        }
+
+        /* ── Modo claro ── */
+        html[data-bs-theme="light"] {
+            --stroke: rgba(0,0,0,.1);
+            --card-bg: #ffffff;
+            --muted: #64748b;
+        }
+        html[data-bs-theme="light"] body {
+            background:
+                radial-gradient(ellipse 70% 40% at 15% 10%, rgba(16,185,129,.08), transparent),
+                radial-gradient(ellipse 50% 30% at 85% 5%, rgba(245,158,11,.1), transparent),
+                #f8fafc;
+            color: #0f172a;
+        }
+        html[data-bs-theme="light"] body::before { background-image: radial-gradient(rgba(0,0,0,.045) 1px, transparent 1px); }
+        html[data-bs-theme="light"] #mainNav {
+            background: rgba(255,255,255,.9) !important;
+            border-bottom: 1px solid rgba(0,0,0,.08) !important;
+        }
+        html[data-bs-theme="light"] .navbar-brand { color: #0f172a !important; }
+        html[data-bs-theme="light"] .nav-link { color: #475569 !important; }
+        html[data-bs-theme="light"] .nav-link:hover { color: #0f172a !important; }
+        html[data-bs-theme="light"] .g-card {
+            background: #ffffff;
+            border-color: rgba(0,0,0,.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,.07);
+        }
+        html[data-bs-theme="light"] .page-title { background: linear-gradient(135deg, #0f172a 20%, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        html[data-bs-theme="light"] .cancion-table th { background: rgba(16,185,129,.07); color: #059669; border-bottom-color: rgba(0,0,0,.08); }
+        html[data-bs-theme="light"] .cancion-table td { color: #334155; border-bottom-color: rgba(0,0,0,.05); }
+        html[data-bs-theme="light"] .cancion-table tr:hover td { background: rgba(16,185,129,.04); }
+        html[data-bs-theme="light"] .btn-outline-dim { border-color: rgba(0,0,0,.14); color: #334155; background: rgba(0,0,0,.03); }
+        html[data-bs-theme="light"] .btn-outline-dim:hover { border-color: var(--primary); color: #0f172a; background: rgba(16,185,129,.06); }
+        html[data-bs-theme="light"] .btn-icon { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.1); color: #64748b; }
+        html[data-bs-theme="light"] .form-control, html[data-bs-theme="light"] .form-select {
+            background: #f8fafc !important; color: #0f172a !important; border-color: rgba(0,0,0,.13) !important;
+        }
+        html[data-bs-theme="light"] .form-control::placeholder { color: #94a3b8; }
+        html[data-bs-theme="light"] .modal-content-inner {
+            background: #ffffff !important; border-color: rgba(0,0,0,.1) !important;
+        }
+        html[data-bs-theme="light"] .modal-footer-sep { border-top: 1px solid rgba(0,0,0,.07); }
+        html[data-bs-theme="light"] #countBadge { color: #64748b; }
+
+        /* ── Toggle noche/día ── */
+        .theme-toggle {
+            display: flex; align-items: center; gap: 7px;
+            cursor: pointer; user-select: none;
+        }
+        .toggle-icon {
+            font-size: .95rem; line-height: 1;
+            transition: opacity .3s, color .3s;
+        }
+        .toggle-icon.sun  { color: #f59e0b; }
+        .toggle-icon.moon { color: #818cf8; }
+        html[data-bs-theme="dark"]  .toggle-icon.sun  { opacity: .35; }
+        html[data-bs-theme="dark"]  .toggle-icon.moon { opacity: 1; }
+        html[data-bs-theme="light"] .toggle-icon.sun  { opacity: 1; }
+        html[data-bs-theme="light"] .toggle-icon.moon { opacity: .35; }
+
+        .toggle-track {
+            position: relative;
+            width: 44px; height: 24px;
+            border-radius: 999px;
+            border: 1px solid var(--stroke);
+            background: rgba(129,140,248,.18);
+            transition: background .35s, border-color .35s;
+        }
+        html[data-bs-theme="light"] .toggle-track {
+            background: rgba(245,158,11,.18);
+            border-color: rgba(245,158,11,.35);
+        }
+        .toggle-thumb {
+            position: absolute;
+            top: 3px; left: 3px;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: #818cf8;
+            box-shadow: 0 1px 4px rgba(0,0,0,.3);
+            transition: left .3s cubic-bezier(.4,0,.2,1), background .3s;
+        }
+        html[data-bs-theme="light"] .toggle-thumb {
+            left: 23px;
+            background: #f59e0b;
+        }
+
+        #mainNav { backdrop-filter: blur(18px); background: rgba(11,18,33,.82) !important; border-bottom: 1px solid var(--stroke); }
+        .navbar-brand { font-weight: 700; color: #fff !important; }
+        .brand-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); margin-right: 8px; vertical-align: middle; }
+        .nav-link { color: var(--muted) !important; font-weight: 600; font-size: .875rem; }
+        .nav-link:hover { color: #fff !important; }
+
+        .g-card { background: var(--card-bg); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 22px 24px; box-shadow: 0 10px 28px rgba(0,0,0,.2); }
+        .page-title { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; letter-spacing: -.02em; background: linear-gradient(135deg, #fff 30%, #a7f3d0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        html[data-bs-theme="light"] .page-title { background: linear-gradient(135deg, #0f172a 20%, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .btn-emerald { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--primary), var(--primary-d)); color: #022c1a; font-weight: 700; border: none; box-shadow: 0 6px 18px var(--primary-glow); transition: filter .18s, transform .18s; }
+        .btn-emerald:hover { filter: brightness(1.1); color: #022c1a; transform: translateY(-1px); }
+        .btn-outline-dim { border: 1px solid var(--stroke); color: #e5e7eb; background: rgba(255,255,255,.05); font-weight: 600; transition: all .18s; }
+        .btn-outline-dim:hover { border-color: var(--primary); color: #fff; background: rgba(16,185,129,.07); }
+
+        /* Table */
+        .cancion-table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+        .cancion-table th { background: rgba(16,185,129,.1); color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--stroke); padding: 12px 14px; text-align: left; }
+        .cancion-table td { border-bottom: 1px solid rgba(255,255,255,.05); padding: 11px 14px; color: #d1d5db; vertical-align: middle; }
+        .cancion-table tr:hover td { background: rgba(16,185,129,.04); }
+        html[data-bs-theme="light"] .cancion-table th { background: rgba(16,185,129,.08); }
+        html[data-bs-theme="light"] .cancion-table td { color: #334155; border-bottom-color: rgba(0,0,0,.06); }
+
+        /* Duration pill */
+        .dur-pill { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.3); color: var(--primary); font-family: "JetBrains Mono", monospace; }
+        .genero-pill { display: inline-block; font-size: .72rem; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); color: #fbbf24; }
+
+        /* Form */
+        .form-control, .form-select { background: rgba(255,255,255,.06) !important; border: 1px solid var(--stroke) !important; color: #e5e7eb !important; border-radius: 10px !important; transition: border-color .2s; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 3px var(--primary-glow) !important; background: rgba(255,255,255,.09) !important; }
+        .form-label { font-weight: 600; font-size: .85rem; color: var(--muted); }
+        html[data-bs-theme="light"] .form-control, html[data-bs-theme="light"] .form-select { background: rgba(255,255,255,.9) !important; color: #0f172a !important; border-color: rgba(0,0,0,.14) !important; }
+        html[data-bs-theme="light"] .form-control::placeholder { color: #94a3b8; }
+        .form-control::placeholder { color: #475569; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 48px 16px; color: var(--muted); }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: .4; }
+
+        /* Search bar */
+        .search-wrap { position: relative; }
+        .search-wrap .bi-search { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+        .search-wrap input { padding-left: 36px !important; }
+
+        /* Toast */
+        .toast-container { z-index: 9999; }
+
+        /* Spinner */
+        #loadingRow td { text-align: center; padding: 32px; color: var(--muted); }
+
+        /* Action buttons */
+        .btn-icon { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--stroke); background: rgba(255,255,255,.05); color: var(--muted); font-size: .85rem; cursor: pointer; transition: all .15s; padding: 0; }
+        .btn-icon:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-icon.danger:hover { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.08); }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
+    <div class="container">
+        <a class="navbar-brand" href="/"><span class="brand-dot"></span>&#193;lbumes &amp; L&#225;minas</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link px-3" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link px-3 active" href="/canciones.html"><i class="bi bi-music-note me-1"></i>Canciones</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="/swagger-ui.html">Swagger</a></li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="theme-toggle" id="themeToggle" title="Cambiar entre modo noche y día" role="button" aria-label="Cambiar tema">
+                <i class="bi bi-sun-fill toggle-icon sun"></i>
+                <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                </div>
+                <i class="bi bi-moon-stars-fill toggle-icon moon"></i>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4" style="position:relative;z-index:1;">
+
+    <!-- HEADER -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+        <div>
+            <div class="page-title mb-1"><i class="bi bi-music-note-beamed me-2" style="-webkit-text-fill-color:var(--primary)"></i>Canciones</div>
+            <p class="text-secondary mb-0" style="font-size:.9rem;">CRUD completo sobre <code>GET/POST/PUT/DELETE /api/canciones</code></p>
+        </div>
+        <button class="btn btn-emerald" data-bs-toggle="modal" data-bs-target="#modalForm" onclick="openCreate()">
+            <i class="bi bi-plus-lg me-1"></i>Nueva canción
+        </button>
+    </div>
+
+    <!-- SEARCH + LIST -->
+    <div class="g-card mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+            <h6 class="fw-bold mb-0"><i class="bi bi-list-ul me-2 text-success"></i>Lista de canciones</h6>
+            <div class="d-flex gap-2 flex-wrap">
+                <div class="search-wrap">
+                    <i class="bi bi-search"></i>
+                    <input id="searchInput" type="text" class="form-control form-control-sm" placeholder="Buscar por artista…" style="width:200px;" oninput="onSearch(this.value)" />
+                </div>
+                <button class="btn btn-outline-dim btn-sm" onclick="cargarCanciones()"><i class="bi bi-arrow-clockwise me-1"></i>Actualizar</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="cancion-table">
+                <thead>
+                    <tr>
+                        <th style="width:50px">#</th>
+                        <th>Título</th>
+                        <th>Artista</th>
+                        <th>Duración</th>
+                        <th>Género</th>
+                        <th style="width:80px">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr id="loadingRow"><td colspan="6"><span class="spinner-border spinner-border-sm text-success me-2"></span>Cargando…</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyState" class="empty-state d-none">
+            <i class="bi bi-music-note d-block"></i>
+            <div class="fw-semibold mb-1">Sin canciones</div>
+            <p class="mb-0 small">Crea una nueva canción con el botón de arriba.</p>
+        </div>
+        <div id="countBadge" class="mt-2 text-secondary" style="font-size:.78rem;"></div>
+    </div>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-inner" style="background:#0f1929;border:1px solid var(--stroke);border-radius:18px;transition:background .35s,border-color .25s;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="modalTitle">Nueva canción</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="cancionForm" novalidate>
+                    <input type="hidden" id="editId" />
+                    <div class="mb-3">
+                        <label class="form-label">Título <span class="text-danger">*</span></label>
+                        <input id="fTitulo" type="text" class="form-control" placeholder="Ej: Bohemian Rhapsody" maxlength="150" required />
+                        <div class="invalid-feedback">El título es obligatorio.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Artista <span class="text-danger">*</span></label>
+                        <input id="fArtista" type="text" class="form-control" placeholder="Ej: Queen" maxlength="100" required />
+                        <div class="invalid-feedback">El artista es obligatorio.</div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label">Duración (seg)</label>
+                            <input id="fDuracion" type="number" class="form-control" placeholder="Ej: 354" min="1" max="86400" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Género</label>
+                            <input id="fGenero" type="text" class="form-control" placeholder="Ej: Rock" maxlength="80" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-dim btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-emerald btn-sm" id="btnGuardar" onclick="guardar()">
+                    <i class="bi bi-check-lg me-1"></i>Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x pb-3">
+    <div id="appToast" class="toast align-items-center border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold" id="toastMsg"></div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+(function () {
+    const API = '/api/canciones';
+    let allCanciones = [];
+    const modalEl  = document.getElementById('modalForm');
+    const modal     = new bootstrap.Modal(modalEl);
+    const toastEl   = document.getElementById('appToast');
+    const bsToast   = new bootstrap.Toast(toastEl, { delay: 2800 });
+
+    // ── Theme ────────────────────────────────────────────────────────────────
+    const html   = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const saved  = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initTheme = saved || (prefersDark ? 'dark' : 'light');
+
+    function applyTheme(t) {
+        html.setAttribute('data-bs-theme', t);
+        localStorage.setItem('theme', t);
+    }
+    applyTheme(initTheme);
+    toggle.addEventListener('click', () =>
+        applyTheme(html.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark')
+    );
+
+    // ── Toast helper ─────────────────────────────────────────────────────────
+    function toast(msg, ok = true) {
+        toastEl.className = 'toast align-items-center border-0 ' + (ok ? 'text-bg-success' : 'text-bg-danger');
+        document.getElementById('toastMsg').textContent = msg;
+        bsToast.show();
+    }
+
+    // ── Format duration ───────────────────────────────────────────────────────
+    function fmtDur(s) {
+        if (!s) return '—';
+        const m = Math.floor(s / 60), r = s % 60;
+        return m + ':' + String(r).padStart(2, '0');
+    }
+
+    // ── Render table ──────────────────────────────────────────────────────────
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        const empty = document.getElementById('emptyState');
+        const count = document.getElementById('countBadge');
+        document.getElementById('loadingRow')?.remove();
+
+        tbody.innerHTML = '';
+        if (!data.length) {
+            empty.classList.remove('d-none');
+            count.textContent = '';
+            return;
+        }
+        empty.classList.add('d-none');
+        count.textContent = data.length + ' canción' + (data.length !== 1 ? 'es' : '');
+
+        data.forEach(c => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="color:var(--muted);font-size:.78rem;font-family:'JetBrains Mono',monospace;">${c.id}</td>
+                <td class="fw-semibold">${esc(c.titulo)}</td>
+                <td>${esc(c.artista)}</td>
+                <td>${c.duracion ? '<span class="dur-pill">' + fmtDur(c.duracion) + '</span>' : '<span style="color:var(--muted)">—</span>'}</td>
+                <td>${c.genero ? '<span class="genero-pill">' + esc(c.genero) + '</span>' : '<span style="color:var(--muted)">—</span>'}</td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <button class="btn-icon" title="Editar" onclick="openEdit(${c.id})"><i class="bi bi-pencil"></i></button>
+                        <button class="btn-icon danger" title="Eliminar" onclick="eliminar(${c.id}, '${esc(c.titulo)}')"><i class="bi bi-trash3"></i></button>
+                    </div>
+                </td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    // ── Load all ──────────────────────────────────────────────────────────────
+    window.cargarCanciones = function () {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '<tr id="loadingRow"><td colspan="6"><span class="spinner-border spinner-border-sm text-success me-2"></span>Cargando…</td></tr>';
+        document.getElementById('emptyState').classList.add('d-none');
+        document.getElementById('searchInput').value = '';
+
+        fetch(API)
+            .then(r => r.json())
+            .then(res => { allCanciones = res.data || []; renderTable(allCanciones); })
+            .catch(() => toast('Error al cargar canciones', false));
+    };
+
+    // ── Search ────────────────────────────────────────────────────────────────
+    window.onSearch = function (val) {
+        if (!val.trim()) { renderTable(allCanciones); return; }
+        fetch(API + '/buscar?artista=' + encodeURIComponent(val))
+            .then(r => r.json())
+            .then(res => renderTable(res.data || []))
+            .catch(() => {});
+    };
+
+    // ── Open create modal ─────────────────────────────────────────────────────
+    window.openCreate = function () {
+        document.getElementById('modalTitle').textContent = 'Nueva canción';
+        document.getElementById('editId').value = '';
+        document.getElementById('cancionForm').classList.remove('was-validated');
+        ['fTitulo','fArtista','fDuracion','fGenero'].forEach(id => document.getElementById(id).value = '');
+    };
+
+    // ── Open edit modal ───────────────────────────────────────────────────────
+    window.openEdit = function (id) {
+        const c = allCanciones.find(x => x.id === id);
+        if (!c) return;
+        document.getElementById('modalTitle').textContent = 'Editar canción';
+        document.getElementById('editId').value = id;
+        document.getElementById('fTitulo').value  = c.titulo  ?? '';
+        document.getElementById('fArtista').value = c.artista ?? '';
+        document.getElementById('fDuracion').value = c.duracion ?? '';
+        document.getElementById('fGenero').value  = c.genero  ?? '';
+        document.getElementById('cancionForm').classList.remove('was-validated');
+        modal.show();
+    };
+
+    // ── Save (create or update) ───────────────────────────────────────────────
+    window.guardar = function () {
+        const form = document.getElementById('cancionForm');
+        form.classList.add('was-validated');
+        if (!form.checkValidity()) return;
+
+        const id      = document.getElementById('editId').value;
+        const payload = {
+            titulo:   document.getElementById('fTitulo').value.trim(),
+            artista:  document.getElementById('fArtista').value.trim(),
+            duracion: document.getElementById('fDuracion').value ? +document.getElementById('fDuracion').value : null,
+            genero:   document.getElementById('fGenero').value.trim() || null
+        };
+        const isEdit  = !!id;
+        const url     = isEdit ? API + '/' + id : API;
+        const method  = isEdit ? 'PUT' : 'POST';
+
+        const btn = document.getElementById('btnGuardar');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Guardando…';
+
+        fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    modal.hide();
+                    toast(isEdit ? 'Canción actualizada' : 'Canción creada');
+                    cargarCanciones();
+                } else {
+                    toast(res.message || 'Error al guardar', false);
+                }
+            })
+            .catch(() => toast('Error de conexión', false))
+            .finally(() => { btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Guardar'; });
+    };
+
+    // ── Delete ────────────────────────────────────────────────────────────────
+    window.eliminar = function (id, titulo) {
+        if (!confirm('¿Eliminar "' + titulo + '"? (soft delete)')) return;
+        fetch(API + '/' + id, { method: 'DELETE' })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) { toast('Canción eliminada'); cargarCanciones(); }
+                else toast(res.message || 'Error al eliminar', false);
+            })
+            .catch(() => toast('Error de conexión', false));
+    };
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    cargarCanciones();
+})();
+</script>
+</body>
+</html>
