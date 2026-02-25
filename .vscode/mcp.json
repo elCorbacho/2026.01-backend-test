@@ -34,6 +34,17 @@
 	"servers": {
 
 
+
+    	"engram": {
+			"command": "engram",
+			"args": ["mcp"]
+		},
+
+
+
+
+
+
 		"sequential-thinking": {
 			"command": "npx",
 			"args": [
@@ -41,6 +52,9 @@
 				"@modelcontextprotocol/server-sequential-thinking"
 			]
 		},
+
+
+
 
 
 		"context7": {
