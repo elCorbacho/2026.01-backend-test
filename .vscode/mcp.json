@@ -34,17 +34,17 @@
 	"servers": {
 
 
-
+// ==================== OFFICIAL MCP SERVERS ====================
+// ENGRAM MEMORY SERVER
+// gestiona memoria persistente
     	"engram": {
 			"command": "engram",
 			"args": ["mcp"]
 		},
 
 
-
-
-
-
+// SEQUENTIAL THINKING SERVER
+// gestiona el pensamiento secuencial, lo que permite a los modelos de lenguaje generar respuestas más coherentes y relevantes al considerar la información en un orden lógico.
 		"sequential-thinking": {
 			"command": "npx",
 			"args": [
@@ -53,10 +53,8 @@
 			]
 		},
 
-
-
-
-
+// CONTEXT 7 SERVER
+// permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas.
 		"context7": {
 			"type": "http",
 			"url": "https://mcp.context7.com/mcp",
@@ -65,6 +63,9 @@
 			}
 		},
 
+
+// AWESOME COPILOT
+// Permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas. Proporciona una API simple para acceder a información contextual, lo que facilita la construcción de aplicaciones inteligentes que pueden proporcionar respuestas más relevantes y precisas.
 		
 		"awesome-copilot": {
 			"command": "docker",
@@ -78,7 +79,8 @@
 		},
 
 
-
+// contextstream server
+// permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas. Proporciona una API simple para acceder a información contextual, lo que facilita la construcción de aplicaciones inteligentes que pueden proporcionar respuestas más relevantes y precisas.
 
 		"contextstream": {
 			"type": "stdio",
