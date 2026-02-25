@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- Conversores de color de Spring Boot -->
+    <conversionRule conversionWord="clr"
+        converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wEx"
+        converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APPENDER PRINCIPAL — Logs generales
+         Formato: HH:mm:ss  LEVEL │ [thread]  logger : mensaje
+         ══════════════════════════════════════════════════════════════ -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{HH:mm:ss.SSS}){faint} %highlight(%-5level) %clr(│){faint} %clr([%15.15t]){magenta} %clr(%-40.40logger{39}){cyan}%clr(:){faint} %highlight(%msg)%n%wEx</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APPENDER SQL — Queries de Hibernate resaltadas en verde
+         ══════════════════════════════════════════════════════════════ -->
+    <appender name="SQL_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{HH:mm:ss.SSS}){faint} %clr(SQL  ▶){green} %clr(│){faint} %clr([%15.15t]){magenta} %clr(%msg){green}%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APPENDER HTTP — Requests HTTP resaltados en amarillo
+         ══════════════════════════════════════════════════════════════ -->
+    <appender name="HTTP_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{HH:mm:ss.SSS}){faint} %clr(HTTP ▶){yellow} %clr(│){faint} %clr([%15.15t]){magenta} %clr(%msg){yellow}%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APPENDER APP — Código propio en azul brillante
+         ══════════════════════════════════════════════════════════════ -->
+    <appender name="APP_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{HH:mm:ss.SSS}){faint} %highlight(%-5level) %clr(│){faint} %clr([%15.15t]){magenta} %clr(%-40.40logger{39}){blue}%clr(:){faint} %highlight(%msg)%n%wEx</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         LOGGERS — Asignación de appenders por paquete
+         ══════════════════════════════════════════════════════════════ -->
+
+    <!-- Tu código: DEBUG, logger azul, SIN propagación al root -->
+    <logger name="ipss.web2.examen" level="DEBUG" additivity="false">
+        <appender-ref ref="APP_CONSOLE"/>
+    </logger>
+
+    <!-- SQL queries: appender verde -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL_CONSOLE"/>
+    </logger>
+
+    <!-- Parámetros SQL (valores de los bind) -->
+    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" additivity="false">
+        <appender-ref ref="SQL_CONSOLE"/>
+    </logger>
+
+    <!-- HTTP request logging -->
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" additivity="false">
+        <appender-ref ref="HTTP_CONSOLE"/>
+    </logger>
+
+    <!-- Reducir ruido de Spring Boot internals -->
+    <logger name="org.springframework.boot.autoconfigure"               level="WARN"/>
+    <logger name="org.springframework.boot.context"                     level="WARN"/>
+    <logger name="org.hibernate.dialect"                                level="WARN"/>
+    <logger name="org.hibernate.engine.transaction"                     level="WARN"/>
+    <logger name="com.zaxxer.hikari"                                    level="WARN"/>
+    <logger name="org.springframework.orm.jpa"                          level="WARN"/>
+    <logger name="com.h2database"                                       level="WARN"/>
+
+    <!-- Root: INFO para el resto del framework -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
