@@ -1,2 +1,4 @@
 # OpenMemory - IDE/Assistant specific rules
 .github\instructions\openmemory.instructions.md
+CLAUDE.md
+AGENTS.md
