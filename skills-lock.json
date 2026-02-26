@@ -50,6 +50,11 @@
       "source": "microsoft/skills",
       "sourceType": "github",
       "computedHash": "0f49bc58414893e38ff80fc26f30ff446d631d22710a6d75134670616d8c5668"
+    },
+    "spring-boot-engineer": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "6b4f90228a643c7e75cd04181c2a7387e9b962b52fcb748f16050deae8dadf8b"
     }
   }
 }

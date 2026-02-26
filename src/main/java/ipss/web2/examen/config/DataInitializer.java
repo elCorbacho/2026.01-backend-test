@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
         album1.setActive(true);
         album1.setLaminas(new ArrayList<>());
         album1.setLaminasCatalogo(new ArrayList<>());
-        Album savedAlbum1 = albumRepository.save(album1);
+        Album savedAlbum1 = Objects.requireNonNull(albumRepository.save(album1));
 
         crearCatalogo(savedAlbum1, new String[][]{
                 {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"},
@@ -65,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
         album2.setActive(true);
         album2.setLaminas(new ArrayList<>());
         album2.setLaminasCatalogo(new ArrayList<>());
-        Album savedAlbum2 = albumRepository.save(album2);
+        Album savedAlbum2 = Objects.requireNonNull(albumRepository.save(album2));
 
         crearCatalogo(savedAlbum2, new String[][]{
                 {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"},
@@ -91,7 +92,7 @@ public class DataInitializer implements CommandLineRunner {
         album3.setActive(true);
         album3.setLaminas(new ArrayList<>());
         album3.setLaminasCatalogo(new ArrayList<>());
-        Album savedAlbum3 = albumRepository.save(album3);
+        Album savedAlbum3 = Objects.requireNonNull(albumRepository.save(album3));
 
         crearCatalogo(savedAlbum3, new String[][]{
                 {"Naruto Uzumaki - El Hokage", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "PORTADA"},
@@ -115,7 +116,7 @@ public class DataInitializer implements CommandLineRunner {
         album4.setActive(true);
         album4.setLaminas(new ArrayList<>());
         album4.setLaminasCatalogo(new ArrayList<>());
-        Album savedAlbum4 = albumRepository.save(album4);
+        Album savedAlbum4 = Objects.requireNonNull(albumRepository.save(album4));
 
         crearCatalogo(savedAlbum4, new String[][]{
                 {"Tanjiro Kamado - Cazador de Demonios", "https://images.unsplash.com/photo-1611339555312-e607c25352ca?w=400", "PORTADA"},
@@ -137,7 +138,7 @@ public class DataInitializer implements CommandLineRunner {
         album5.setActive(true);
         album5.setLaminas(new ArrayList<>());
         album5.setLaminasCatalogo(new ArrayList<>());
-        Album savedAlbum5 = albumRepository.save(album5);
+        Album savedAlbum5 = Objects.requireNonNull(albumRepository.save(album5));
 
         crearCatalogo(savedAlbum5, new String[][]{
                 {"Guts - El Guerrero Negro", "https://images.unsplash.com/photo-1618519764d82b19d648d1aac2e2b63500cf471a?w=400", "PORTADA"},
@@ -157,14 +158,15 @@ public class DataInitializer implements CommandLineRunner {
                 {"A Cruel Angel's Thesis", "Yoko Takahashi", 230, "J-Pop"},
                 {"The Hero", "JAM Project", 256, "Anime"}
         };
-        for (Object[] c : canciones) {
-            cancionRepository.save(Cancion.builder()
-                    .titulo((String) c[0])
-                    .artista((String) c[1])
-                    .duracion((Integer) c[2])
-                    .genero((String) c[3])
-                    .active(true)
-                    .build());
+    for (Object[] c : canciones) {
+        Cancion nueva = Cancion.builder()
+            .titulo((String) c[0])
+            .artista((String) c[1])
+            .duracion((Integer) c[2])
+            .genero((String) c[3])
+            .active(true)
+            .build();
+        cancionRepository.save(Objects.requireNonNull(nueva));
         }
 
         long albumCount = albumRepository.count();
@@ -190,7 +192,7 @@ public class DataInitializer implements CommandLineRunner {
             catalogo.setAlbum(album);
             catalogo.setActive(true);
 
-            LaminaCatalogo savedCatalogo = laminaCatalogoRepository.save(catalogo);
+            LaminaCatalogo savedCatalogo = Objects.requireNonNull(laminaCatalogoRepository.save(catalogo));
             album.getLaminasCatalogo().add(savedCatalogo);
         }
 
@@ -207,7 +209,7 @@ public class DataInitializer implements CommandLineRunner {
             lamina.setAlbum(album);
             lamina.setActive(true);
 
-            Lamina savedLamina = laminaRepository.save(lamina);
+            Lamina savedLamina = Objects.requireNonNull(laminaRepository.save(lamina));
             album.getLaminas().add(savedLamina);
         }
 
@@ -227,7 +229,7 @@ public class DataInitializer implements CommandLineRunner {
                 lamina.setAlbum(album);
                 lamina.setActive(true);
 
-                Lamina saved = laminaRepository.save(lamina);
+                Lamina saved = Objects.requireNonNull(laminaRepository.save(lamina));
                 album.getLaminas().add(saved);
             }
         }

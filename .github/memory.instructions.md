@@ -1,12 +1,9 @@
 
 ## Memory — Engram Persistent Memory
 
-
-## Memory
 You have access to Engram persistent memory via MCP tools (mem_save, mem_search, mem_session_summary, etc.).
 - Save proactively after significant work — don't wait to be asked.
 - After any compaction or context reset, call `mem_context` to recover session state before continuing.
-
 
 ## Memory
 You have access to Engram persistent memory via MCP tools (mem_save, mem_search, mem_session_summary, etc.).
@@ -15,8 +12,6 @@ You have access to Engram persistent memory via MCP tools (mem_save, mem_search,
 
 You have access to Engram persistent memory (mem_save, mem_search, mem_context).
 Save proactively after significant work. After context resets, call mem_context to recover state.
-
-
 
 You have access to Engram persistent memory via MCP tools:
 mem_save, mem_search, mem_context, mem_session_summary,
@@ -37,4 +32,3 @@ mem_timeline, mem_get_observation, mem_stats, mem_session_start, mem_session_end
 - type: bugfix | decision | pattern | config | discovery
 - content: What / Why / Where / Learned
 ```
-
