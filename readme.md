@@ -439,3 +439,13 @@ Las colecciones incluyen:
 - ✔️ **Carga Masiva** - 2 endpoints (Agregar múltiples láminas)
 - ✔️ **Casos de Error** - Ejemplos de validación y errores
 - ✔️ **Ejemplos de Respuesta** - Respuestas reales guardadas para referencia
+ 
+---
+
+## 🤖 Agentes, Skills y Memoria
+
+La documentación específica sobre agentes, skills y las reglas de memoria (Engram) se encuentra en:
+
+- [README — Agentes, Skills y Memoria (Engram)](readme-agents.md)
+
+Revisa ese archivo para normas, plantillas y procedimientos recomendados para trabajar con agentes en este repositorio.
