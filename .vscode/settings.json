@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^powershell -Command \"\\$p = \\(netstat -ano \\| Select-String ':8080'\\); if\\(\\$p\\)\\{ \\$line = \\$p\\.Line; \\$pid = \\(\\$line -split '\\\\s\\+'\\)\\[-1\\]; Write-Output \\\\\"Killing PID \\$pid\\\\\"; Stop-Process -Id \\$pid -Force \\} else \\{ Write-Output 'No process en puerto 8080' \\}\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

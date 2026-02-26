@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-@SuppressWarnings("null")
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -27,7 +26,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Verificar si ya existen datos
         if (albumRepository.count() > 0) {
             System.out.println("⚠️ Base de datos ya contiene datos. Saltando inicialización.");
             return;
@@ -35,7 +33,7 @@ public class DataInitializer implements CommandLineRunner {
 
         System.out.println("🚀 Iniciando población de base de datos con anime populares...");
 
-        // ==================== ALBUM 1: CABALLEROS DEL ZODIACO ====================
+        // Album 1
         Album album1 = new Album();
         album1.setNombre("Caballeros del Zodiaco");
         album1.setYear(1986);
@@ -45,22 +43,21 @@ public class DataInitializer implements CommandLineRunner {
         album1.setLaminasCatalogo(new ArrayList<>());
         Album savedAlbum1 = albumRepository.save(album1);
 
-        // Crear catálogo para album 1
-        crearCatalogo(savedAlbum1, new String[][] {
+        crearCatalogo(savedAlbum1, new String[][]{
                 {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"},
                 {"Armadura Dorada de Aries", "https://images.unsplash.com/photo-1578322154310-cc4ecca2f5d5?w=400", "CONTENIDO"},
                 {"Batalla contra Hades", "https://images.unsplash.com/photo-1607084591413-25427a3d4d12?w=400", "CONTENIDO"}
         }, 1986);
 
-        // Agregar láminas de prueba (incluyendo algunas repetidas y faltantes)
-        agregarLaminasDeEjemplo(savedAlbum1, new String[][] {
-                {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"}, // En catálogo
-                {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"}, // Repetida
-                {"Armadura Dorada de Aries", "https://images.unsplash.com/photo-1578322154310-cc4ecca2f5d5?w=400", "CONTENIDO"}   // En catálogo
-                // Falta: "Batalla contra Hades"
+        agregarLaminasDeEjemplo(savedAlbum1, new String[][]{
+                {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"},
+                {"Seiya - Caballero de Pegaso", "https://images.unsplash.com/photo-1617637881555-eae2ba6ee46f?w=400", "PORTADA"},
+                {"Armadura Dorada de Aries", "https://images.unsplash.com/photo-1578322154310-cc4ecca2f5d5?w=400", "CONTENIDO"}
         }, 1986);
 
-        // ==================== ALBUM 2: DRAGON BALL Z ====================
+        syncLaminasFromCatalog(savedAlbum1);
+
+        // Album 2
         Album album2 = new Album();
         album2.setNombre("Dragon Ball Z");
         album2.setYear(1989);
@@ -70,23 +67,23 @@ public class DataInitializer implements CommandLineRunner {
         album2.setLaminasCatalogo(new ArrayList<>());
         Album savedAlbum2 = albumRepository.save(album2);
 
-        // Crear catálogo para album 2
-        crearCatalogo(savedAlbum2, new String[][] {
+        crearCatalogo(savedAlbum2, new String[][]{
                 {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"},
                 {"Vegeta - El Príncipe Saiyajin", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "CONTENIDO"},
                 {"Batalla contra Freezer", "https://images.unsplash.com/photo-1626814026595-cac13b1db48d?w=400", "CONTENIDO"}
         }, 1989);
 
-        // Agregar láminas de prueba (colección completa con una repetida)
-        agregarLaminasDeEjemplo(savedAlbum2, new String[][] {
+        agregarLaminasDeEjemplo(savedAlbum2, new String[][]{
                 {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"},
                 {"Vegeta - El Príncipe Saiyajin", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "CONTENIDO"},
                 {"Batalla contra Freezer", "https://images.unsplash.com/photo-1626814026595-cac13b1db48d?w=400", "CONTENIDO"},
-                {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"}, // Repetida
-                {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"}  // Otra repetida
+                {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"},
+                {"Goku - Super Saiyajin", "https://images.unsplash.com/photo-1632779686507-fe4db93d0f93?w=400", "PORTADA"}
         }, 1989);
 
-        // ==================== ALBUM 3: NARUTO ====================
+        syncLaminasFromCatalog(savedAlbum2);
+
+        // Album 3
         Album album3 = new Album();
         album3.setNombre("Naruto");
         album3.setYear(2002);
@@ -96,21 +93,21 @@ public class DataInitializer implements CommandLineRunner {
         album3.setLaminasCatalogo(new ArrayList<>());
         Album savedAlbum3 = albumRepository.save(album3);
 
-        // Crear catálogo para album 3
-        crearCatalogo(savedAlbum3, new String[][] {
+        crearCatalogo(savedAlbum3, new String[][]{
                 {"Naruto Uzumaki - El Hokage", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "PORTADA"},
                 {"Sasuke Uchiha - El Último de su Clan", "https://images.unsplash.com/photo-1619983081563-430f63602d4b?w=400", "CONTENIDO"},
                 {"Sakura Haruno - Kunoichi Poderosa", "https://images.unsplash.com/photo-1625948515291-89613c66ba51?w=400", "CONTENIDO"}
         }, 2002);
 
-        // Agregar láminas de prueba (colección completa sin repetidas)
-        agregarLaminasDeEjemplo(savedAlbum3, new String[][] {
+        agregarLaminasDeEjemplo(savedAlbum3, new String[][]{
                 {"Naruto Uzumaki - El Hokage", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "PORTADA"},
                 {"Sasuke Uchiha - El Último de su Clan", "https://images.unsplash.com/photo-1619983081563-430f63602d4b?w=400", "CONTENIDO"},
                 {"Sakura Haruno - Kunoichi Poderosa", "https://images.unsplash.com/photo-1625948515291-89613c66ba51?w=400", "CONTENIDO"}
         }, 2002);
 
-        // ==================== ALBUM 4: DEMON SLAYER ====================
+        syncLaminasFromCatalog(savedAlbum3);
+
+        // Album 4
         Album album4 = new Album();
         album4.setNombre("Demon Slayer");
         album4.setYear(2018);
@@ -120,20 +117,19 @@ public class DataInitializer implements CommandLineRunner {
         album4.setLaminasCatalogo(new ArrayList<>());
         Album savedAlbum4 = albumRepository.save(album4);
 
-        // Crear catálogo para album 4
-        crearCatalogo(savedAlbum4, new String[][] {
+        crearCatalogo(savedAlbum4, new String[][]{
                 {"Tanjiro Kamado - Cazador de Demonios", "https://images.unsplash.com/photo-1611339555312-e607c25352ca?w=400", "PORTADA"},
                 {"Nezuko - El Demonio Humano", "https://images.unsplash.com/photo-1618519764d82b19d648d1aac2e2b63500cf471a?w=400", "CONTENIDO"},
                 {"Hashira - Los Pilares de Fuego", "https://images.unsplash.com/photo-1619983081563-430f63602d4b?w=400", "CONTENIDO"}
         }, 2018);
 
-        // Agregar láminas de prueba (solo 1 lámina, faltan 2)
-        agregarLaminasDeEjemplo(savedAlbum4, new String[][] {
+        agregarLaminasDeEjemplo(savedAlbum4, new String[][]{
                 {"Tanjiro Kamado - Cazador de Demonios", "https://images.unsplash.com/photo-1611339555312-e607c25352ca?w=400", "PORTADA"}
-                // Faltan: Nezuko y Hashira
         }, 2018);
 
-        // ==================== ALBUM 5: BERSERK ====================
+        syncLaminasFromCatalog(savedAlbum4);
+
+        // Album 5
         Album album5 = new Album();
         album5.setNombre("Berserk");
         album5.setYear(1997);
@@ -143,25 +139,23 @@ public class DataInitializer implements CommandLineRunner {
         album5.setLaminasCatalogo(new ArrayList<>());
         Album savedAlbum5 = albumRepository.save(album5);
 
-        // Crear catálogo para album 5
-        crearCatalogo(savedAlbum5, new String[][] {
+        crearCatalogo(savedAlbum5, new String[][]{
                 {"Guts - El Guerrero Negro", "https://images.unsplash.com/photo-1618519764d82b19d648d1aac2e2b63500cf471a?w=400", "PORTADA"},
                 {"La Mano del Dios", "https://images.unsplash.com/photo-1607084591413-25427a3d4d12?w=400", "CONTENIDO"},
                 {"Griffith - El Falcón Blanco", "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400", "CONTENIDO"}
         }, 1997);
 
-        // Agregar láminas de prueba (no agregar ninguna, solo catálogo)
-        // Este álbum está sin completar
+        syncLaminasFromCatalog(savedAlbum5);
 
-        // ==================== CANCIONES ====================
+        // Canciones
         Object[][] canciones = {
-            {"Pegasus Fantasy",      "Make-Up",           210, "J-Pop"},
-            {"Cha-La Head-Cha-La",   "Hironobu Kageyama", 228, "J-Pop"},
-            {"Blue Bird",            "Ikimono-gakari",    265, "J-Pop"},
-            {"Gurenge",              "LiSA",              232, "Anime"},
-            {"Tank!",                "The Seatbelts",     174, "Jazz"},
-            {"A Cruel Angel's Thesis","Yoko Takahashi",   230, "J-Pop"},
-            {"The Hero",             "JAM Project",       256, "Anime"},
+                {"Pegasus Fantasy", "Make-Up", 210, "J-Pop"},
+                {"Cha-La Head-Cha-La", "Hironobu Kageyama", 228, "J-Pop"},
+                {"Blue Bird", "Ikimono-gakari", 265, "J-Pop"},
+                {"Gurenge", "LiSA", 232, "Anime"},
+                {"Tank!", "The Seatbelts", 174, "Jazz"},
+                {"A Cruel Angel's Thesis", "Yoko Takahashi", 230, "J-Pop"},
+                {"The Hero", "JAM Project", 256, "Anime"}
         };
         for (Object[] c : canciones) {
             cancionRepository.save(Cancion.builder()
@@ -173,16 +167,17 @@ public class DataInitializer implements CommandLineRunner {
                     .build());
         }
 
+        long albumCount = albumRepository.count();
+        long catalogCount = laminaCatalogoRepository.count();
+        long laminaCount = laminaRepository.count();
+        long cancionesCount = cancionRepository.count();
+
         System.out.println("✅ Base de datos poblada exitosamente");
-        System.out.println("   📚 5 Álbumes creados con catálogos");
-        System.out.println("   🖼️  15 Láminas en catálogo");
-        System.out.println("   🎵 7 Canciones cargadas");
-        System.out.println("   📋 Ejemplos de estado:");
-        System.out.println("      - Album 1: 2 poseídas, 1 faltante, 1 repetida");
-        System.out.println("      - Album 2: 5 poseídas, 0 faltantes, 3 repetidas");
-        System.out.println("      - Album 3: 3 poseídas (completo)");
-        System.out.println("      - Album 4: 1 poseída, 2 faltantes");
-        System.out.println("      - Album 5: 0 poseídas (sin iniciar)");
+        System.out.println("   📚 " + albumCount + " Álbumes creados con catálogos");
+        System.out.println("   🖼️  " + catalogCount + " Láminas en catálogo");
+        System.out.println("   🎵 " + cancionesCount + " Canciones cargadas");
+        System.out.println("   📋 Resumen de estado (estimado):");
+        System.out.println("      - Álbumes: " + albumCount + ", Láminas en posesión: " + laminaCount);
     }
 
     private void crearCatalogo(Album album, String[][] laminasData, int year) {
@@ -214,6 +209,27 @@ public class DataInitializer implements CommandLineRunner {
 
             Lamina savedLamina = laminaRepository.save(lamina);
             album.getLaminas().add(savedLamina);
+        }
+
+        albumRepository.save(album);
+    }
+
+    private void syncLaminasFromCatalog(Album album) {
+        if (album.getLaminasCatalogo() == null) return;
+
+        for (LaminaCatalogo catalogo : album.getLaminasCatalogo()) {
+            if (laminaRepository.findByAlbumAndNombreAndActiveTrue(album, catalogo.getNombre()).isEmpty()) {
+                Lamina lamina = new Lamina();
+                lamina.setNombre(catalogo.getNombre());
+                lamina.setImagen(catalogo.getImagen());
+                lamina.setTipoLamina(catalogo.getTipoLamina());
+                lamina.setFechaLanzamiento(catalogo.getFechaLanzamiento());
+                lamina.setAlbum(album);
+                lamina.setActive(true);
+
+                Lamina saved = laminaRepository.save(lamina);
+                album.getLaminas().add(saved);
+            }
         }
 
         albumRepository.save(album);
