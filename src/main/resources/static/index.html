@@ -409,6 +409,7 @@
             <ul class="navbar-nav mx-auto gap-1">
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#overview">API</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#setup">Setup</a></li>
+                <li class="nav-item"><a class="nav-link px-3 py-1" href="#db-embebida">DB embebida</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#datos">Base de datos</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#estructura-app">Estructura app</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#vistas">Vistas</a></li>
@@ -441,6 +442,7 @@
     <div class="offcanvas-body d-flex flex-column gap-2 pt-4">
         <a href="#overview" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-lightning-charge me-2"></i>API Overview</a>
         <a href="#setup"    class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-terminal me-2"></i>Setup</a>
+        <a href="#db-embebida" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-database-gear me-2"></i>DB embebida</a>
         <a href="#datos"    class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-database me-2"></i>Base de datos</a>
         <a href="#estructura-app" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-2 me-2"></i>Estructura app</a>
         <a href="#vistas"   class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-window me-2"></i>Vistas</a>
@@ -666,6 +668,53 @@ server.port=8080</pre>
                             <li><i class="bi bi-arrow-right-circle"></i><span>Arranque en <strong>~2-3 segundos</strong> tras el build.</span></li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEC: DB EMBEBIDA -->
+<div class="page-section" id="db-embebida">
+    <div class="container">
+        <div class="reveal">
+            <div class="section-label"><i class="bi bi-database-gear"></i>DB embebida (H2 local)</div>
+            <h2 class="section-title">Acceso rápido a base de datos embebida</h2>
+            <p class="section-sub">Enlaces y credenciales de desarrollo local para ingresar a la consola H2 desde esta misma vista one single page.</p>
+        </div>
+
+        <div class="row g-3 reveal">
+            <div class="col-12 col-lg-7">
+                <div class="card-base h-100">
+                    <div class="card-icon"><i class="bi bi-box-arrow-up-right"></i></div>
+                    <h5 class="fw-bold mb-2" style="font-size:.96rem;">Consola H2</h5>
+                    <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:14px;">Accede directamente a la consola embebida habilitada en local:</p>
+                    <a class="btn btn-primary-solid btn-sm" href="/h2-console"><i class="bi bi-database-check me-1"></i>Abrir H2 Console</a>
+                    <ul class="feature-list mt-3">
+                        <li><i class="bi bi-check2-circle"></i><span>Ruta local: <code>/h2-console</code></span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>Base: <code>H2 in-memory</code></span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>Solo uso local/desarrollo</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="card-base h-100">
+                    <div class="card-icon"><i class="bi bi-key"></i></div>
+                    <h5 class="fw-bold mb-2" style="font-size:.96rem;">Credenciales de ingreso (local)</h5>
+                    <div class="code-wrap mt-0">
+                        <div class="code-header">
+                            <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+                            <span class="code-file">h2-console-login</span>
+                        </div>
+                        <pre id="pre-h2-login">JDBC URL: jdbc:h2:mem:web2examen;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+User: sa
+Password: (vacía)</pre>
+                        <button class="btn-copy" style="top:38px" onclick="copyCode('pre-h2-login',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                    </div>
+                    <p class="mb-0 mt-3" style="font-size:.84rem;color:var(--text-muted);">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Esta vista muestra solo datos de entorno local embebido. No expone credenciales de producción.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1165,6 +1214,7 @@ server.port=8080</pre>
                 <a href="/v3/api-docs"><i class="bi bi-braces me-1"></i>OpenAPI</a>
                 <a href="/actuator/health"><i class="bi bi-activity me-1"></i>Health</a>
                 <a href="/h2-console"><i class="bi bi-database me-1"></i>H2 Console</a>
+                <a href="#db-embebida"><i class="bi bi-database-gear me-1"></i>DB embebida</a>
                 <a href="#estructura-app"><i class="bi bi-diagram-2 me-1"></i>Estructura app</a>
                 <a href="#vistas"><i class="bi bi-window-stack me-1"></i>Vistas</a>
                 <a href="#sdd"><i class="bi bi-diagram-3 me-1"></i>SDD</a>
@@ -1205,7 +1255,7 @@ server.port=8080</pre>
 
     // ── Active nav ───────────────────────────────────────────────────────────
     var navLinks = document.querySelectorAll('#navbarDesktop .nav-link');
-    var secs = ['overview','setup','datos','estructura-app','vistas','sdd','recursos'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+    var secs = ['overview','setup','db-embebida','datos','estructura-app','vistas','sdd','recursos'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
     new IntersectionObserver(function(entries){
         entries.forEach(function(e){
             if(e.isIntersecting){
@@ -1275,4 +1325,3 @@ server.port=8080</pre>
 </script>
 </body>
 </html>
-
