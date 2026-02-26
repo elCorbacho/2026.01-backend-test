@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es" data-bs-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,10 +13,23 @@
     <style>
         /* ─── Design tokens ─── */
         :root {
-            --primary:       #10b981;
-            --primary-d:     #059669;
-            --primary-dim:   rgba(16,185,129,.12);
-            --primary-glow:  rgba(16,185,129,.20);
+            --primary:       #0ea5a3;
+            --primary-d:     #0f766e;
+            --primary-dim:   rgba(14,165,163,.12);
+            --primary-glow:  rgba(14,165,163,.20);
+            --surface:       #f3f7fb;
+            --surface-1:     #ffffff;
+            --surface-2:     #eaf0f6;
+            --border:        #d7e0ea;
+            --border-soft:   rgba(148,163,184,.35);
+            --text:          #0f172a;
+            --text-muted:    #5b6678;
+            --radius:        12px;
+            --radius-lg:     16px;
+        }
+
+        /* ─── Light mode tokens ─── */
+        html[data-bs-theme="dark"] {
             --surface:       #0d1117;
             --surface-1:     #161b22;
             --surface-2:     #21262d;
@@ -24,20 +37,7 @@
             --border-soft:   rgba(48,54,61,.6);
             --text:          #e6edf3;
             --text-muted:    #7d8590;
-            --radius:        12px;
-            --radius-lg:     16px;
-        }
-
-        /* ─── Light mode tokens ─── */
-        html[data-bs-theme="light"] {
-            --surface:    #ffffff;
-            --surface-1:  #f6f8fa;
-            --surface-2:  #eaeef2;
-            --border:     #d0d7de;
-            --border-soft:#d0d7de;
-            --text:       #1f2328;
-            --text-muted: #656d76;
-            --primary-dim: rgba(16,185,129,.08);
+            --primary-dim:   rgba(14,165,163,.18);
         }
 
         /* ─── Base ─── */
@@ -63,13 +63,13 @@
 
         /* ─── Navbar ─── */
         #mainNav {
-            background: rgba(13,17,23,.92) !important;
+            background: rgba(255,255,255,.92) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
-        html[data-bs-theme="light"] #mainNav {
-            background: rgba(255,255,255,.94) !important;
+        html[data-bs-theme="dark"] #mainNav {
+            background: rgba(13,17,23,.92) !important;
             border-bottom: 1px solid var(--border);
         }
         .navbar-brand {
@@ -246,7 +246,7 @@
             background: var(--surface-1); border: 1px solid var(--border);
             border-radius: 0 0 var(--radius) var(--radius);
             padding: 14px 16px; margin: 0; overflow-x: auto;
-            font-size: .8rem; color: #e6edf3; line-height: 1.6;
+            font-size: .8rem; color: var(--text); line-height: 1.6;
         }
         .btn-copy {
             position: absolute; top: 38px; right: 8px;
@@ -311,8 +311,8 @@
             background: var(--primary-dim) !important;
             color: var(--primary) !important;
         }
-        .accordion-button::after { filter: invert(.6) brightness(.8); }
-        html[data-bs-theme="light"] .accordion-button::after { filter: none; }
+        .accordion-button::after { filter: none; }
+        html[data-bs-theme="dark"] .accordion-button::after { filter: invert(.6) brightness(.8); }
         .accordion-body { color: var(--text-muted); font-size: .9rem; }
 
         /* ─── Step badge ─── */
