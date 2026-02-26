@@ -449,3 +449,8 @@ La documentación específica sobre agentes, skills y las reglas de memoria (Eng
 - [README — Agentes, Skills y Memoria (Engram)](readme-agents.md)
 
 Revisa ese archivo para normas, plantillas y procedimientos recomendados para trabajar con agentes en este repositorio.
+## 🖥️ Vistas Web
+
+- Inicio: `http://localhost:8080/`
+- Estructura detallada de base de datos: `http://localhost:8080/db/estructura-detallada`
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
