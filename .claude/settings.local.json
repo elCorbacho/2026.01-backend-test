@@ -5,7 +5,10 @@
       "Bash(claude plugin --help)",
       "Bash(claude plugin marketplace --help)",
       "mcp__plugin_engram_engram__mem_context",
-      "mcp__plugin_engram_engram__mem_save"
+      "mcp__plugin_engram_engram__mem_save",
+      "mcp__plugin_engram_engram__mem_session_summary",
+      "mcp__plugin_engram_engram__mem_session_end",
+      "mcp__plugin_engram_engram__mem_session_start"
     ]
   }
 }

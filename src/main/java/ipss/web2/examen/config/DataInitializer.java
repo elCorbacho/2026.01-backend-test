@@ -1,9 +1,11 @@
 package ipss.web2.examen.config;
 
 import ipss.web2.examen.models.Album;
+import ipss.web2.examen.models.Cancion;
 import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.repositories.AlbumRepository;
+import ipss.web2.examen.repositories.CancionRepository;
 import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataInitializer implements CommandLineRunner {
 
     private final AlbumRepository albumRepository;
+    private final CancionRepository cancionRepository;
     private final LaminaRepository laminaRepository;
     private final LaminaCatalogoRepository laminaCatalogoRepository;
 
@@ -150,9 +153,30 @@ public class DataInitializer implements CommandLineRunner {
         // Agregar láminas de prueba (no agregar ninguna, solo catálogo)
         // Este álbum está sin completar
 
+        // ==================== CANCIONES ====================
+        Object[][] canciones = {
+            {"Pegasus Fantasy",      "Make-Up",           210, "J-Pop"},
+            {"Cha-La Head-Cha-La",   "Hironobu Kageyama", 228, "J-Pop"},
+            {"Blue Bird",            "Ikimono-gakari",    265, "J-Pop"},
+            {"Gurenge",              "LiSA",              232, "Anime"},
+            {"Tank!",                "The Seatbelts",     174, "Jazz"},
+            {"A Cruel Angel's Thesis","Yoko Takahashi",   230, "J-Pop"},
+            {"The Hero",             "JAM Project",       256, "Anime"},
+        };
+        for (Object[] c : canciones) {
+            cancionRepository.save(Cancion.builder()
+                    .titulo((String) c[0])
+                    .artista((String) c[1])
+                    .duracion((Integer) c[2])
+                    .genero((String) c[3])
+                    .active(true)
+                    .build());
+        }
+
         System.out.println("✅ Base de datos poblada exitosamente");
         System.out.println("   📚 5 Álbumes creados con catálogos");
         System.out.println("   🖼️  15 Láminas en catálogo");
+        System.out.println("   🎵 7 Canciones cargadas");
         System.out.println("   📋 Ejemplos de estado:");
         System.out.println("      - Album 1: 2 poseídas, 1 faltante, 1 repetida");
         System.out.println("      - Album 2: 5 poseídas, 0 faltantes, 3 repetidas");
