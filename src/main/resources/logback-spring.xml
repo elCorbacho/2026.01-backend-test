@@ -47,7 +47,7 @@
     </logger>
 
     <!-- SQL bind parameter logs -->
-    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" additivity="false">
+    <logger name="org.hibernate.orm.jdbc.bind" level="WARN" additivity="false">
         <appender-ref ref="SQL_CONSOLE"/>
     </logger>
 
