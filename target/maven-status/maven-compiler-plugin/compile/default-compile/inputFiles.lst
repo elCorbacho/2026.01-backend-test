@@ -6,6 +6,7 @@ C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\CancionController.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\DemoWidgetController.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\EmpresaInsumosController.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\GanadorPremioAlbumController.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\LaminaController.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\LaminaUserController.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\controllers\api\PaisDistribucionController.java
@@ -49,6 +50,7 @@ C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\Cancion.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\DemoWidget.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\EmpresaInsumos.java
+C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\GanadorPremioAlbum.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\Lamina.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\LaminaCatalogo.java
 C:\Users\histo\OneDrive\Escritorio\2026.01-backend-test\src\main\java\ipss\web2\examen\models\PaisDistribucion.java

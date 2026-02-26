@@ -645,165 +645,196 @@ server.port=8080</pre>
     <div class="container">
         <div class="reveal">
             <div class="section-label"><i class="bi bi-database-fill"></i>Base de datos</div>
-            <h2 class="section-title">Estructura de entidades</h2>
-            <p class="section-sub">Esquema relacional generado desde entidades JPA con auditoría y soft delete.</p>
+            <h2 class="section-title">Estructura completa integrada</h2>
+            <p class="section-sub">Contenido incorporado desde <code>db-estructura.html</code> manteniendo el estilo visual actual del sitio principal.</p>
         </div>
-        <ul class="nav db-tabs mb-4 flex-wrap reveal" id="dbTabs" role="tablist">
-            <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-album" type="button"><i class="bi bi-collection me-1"></i>Album</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-lamina" type="button"><i class="bi bi-image me-1"></i>Lamina</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-catalogo" type="button"><i class="bi bi-journal-text me-1"></i>LaminaCatalogo</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cancion" type="button"><i class="bi bi-music-note me-1"></i>Cancion</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rel" type="button"><i class="bi bi-diagram-2 me-1"></i>Relaciones</button></li>
-        </ul>
-        <div class="tab-content">
-            <!-- Album -->
-            <div class="tab-pane fade show active" id="tab-album" role="tabpanel">
-                <div class="card-base">
-                    <div class="d-flex align-items-center gap-2 mb-1">
-                        <i class="bi bi-collection text-primary-em"></i>
-                        <h5 class="mb-0 fw-bold" style="font-size:.95rem;">Album</h5>
+
+        <div class="d-flex flex-wrap gap-2 mb-4 reveal">
+            <span class="db-pill"><i class="bi bi-diagram-3"></i>ERD</span>
+            <span class="db-pill"><i class="bi bi-table"></i>Detalle de columnas</span>
+            <span class="db-pill"><i class="bi bi-code-slash"></i>DDL SQL</span>
+            <span class="db-pill"><i class="bi bi-shield-check"></i>Reglas de persistencia</span>
+        </div>
+
+        <div class="card-base mb-4 reveal">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-diagram-2 me-2 text-primary-em"></i>Diagrama de relaciones</h5>
+            <div class="erd-grid">
+                <div class="card-base p-0">
+                    <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-collection-fill me-2"></i>album</div>
+                    <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), nombre, year, descripcion, is_active, created_at, updated_at</div>
+                </div>
+                <div class="erd-link">
+                    1 ? N
+                    <div class="line"></div>
+                    l?minas / cat?logo
+                </div>
+                <div class="d-grid gap-3">
+                    <div class="card-base p-0">
+                        <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-image-fill me-2"></i>lamina</div>
+                        <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), album_id (FK), nombre, imagen, fecha_lanzamiento, tipo_lamina, is_active...</div>
                     </div>
-                    <p style="font-size:.85rem;color:var(--text-muted);" class="mb-3">Contexto de colección: título, año y descripción.</p>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="ftag pk"><i class="bi bi-key me-1"></i>PK id</span>
-                        <span class="ftag">nombre *</span>
-                        <span class="ftag">year</span>
-                        <span class="ftag">descripcion</span>
-                        <span class="ftag soft">active</span>
-                        <span class="ftag audit">created_at</span>
-                        <span class="ftag audit">updated_at</span>
-                    </div>
-                    <div class="code-wrap">
-                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">Album.java</span></div>
-                        <pre id="pre-album">@Entity
-public class Album {
-    @Id @GeneratedValue Long id;
-    @NotBlank String nombre;
-    Integer year;
-    String descripcion;
-    Boolean active = true;          // soft delete
-    @CreatedDate LocalDateTime createdAt;
-    @LastModifiedDate LocalDateTime updatedAt;
-    @OneToMany(mappedBy = "album", cascade = ALL, fetch = LAZY)
-    List&lt;Lamina&gt; laminas;
-}</pre>
-                        <button class="btn-copy" style="top:38px" onclick="copyCode('pre-album',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+                    <div class="card-base p-0">
+                        <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-bookmark-star-fill me-2"></i>lamina_catalogo</div>
+                        <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), album_id (FK), nombre (UQ por ?lbum), imagen, fecha_lanzamiento, tipo_lamina...</div>
                     </div>
                 </div>
             </div>
-            <!-- Lamina -->
-            <div class="tab-pane fade" id="tab-lamina" role="tabpanel">
-                <div class="card-base">
-                    <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-image text-primary-em"></i><h5 class="mb-0 fw-bold" style="font-size:.95rem;">Lamina</h5></div>
-                    <p style="font-size:.85rem;color:var(--text-muted);" class="mb-3">Láminas reales del usuario, ligadas a un álbum específico.</p>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="ftag pk"><i class="bi bi-key me-1"></i>PK id</span>
-                        <span class="ftag fk"><i class="bi bi-link me-1"></i>FK album_id</span>
-                        <span class="ftag">nombre</span><span class="ftag">imagen</span>
-                        <span class="ftag">fecha_lanzamiento</span><span class="ftag">tipo_lamina</span>
-                        <span class="ftag soft">active</span><span class="ftag audit">created_at</span><span class="ftag audit">updated_at</span>
-                    </div>
-                    <div class="code-wrap">
-                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">Lamina.java</span></div>
-                        <pre id="pre-lamina">@Entity
-public class Lamina {
-    @Id @GeneratedValue Long id;
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "album_id", nullable = false)
-    Album album;
-    String nombre;
-    String imagen;
-    LocalDate fechaLanzamiento;
-    String tipoLamina;
-    Boolean active = true;
-    @CreatedDate LocalDateTime createdAt;
-    @LastModifiedDate LocalDateTime updatedAt;
-}</pre>
-                        <button class="btn-copy" style="top:38px" onclick="copyCode('pre-lamina',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <span class="ftag pk">PK</span>
+                <span class="ftag fk">FK</span>
+                <span class="ftag">UQ (album_id, nombre)</span>
+                <span class="ftag soft">Soft delete</span>
+                <span class="ftag audit">Auditor?a</span>
+            </div>
+        </div>
+
+        <div class="reveal mb-3">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-table me-2 text-primary-em"></i>Detalle de columnas</h5>
+        </div>
+
+        <div class="card-base mb-3 reveal">
+            <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-collection-fill me-2"></i>Tabla <code>album</code></h6>
+            <div class="table-responsive">
+                <table class="schema-col-table">
+                    <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+                        <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+                        <tr><td><code>year</code></td><td>INT</td><td>Integer</td><td>NOT NULL</td></tr>
+                        <tr><td><code>descripcion</code></td><td>VARCHAR(500)</td><td>String</td><td>Opcional</td></tr>
+                        <tr><td><code>is_active</code></td><td>BOOLEAN</td><td>Boolean</td><td>Soft delete</td></tr>
+                        <tr><td><code>created_at</code>, <code>updated_at</code></td><td>DATETIME</td><td>LocalDateTime</td><td>Auditor?a JPA</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-base mb-3 reveal">
+            <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-image-fill me-2"></i>Tabla <code>lamina</code></h6>
+            <div class="table-responsive">
+                <table class="schema-col-table">
+                    <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+                        <tr><td><code>album_id</code></td><td>BIGINT</td><td>Album</td><td>FK ? album(id), NOT NULL</td></tr>
+                        <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+                        <tr><td><code>imagen</code></td><td>VARCHAR(255)</td><td>String</td><td>Opcional</td></tr>
+                        <tr><td><code>fecha_lanzamiento</code></td><td>DATE</td><td>LocalDate</td><td>NOT NULL</td></tr>
+                        <tr><td><code>tipo_lamina</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-base mb-4 reveal">
+            <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-bookmark-star-fill me-2"></i>Tabla <code>lamina_catalogo</code></h6>
+            <div class="table-responsive">
+                <table class="schema-col-table">
+                    <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+                        <tr><td><code>album_id</code></td><td>BIGINT</td><td>Album</td><td>FK ? album(id), NOT NULL</td></tr>
+                        <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL + UQ compuesto</td></tr>
+                        <tr><td><code>imagen</code></td><td>VARCHAR(255)</td><td>String</td><td>Opcional</td></tr>
+                        <tr><td><code>fecha_lanzamiento</code></td><td>DATE</td><td>LocalDate</td><td>NOT NULL</td></tr>
+                        <tr><td><code>tipo_lamina</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-3 mb-0" style="font-size:.82rem;color:var(--text-muted);">La restricci?n ?nica es <code>(album_id, nombre)</code>: el nombre no se repite dentro del mismo ?lbum.</p>
+        </div>
+
+        <div class="reveal mb-3">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-code-slash me-2 text-primary-em"></i>DDL SQL</h5>
+        </div>
+
+        <div class="row g-3 reveal">
+            <div class="col-12 col-lg-4">
+                <div class="card-base h-100">
+                    <div class="code-wrap mt-0">
+                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">album.sql</span></div>
+                        <pre id="sql-album">CREATE TABLE album (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(255) NOT NULL,
+  year INT NOT NULL,
+  descripcion VARCHAR(500),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at DATETIME(6),
+  updated_at DATETIME(6),
+  PRIMARY KEY (id)
+);</pre>
+                        <button class="btn-copy" style="top:38px" onclick="copyCode('sql-album',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
                     </div>
                 </div>
             </div>
-            <!-- LaminaCatalogo -->
-            <div class="tab-pane fade" id="tab-catalogo" role="tabpanel">
-                <div class="card-base">
-                    <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-journal-text text-primary-em"></i><h5 class="mb-0 fw-bold" style="font-size:.95rem;">LaminaCatalogo</h5></div>
-                    <p style="font-size:.85rem;color:var(--text-muted);" class="mb-3">Catálogo maestro de láminas por álbum, con unicidad en nombre dentro del mismo álbum.</p>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="ftag pk"><i class="bi bi-key me-1"></i>PK id</span>
-                        <span class="ftag fk"><i class="bi bi-link me-1"></i>FK album_id</span>
-                        <span class="ftag">nombre (unique)</span><span class="ftag">imagen</span>
-                        <span class="ftag">fecha_lanzamiento</span><span class="ftag">tipo_lamina</span>
-                        <span class="ftag soft">active</span><span class="ftag audit">created_at</span><span class="ftag audit">updated_at</span>
-                    </div>
-                    <div class="code-wrap">
-                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">LaminaCatalogo.java</span></div>
-                        <pre id="pre-cat">@Entity
-@Table(uniqueConstraints = @UniqueConstraint(
-    columnNames = {"album_id", "nombre"}))
-public class LaminaCatalogo {
-    @Id @GeneratedValue Long id;
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "album_id", nullable = false)
-    Album album;
-    @NotBlank String nombre;
-    String imagen;
-    LocalDate fechaLanzamiento;
-    String tipoLamina;
-    Boolean active = true;
-    @CreatedDate LocalDateTime createdAt;
-    @LastModifiedDate LocalDateTime updatedAt;
-}</pre>
-                        <button class="btn-copy" style="top:38px" onclick="copyCode('pre-cat',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+            <div class="col-12 col-lg-4">
+                <div class="card-base h-100">
+                    <div class="code-wrap mt-0">
+                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">lamina.sql</span></div>
+                        <pre id="sql-lamina">CREATE TABLE lamina (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  album_id BIGINT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  imagen VARCHAR(255),
+  fecha_lanzamiento DATE NOT NULL,
+  tipo_lamina VARCHAR(255) NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at DATETIME(6),
+  updated_at DATETIME(6),
+  PRIMARY KEY (id),
+  CONSTRAINT fk_lamina_album
+    FOREIGN KEY (album_id) REFERENCES album(id)
+);</pre>
+                        <button class="btn-copy" style="top:38px" onclick="copyCode('sql-lamina',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
                     </div>
                 </div>
             </div>
-            <!-- Cancion -->
-            <div class="tab-pane fade" id="tab-cancion" role="tabpanel">
-                <div class="card-base">
-                    <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-music-note text-primary-em"></i><h5 class="mb-0 fw-bold" style="font-size:.95rem;">Cancion</h5></div>
-                    <p style="font-size:.85rem;color:var(--text-muted);" class="mb-3">Entidad independiente para gestión de canciones con CRUD completo.</p>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="ftag pk"><i class="bi bi-key me-1"></i>PK id</span>
-                        <span class="ftag">titulo *</span><span class="ftag">artista *</span>
-                        <span class="ftag">duracion (seg)</span><span class="ftag">genero</span>
-                        <span class="ftag soft">active</span><span class="ftag audit">created_at</span><span class="ftag audit">updated_at</span>
-                    </div>
-                    <div class="code-wrap">
-                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">Cancion.java</span></div>
-                        <pre id="pre-cancion">@Entity
-public class Cancion {
-    @Id @GeneratedValue Long id;
-    @NotBlank String titulo;
-    @NotBlank String artista;
-    Integer duracion;   // segundos
-    String genero;
-    Boolean active = true;
-    @CreatedDate LocalDateTime createdAt;
-    @LastModifiedDate LocalDateTime updatedAt;
-}</pre>
-                        <button class="btn-copy" style="top:38px" onclick="copyCode('pre-cancion',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+            <div class="col-12 col-lg-4">
+                <div class="card-base h-100">
+                    <div class="code-wrap mt-0">
+                        <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">lamina_catalogo.sql</span></div>
+                        <pre id="sql-catalogo">CREATE TABLE lamina_catalogo (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  album_id BIGINT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  imagen VARCHAR(255),
+  fecha_lanzamiento DATE NOT NULL,
+  tipo_lamina VARCHAR(255) NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at DATETIME(6),
+  updated_at DATETIME(6),
+  PRIMARY KEY (id),
+  CONSTRAINT uq_catalogo_album_nombre UNIQUE (album_id, nombre),
+  CONSTRAINT fk_catalogo_album
+    FOREIGN KEY (album_id) REFERENCES album(id)
+);</pre>
+                        <button class="btn-copy" style="top:38px" onclick="copyCode('sql-catalogo',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
                     </div>
                 </div>
             </div>
-            <!-- Relaciones -->
-            <div class="tab-pane fade" id="tab-rel" role="tabpanel">
-                <div class="card-base">
-                    <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-diagram-2 me-2 text-primary-em"></i>Diagrama de relaciones</h5>
-                    <div class="table-responsive mb-3">
-                        <table class="rel-table">
-                            <thead><tr><th>Entidad origen</th><th>Entidad destino</th><th>Cardinalidad</th><th>Detalles</th></tr></thead>
-                            <tbody>
-                                <tr><td><strong>Album</strong></td><td>Lamina</td><td><span class="badge" style="background:var(--primary-dim);color:var(--primary);border:1px solid rgba(16,185,129,.3)">1 → N</span></td><td><code>album_id</code> obligatoria &middot; cascade &middot; LAZY</td></tr>
-                                <tr><td><strong>Album</strong></td><td>LaminaCatalogo</td><td><span class="badge" style="background:var(--primary-dim);color:var(--primary);border:1px solid rgba(16,185,129,.3)">1 → N</span></td><td>Unique constraint <code>(album_id, nombre)</code></td></tr>
-                                <tr><td><strong>Cancion</strong></td><td>—</td><td><span class="badge" style="background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border)">Independiente</span></td><td>Sin FK, CRUD propio en <code>/api/canciones</code></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex flex-wrap gap-2">
-                        <span class="ftag soft"><i class="bi bi-trash me-1"></i>Soft delete: is_active</span>
-                        <span class="ftag audit"><i class="bi bi-clock-history me-1"></i>Auditoría: created_at / updated_at</span>
-                        <span class="ftag"><i class="bi bi-x-circle me-1"></i>Nunca se borra físicamente</span>
-                    </div>
+        </div>
+
+        <div class="reveal mt-4 mb-3">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-shield-check me-2 text-primary-em"></i>Reglas de persistencia</h5>
+        </div>
+
+        <div class="row g-3 reveal">
+            <div class="col-12 col-md-4">
+                <div class="card-base h-100">
+                    <div class="rule-title"><span class="ftag soft me-2">SD</span>Soft delete</div>
+                    <p class="rule-copy">Los registros se marcan con <code>is_active=false</code>; no se eliminan f?sicamente.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card-base h-100">
+                    <div class="rule-title"><span class="ftag audit me-2">AU</span>Auditor?a JPA</div>
+                    <p class="rule-copy"><code>created_at</code> y <code>updated_at</code> se completan autom?ticamente con <code>@CreatedDate</code> y <code>@LastModifiedDate</code>.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card-base h-100">
+                    <div class="rule-title"><span class="ftag me-2">UQ</span>Cat?logo ?nico por ?lbum</div>
+                    <p class="rule-copy">La BD asegura unicidad con <code>(album_id, nombre)</code> en <code>lamina_catalogo</code>.</p>
                 </div>
             </div>
         </div>
