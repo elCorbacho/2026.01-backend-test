@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Engram en un vistazo</title>
+    <style>
+        :root {
+            --bg: #0f1115;
+            --card: #15181f;
+            --accent: #48c9b0;
+            --text: #f3f4f6;
+            --muted: #9aa1b8;
+        }
+        * { box-sizing:border-box; }
+        body {
+            margin:0;
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            background: radial-gradient(circle at 10% -10%, rgba(72,201,176,0.25), transparent 45%), #0f1115;
+            color: var(--text);
+            min-height:100vh;
+        }
+        header {
+            padding:3rem 1.5rem 2rem;
+            text-align:center;
+        }
+        header h1 {
+            margin:0;
+            font-size:clamp(2rem,4vw,3rem);
+        }
+        header p {
+            margin:0.75rem auto;
+            max-width:45rem;
+            color:var(--muted);
+        }
+        main {
+            max-width:960px;
+            margin:0 auto 3rem;
+            padding:0 1.5rem;
+        }
+        section {
+            margin-top:2rem;
+        }
+        .grid {
+            display:grid;
+            gap:1rem;
+        }
+        .grid-3 {
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+        }
+        .grid-2 {
+            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        }
+        .card {
+            background:var(--card);
+            padding:1.25rem;
+            border-radius:1rem;
+            border:1px solid rgba(255,255,255,0.08);
+            box-shadow:0 20px 45px rgba(0,0,0,0.35);
+        }
+        .card h3 {
+            margin-top:0;
+            color:var(--accent);
+        }
+        .step-list {
+            list-style:none;
+            padding:0;
+            margin:0;
+        }
+        .step-list li {
+            padding:0.75rem 0;
+            border-bottom:1px solid rgba(255,255,255,0.06);
+        }
+        .step-list li:last-child { border-bottom:none; }
+        .tag {
+            display:inline-flex;
+            align-items:center;
+            gap:0.35rem;
+            background:rgba(72,201,176,0.15);
+            color:var(--accent);
+            padding:0.25rem 0.65rem;
+            border-radius:999px;
+            font-size:0.8rem;
+            font-weight:600;
+        }
+        footer {
+            text-align:center;
+            margin-top:3rem;
+            color:var(--muted);
+            font-size:0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="tag">Engram · memoria persistente</div>
+        <h1>Cómo usar Engram en este repositorio</h1>
+        <p>Engram guarda observaciones importantes sobre decisiones, bugs y contexto de la sesión para que futuros agentes recuperen memoria precisa y útil.</p>
+    </header>
+    <main>
+        <section>
+            <div class="card">
+                <h3>¿Qué guarda Engram?</h3>
+                <p>Siempre que se completa una corrección de bug, se toma una decisión arquitectónica, se descubre un comportamiento no obvio o se cambia la configuración, se ejecuta <code>mem_save</code> para registrar:</p>
+                <ul>
+                    <li>Qué se hizo y por qué.</li>
+                    <li>En qué archivos sucedió.</li>
+                    <li>Qué aprendizajes o gotchas importantes surgieron.</li>
+                </ul>
+                <p>Así la próxima vez el agente ya tiene contexto y puede continuar desde donde quedó.</p>
+            </div>
+        </section>
+        <section class="grid grid-3">
+            <div class="card">
+                <h3>Cuando guardar</h3>
+                <p>Ejecuta <code>mem_save</code> al terminar:</p>
+                <ul>
+                    <li>Correcciones de bugs.</li>
+                    <li>Decisiones de diseño o arquitectura.</li>
+                    <li>Cambios de configuración o instrucciones nuevas del usuario.</li>
+                    <li>Descubrimientos técnicos relevantes.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Cuando buscar</h3>
+                <p>Antes de empezar o cuando el usuario solicita recuerdo:</p>
+                <ul>
+                    <li>Usa <code>mem_context</code> para obtener sesiones recientes.</li>
+                    <li>Si no ves lo que necesitas, busca por tema con <code>mem_search</code>.</li>
+                    <li>Relee observaciones completas con <code>mem_get_observation</code>.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Siempre que termines</h3>
+                <p>Cierra la sesión con <code>mem_session_summary</code> incluyendo:</p>
+                <ul>
+                    <li>Meta general.</li>
+                    <li>Instrucciones o restricciones aprendidas.</li>
+                    <li>Descubrimientos técnicos.</li>
+                    <li>Trabajos completados y próximos pasos.</li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <div class="card">
+                <h3>Flujo típico</h3>
+                <ol class="step-list">
+                    <li>Inicia sesión y revisa <code>mem_context</code> para saber qué se hizo antes.</li>
+                    <li>Trabaja y, si haces un cambio significativo, registra con <code>mem_save</code>.</li>
+                    <li>Si hay que recordar algo después, consulta la memoria guardada.</li>
+                    <li>Antes de cerrar, resume y marca archivos relevantes en <code>mem_session_summary</code>.</li>
+                </ol>
+            </div>
+        </section>
+        <section class="grid grid-2">
+            <div class="card">
+                <h3>Ejemplo de observación</h3>
+                <p>Un <code>mem_save</code> bien formado:</p>
+                <code>
+                    **What**: Reemplacé `RuntimeException` por `InvalidOperationException` en `LaminaService`<br>
+                    **Why**: Para devolver 400 con DTO consistente y no exponer detalles internos<br>
+                    **Where**: src/.../LaminaService.java<br>
+                    **Learned**: Los handlers globales esperan excepciones específicas para armar `ApiResponseDTO`
+                </code>
+            </div>
+            <div class="card">
+                <h3>Consejos rápidos</h3>
+                <ul>
+                    <li>No escribas en memoria información superflua (por ejemplo, “corrí tests”) si no aporta contexto.</li>
+                    <li>Utiliza títulos breves y consistentes al guardar (p.ej. “Decisión · Validación de pedidos”).</li>
+                    <li>Si corriges un bug, describe el síntoma y cómo lo resolviste.</li>
+                    <li>Evita duplicar temas; usa <code>topic_key</code> si el asunto evoluciona.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        Engram mantiene el contexto vivo. Guarda, busca y resume cada sesión para que el equipo no pierda la historia.
+    </footer>
+</body>
+</html>
