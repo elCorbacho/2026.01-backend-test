@@ -1,0 +1,17 @@
+schema: "1.0"
+change:
+  id: completar-fase-4-9-vista-openspec
+  status: proposed
+  created_at: 2026-02-26
+  modified_at: 2026-02-26
+  artifacts:
+    proposal: proposal.md
+    design: design.md
+    specs: []
+    tasks: tasks.md
+    verify_report: verify-report.md
+  tags:
+    - frontend
+    - html
+    - optimization
+    - completion
