@@ -1,5 +1,7 @@
 schema: spec-driven
 
+artifact_store:
+  mode: engram
 
 
 context: |
