@@ -1,277 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-CL" data-bs-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="OpenSpec y Skills Agent Teams — Comparativa de metodologías" />
+    <meta name="description" content="OpenSpec y Skills Agent Teams â€” Comparativa de metodologÃ­as" />
     <title>OpenSpec y Skills Agent Teams</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <style>
-        /* ─── Design tokens ─── */
-        :root {
-            --primary:       #0ea5a3;
-            --primary-d:     #0f766e;
-            --primary-dim:   rgba(14,165,163,.12);
-            --primary-glow:  rgba(14,165,163,.20);
-            --surface:       #f3f7fb;
-            --surface-1:     #ffffff;
-            --surface-2:     #eaf0f6;
-            --border:        #d7e0ea;
-            --border-soft:   rgba(148,163,184,.35);
-            --text:          #0f172a;
-            --text-muted:    #5b6678;
-            --radius:        12px;
-            --radius-lg:     16px;
-        }
-
-        /* ─── Light mode tokens ─── */
-        html[data-bs-theme="dark"] {
-            --surface:       #0d1117;
-            --surface-1:     #161b22;
-            --surface-2:     #21262d;
-            --border:        #30363d;
-            --border-soft:   rgba(48,54,61,.6);
-            --text:          #e6edf3;
-            --text-muted:    #7d8590;
-            --primary-dim:   rgba(14,165,163,.18);
-        }
-
-        /* ─── Base ─── */
-        *, *::before, *::after { box-sizing: border-box; }
-        code, pre { font-family: "JetBrains Mono", "Fira Code", monospace; }
-        body {
-            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-            background: var(--surface);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        a { color: var(--primary); }
-        strong { color: inherit; }
-
-        /* ─── Scroll progress ─── */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; z-index: 9999;
-            height: 2px; width: 0%;
-            background: var(--primary);
-            transition: width .08s linear;
-        }
-
-        /* ─── Navbar ─── */
-        #mainNav {
-            background: rgba(255,255,255,.92) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-        html[data-bs-theme="dark"] #mainNav {
-            background: rgba(13,17,23,.92) !important;
-            border-bottom: 1px solid var(--border);
-        }
-        .navbar-brand {
-            font-weight: 700; font-size: .95rem;
-            color: var(--text) !important;
-            letter-spacing: -.01em;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .brand-mark {
-            width: 28px; height: 28px; border-radius: 8px;
-            background: var(--primary);
-            display: inline-flex; align-items: center; justify-content: center;
-            color: #022c1a; font-size: .85rem; font-weight: 700; flex-shrink: 0;
-        }
-        .nav-link {
-            color: var(--text-muted) !important;
-            font-weight: 500; font-size: .875rem;
-            border-radius: 6px;
-            transition: color .15s, background .15s;
-        }
-        .nav-link:hover { color: var(--text) !important; background: var(--surface-2) !important; }
-        .nav-link.active { color: var(--text) !important; background: var(--surface-2) !important; }
-
-        /* theme toggle */
-        .theme-toggle {
-            display: flex; align-items: center; gap: 6px;
-            cursor: pointer; user-select: none; padding: 4px;
-        }
-        .toggle-icon { font-size: .9rem; line-height: 1; transition: opacity .25s; }
-        .toggle-icon.sun  { color: #f59e0b; }
-        .toggle-icon.moon { color: #818cf8; }
-        html[data-bs-theme="dark"]  .toggle-icon.sun  { opacity: .3; }
-        html[data-bs-theme="dark"]  .toggle-icon.moon { opacity: 1; }
-        html[data-bs-theme="light"] .toggle-icon.sun  { opacity: 1; }
-        html[data-bs-theme="light"] .toggle-icon.moon { opacity: .3; }
-        .toggle-track {
-            position: relative; width: 40px; height: 22px;
-            border-radius: 999px; border: 1px solid var(--border);
-            background: var(--surface-2);
-            transition: background .3s, border-color .3s;
-        }
-        html[data-bs-theme="light"] .toggle-track { background: var(--surface-1); }
-        .toggle-thumb {
-            position: absolute; top: 2px; left: 2px;
-            width: 16px; height: 16px; border-radius: 50%;
-            background: #818cf8;
-            box-shadow: 0 1px 3px rgba(0,0,0,.25);
-            transition: left .25s cubic-bezier(.4,0,.2,1), background .25s;
-        }
-        html[data-bs-theme="light"] .toggle-thumb { left: 20px; background: #f59e0b; }
-
-        /* ─── Buttons ─── */
-        .btn-primary-solid {
-            background: var(--primary); color: #022c1a; font-weight: 600;
-            border: none; border-radius: var(--radius); padding: 8px 16px;
-            transition: filter .15s, transform .15s;
-            font-size: .875rem;
-        }
-        .btn-primary-solid:hover { filter: brightness(1.08); color: #022c1a; transform: translateY(-1px); }
-
-        .btn-ghost {
-            background: transparent; color: var(--text-muted);
-            border: 1px solid var(--border); border-radius: var(--radius);
-            font-weight: 500; font-size: .875rem; padding: 8px 16px;
-            transition: color .15s, border-color .15s, background .15s;
-        }
-        .btn-ghost:hover { color: var(--text); border-color: var(--text-muted); background: var(--surface-2); }
-
-        /* ─── Hero ─── */
-        #hero-section {
-            border-bottom: 1px solid var(--border);
-            padding: 80px 0 64px;
-        }
-        .hero-eyebrow {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--primary-dim); border: 1px solid rgba(16,185,129,.25);
-            border-radius: 999px; padding: 4px 12px;
-            font-size: .75rem; font-weight: 600; color: var(--primary);
-            letter-spacing: .02em; margin-bottom: 20px;
-        }
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.25rem);
-            font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
-            color: var(--text); margin-bottom: 16px;
-        }
-        .hero-sub {
-            font-size: 1.05rem; color: var(--text-muted);
-            max-width: 580px; margin-bottom: 32px; line-height: 1.65;
-        }
-
-        /* ─── Section layout ─── */
-        .page-section {
-            border-bottom: 1px solid var(--border);
-            padding: 56px 0;
-        }
-        .section-label {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: .72rem; font-weight: 700; letter-spacing: .08em;
-            text-transform: uppercase; color: var(--primary);
-            margin-bottom: 8px;
-        }
-        .section-title {
-            font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em;
-            color: var(--text); margin-bottom: 4px;
-        }
-        .section-sub { color: var(--text-muted); font-size: .9rem; margin-bottom: 32px; }
-
-        /* ─── Cards ─── */
-        .card-base {
-            background: var(--surface-1);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 20px 22px;
-            transition: border-color .2s, box-shadow .2s;
-        }
-        .card-base:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-dim);
-        }
-        .card-icon {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: var(--primary-dim); border: 1px solid rgba(16,185,129,.2);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--primary); font-size: .95rem; margin-bottom: 14px;
-        }
-
-        /* ─── Feature list ─── */
-        .feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: .9rem; }
-        .feature-list li i { color: var(--primary); font-size: .85rem; margin-top: 3px; flex-shrink: 0; }
-
-        /* ─── Code blocks ─── */
-        .code-wrap { position: relative; margin-top: 12px; }
-        .code-header {
-            display: flex; align-items: center; gap: 6px;
-            background: var(--surface-2); border: 1px solid var(--border);
-            border-bottom: 0; border-radius: var(--radius) var(--radius) 0 0;
-            padding: 7px 12px;
-        }
-        .code-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-        .code-dot.r { background: #f85149; } .code-dot.y { background: #d29922; } .code-dot.g { background: #3fb950; }
-        .code-file { font-size: .72rem; color: var(--text-muted); margin-left: 4px; }
-        .code-wrap pre {
-            background: var(--surface-1); border: 1px solid var(--border);
-            border-radius: 0 0 var(--radius) var(--radius);
-            padding: 14px 16px; margin: 0; overflow-x: auto;
-            font-size: .8rem; color: var(--text); line-height: 1.6;
-        }
-        .btn-copy {
-            position: absolute; top: 38px; right: 8px;
-            background: var(--surface-2); border: 1px solid var(--border);
-            color: var(--text-muted); border-radius: 6px; padding: 2px 8px;
-            font-size: .7rem; cursor: pointer; transition: color .15s, background .15s;
-        }
-        .btn-copy:hover  { background: var(--primary-dim); color: var(--primary); border-color: rgba(16,185,129,.3); }
-        .btn-copy.copied { background: var(--primary-dim); color: var(--primary); border-color: rgba(16,185,129,.3); }
-
-        /* ─── Footer ─── */
-        .site-footer {
-            border-top: 1px solid var(--border);
-            background: var(--surface-1);
-            padding: 28px 0;
-        }
-        .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-        .footer-brand { font-weight: 700; font-size: .88rem; color: var(--text); display: flex; align-items: center; gap: 8px; }
-        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: .82rem; font-weight: 500; transition: color .15s; }
-        .footer-links a:hover { color: var(--text); }
-        .footer-copy { color: var(--text-muted); font-size: .78rem; }
-
-        /* ─── Back to top ─── */
-        #backTop {
-            position: fixed; bottom: 24px; right: 24px; z-index: 500;
-            width: 38px; height: 38px; border-radius: 8px;
-            background: var(--surface-2); border: 1px solid var(--border);
-            color: var(--text-muted);
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity .2s, color .15s, border-color .15s;
-            cursor: pointer;
-        }
-        #backTop.show { opacity: 1; pointer-events: all; }
-        #backTop:hover { color: var(--primary); border-color: rgba(16,185,129,.4); }
-
-        /* ─── Scroll-reveal ─── */
-        .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
-        .reveal.visible { opacity: 1; transform: none; }
-
-        /* ─── Offcanvas ─── */
-        .offcanvas {
-            background: var(--surface-1) !important;
-            border-left: 1px solid var(--border) !important;
-        }
-
-        /* ─── Toast ─── */
-        .toast-container { z-index: 9999; }
-
-        /* ─── Misc utils ─── */
-        .text-primary-em { color: var(--primary); }
-        .border-subtle   { border-color: var(--border) !important; }
-        @media(max-width:576px) { .hero-title { font-size: 1.9rem; } }
-    </style>
+    <link rel="stylesheet" href="/css/openspec-y-skills-teams.css" />
 </head>
 <body>
 <div id="scroll-progress"></div>
@@ -281,7 +20,7 @@
     <div class="container">
         <a class="navbar-brand" href="/">
             <span class="brand-mark"><i class="bi bi-collection-fill"></i></span>
-            Álbumes &amp; Láminas
+            Ãlbumes &amp; LÃ¡minas
         </a>
         <div class="collapse navbar-collapse" id="navbarDesktop">
             <ul class="navbar-nav mx-auto gap-1">
@@ -291,7 +30,7 @@
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="/#datos">Base de datos</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="/#estructura-app">Estructura app</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="/#vistas">Vistas</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-1" href="/openspec-y-skills-teams.html">Metodologías</a></li>
+                <li class="nav-item"><a class="nav-link px-3 py-1" href="/openspec-y-skills-teams.html">MetodologÃ­as</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="/#recursos">Recursos</a></li>
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="/#sdd">SDD</a></li>
             </ul>
@@ -315,7 +54,7 @@
 <!-- OFFCANVAS MOBILE -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
     <div class="offcanvas-header" style="border-bottom:1px solid var(--border)">
-        <span class="fw-bold" style="color:var(--text)">Navegación</span>
+        <span class="fw-bold" style="color:var(--text)">NavegaciÃ³n</span>
         <button class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column gap-2 pt-4">
@@ -325,7 +64,7 @@
         <a href="/#datos"    class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-database me-2"></i>Base de datos</a>
         <a href="/#estructura-app" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-2 me-2"></i>Estructura app</a>
         <a href="/#vistas"   class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-window me-2"></i>Vistas</a>
-        <a href="/openspec-y-skills-teams.html" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>Metodologías</a>
+        <a href="/openspec-y-skills-teams.html" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>MetodologÃ­as</a>
         <a href="/#recursos" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-link-45deg me-2"></i>Recursos</a>
         <a href="/#sdd"      class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>SDD</a>
         <hr style="border-color:var(--border)" />
@@ -337,10 +76,10 @@
 <div id="hero-section">
     <div class="container">
         <div class="hero-eyebrow">
-            <i class="bi bi-diagram-3"></i>Metodologías · SDD &amp; Skills
+            <i class="bi bi-diagram-3"></i>MetodologÃ­as Â· SDD &amp; Skills
         </div>
         <h1 class="hero-title">OpenSpec y<br>Skills Agent Teams</h1>
-        <p class="hero-sub">Descubre cómo Spec-Driven Development y Skills Agent Teams trabajan juntos para organizar el desarrollo de features complejas de forma clara, verificable y mantenible.</p>
+        <p class="hero-sub">Descubre cÃ³mo Spec-Driven Development y Skills Agent Teams trabajan juntos para organizar el desarrollo de features complejas de forma clara, verificable y mantenible.</p>
     </div>
 </div>
 
@@ -351,20 +90,20 @@
         <div class="container">
             <div class="reveal">
                 <div class="section-label"><i class="bi bi-diagram-2-fill"></i>Spec-Driven Development</div>
-                <h2 class="section-title">¿Qué es OpenSpec?</h2>
-                <p class="section-sub">OpenSpec es una metodología de desarrollo impulsada por especificaciones donde se define qué, cómo y cuándo antes de implementar.</p>
+                <h2 class="section-title">Â¿QuÃ© es OpenSpec?</h2>
+                <p class="section-sub">OpenSpec es una metodologÃ­a de desarrollo impulsada por especificaciones donde se define quÃ©, cÃ³mo y cuÃ¡ndo antes de implementar.</p>
             </div>
 
             <!-- What is OpenSpec -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
-                <h5 class="fw-bold mb-3" style="font-size:.95rem;">Definición</h5>
-                <p style="margin-bottom: 16px;">Spec-Driven Development (SDD) es una forma de trabajar donde primero se documenta <strong>qué se quiere cambiar</strong>, <strong>cómo se valida</strong>, y después se implementa. Esto evita cambios improvisados y mejora la trazabilidad de decisiones técnicas.</p>
+                <h5 class="fw-bold mb-3" style="font-size:.95rem;">DefiniciÃ³n</h5>
+                <p style="margin-bottom: 16px;">Spec-Driven Development (SDD) es una forma de trabajar donde primero se documenta <strong>quÃ© se quiere cambiar</strong>, <strong>cÃ³mo se valida</strong>, y despuÃ©s se implementa. Esto evita cambios improvisados y mejora la trazabilidad de decisiones tÃ©cnicas.</p>
                 <h6 class="fw-bold mb-2" style="font-size:.9rem;">Beneficios clave:</h6>
                 <ul class="feature-list">
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Claridad:</strong> todos entienden exactamente qué se va a hacer antes de empezar.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad:</strong> cada cambio queda documentado con su intención, especificación y diseño.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Verificabilidad:</strong> puedes validar que la implementación cumple con lo especificado.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Retomabilidad:</strong> si te interrumpen, puedes retomar el trabajo meses después sin confusión.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Claridad:</strong> todos entienden exactamente quÃ© se va a hacer antes de empezar.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad:</strong> cada cambio queda documentado con su intenciÃ³n, especificaciÃ³n y diseÃ±o.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Verificabilidad:</strong> puedes validar que la implementaciÃ³n cumple con lo especificado.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Retomabilidad:</strong> si te interrumpen, puedes retomar el trabajo meses despuÃ©s sin confusiÃ³n.</span></li>
                 </ul>
             </div>
 
@@ -372,14 +111,14 @@
             <div class="card-base reveal" style="margin-bottom: 32px;">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Flujo recomendado (8 pasos)</h5>
                 <ol class="feature-list" style="list-style: decimal; padding-left: 20px;">
-                    <li><span><strong>Explore:</strong> entiende el alcance, riesgos y módulos afectados.</span></li>
-                    <li><span><strong>Propose:</strong> redacta <code>proposal.md</code> con intención y plan.</span></li>
+                    <li><span><strong>Explore:</strong> entiende el alcance, riesgos y mÃ³dulos afectados.</span></li>
+                    <li><span><strong>Propose:</strong> redacta <code>proposal.md</code> con intenciÃ³n y plan.</span></li>
                     <li><span><strong>Spec:</strong> define requisitos y escenarios (Given/When/Then).</span></li>
-                    <li><span><strong>Design:</strong> documenta decisiones técnicas y trade-offs.</span></li>
-                    <li><span><strong>Tasks:</strong> divide la implementación en tareas concretas.</span></li>
-                    <li><span><strong>Apply:</strong> implementa el código siguiendo tasks y specs.</span></li>
+                    <li><span><strong>Design:</strong> documenta decisiones tÃ©cnicas y trade-offs.</span></li>
+                    <li><span><strong>Tasks:</strong> divide la implementaciÃ³n en tareas concretas.</span></li>
+                    <li><span><strong>Apply:</strong> implementa el cÃ³digo siguiendo tasks y specs.</span></li>
                     <li><span><strong>Verify:</strong> valida que todo cumpla lo especificado.</span></li>
-                    <li><span><strong>Archive:</strong> cierra el cambio y muévelo a <code>archive/</code>.</span></li>
+                    <li><span><strong>Archive:</strong> cierra el cambio y muÃ©velo a <code>archive/</code>.</span></li>
                 </ol>
             </div>
 
@@ -409,11 +148,11 @@
                                 <span class="code-file">openspec-tree</span>
                             </div>
                             <pre id="code-sdd-tree">openspec/changes/mi-cambio/
-├── proposal.md
-├── specs/
-│   └── {domain}/spec.md
-├── design.md
-└── tasks.md</pre>
+â”œâ”€â”€ proposal.md
+â”œâ”€â”€ specs/
+â”‚   â””â”€â”€ {domain}/spec.md
+â”œâ”€â”€ design.md
+â””â”€â”€ tasks.md</pre>
                             <button class="btn-copy" style="top: 38px" onclick="copyCode('code-sdd-tree',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
                         </div>
                     </div>
@@ -422,10 +161,10 @@
 
             <!-- Best Practices -->
             <div class="card-base reveal">
-                <h5 class="fw-bold mb-3" style="font-size:.95rem;">Buenas prácticas</h5>
+                <h5 class="fw-bold mb-3" style="font-size:.95rem;">Buenas prÃ¡cticas</h5>
                 <ul class="feature-list">
                     <li><i class="bi bi-check-circle-fill"></i><span><strong>Nombres descriptivos:</strong> usa infinitivo o acciones claras (<code>agregar-*</code>, <code>corregir-*</code>, <code>refactorizar-*</code>).</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Cambios pequeños:</strong> mantén cada cambio enfocado en un objetivo claro. Evita mezclar múltiples features grandes.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Cambios pequeÃ±os:</strong> mantÃ©n cada cambio enfocado en un objetivo claro. Evita mezclar mÃºltiples features grandes.</span></li>
                     <li><i class="bi bi-check-circle-fill"></i><span><strong>Escenarios testeable:</strong> cada requisito debe tener al menos un escenario Given/When/Then que pueda automatizarse.</span></li>
                     <li><i class="bi bi-check-circle-fill"></i><span><strong>Cierre completo:</strong> no dejes cambios a mitad de camino. Verifica y archiva para evitar deuda documental.</span></li>
                 </ul>
@@ -438,19 +177,19 @@
         <div class="container">
             <div class="reveal">
                 <div class="section-label"><i class="bi bi-robot"></i>Skills Agent Teams</div>
-                <h2 class="section-title">¿Qué son Skills Agent Teams?</h2>
-                <p class="section-sub">Equipos de agentes especializados que trabajan en colaboración para resolver tareas complejas del proyecto.</p>
+                <h2 class="section-title">Â¿QuÃ© son Skills Agent Teams?</h2>
+                <p class="section-sub">Equipos de agentes especializados que trabajan en colaboraciÃ³n para resolver tareas complejas del proyecto.</p>
             </div>
 
             <!-- What are Skills Teams -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
-                <h5 class="fw-bold mb-3" style="font-size:.95rem;">Definición</h5>
-                <p style="margin-bottom: 16px;">Skills Agent Teams son agentes IA especializados, cada uno con un rol específico y acceso a herramientas particulares. Trabajan de forma autónoma en tareas complejas, aplicando sus habilidades especializadas de manera coordinada.</p>
-                <h6 class="fw-bold mb-2" style="font-size:.9rem;">Características:</h6>
+                <h5 class="fw-bold mb-3" style="font-size:.95rem;">DefiniciÃ³n</h5>
+                <p style="margin-bottom: 16px;">Skills Agent Teams son agentes IA especializados, cada uno con un rol especÃ­fico y acceso a herramientas particulares. Trabajan de forma autÃ³noma en tareas complejas, aplicando sus habilidades especializadas de manera coordinada.</p>
+                <h6 class="fw-bold mb-2" style="font-size:.9rem;">CaracterÃ­sticas:</h6>
                 <ul class="feature-list">
                     <li><i class="bi bi-check-circle-fill"></i><span><strong>Especializados:</strong> cada agente tiene experticia en un dominio (backend, frontend, testing, etc.).</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Autónomos:</strong> pueden trabajar sin supervisión constante en tareas bien definidas.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Herramientas específicas:</strong> cada agente tiene acceso a tools relevantes para su dominio.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>AutÃ³nomos:</strong> pueden trabajar sin supervisiÃ³n constante en tareas bien definidas.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Herramientas especÃ­ficas:</strong> cada agente tiene acceso a tools relevantes para su dominio.</span></li>
                     <li><i class="bi bi-check-circle-fill"></i><span><strong>Colaborativos:</strong> pueden coordinarse y comunicarse con otros agentes cuando es necesario.</span></li>
                 </ul>
             </div>
@@ -462,25 +201,25 @@
                     <div class="col-12 col-md-6">
                         <div class="card-base p-3 mb-0" style="border: 1px solid var(--primary-dim);">
                             <h6 class="fw-bold mb-1" style="font-size:.85rem; color: var(--primary);">general-purpose</h6>
-                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">Manejo general de tareas, investigación compleja, búsqueda de código.</p>
+                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">Manejo general de tareas, investigaciÃ³n compleja, bÃºsqueda de cÃ³digo.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="card-base p-3 mb-0" style="border: 1px solid var(--primary-dim);">
                             <h6 class="fw-bold mb-1" style="font-size:.85rem; color: var(--primary);">Explore</h6>
-                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">Exploración rápida de codebases, búsqueda de patrones, respuestas sobre arquitectura.</p>
+                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">ExploraciÃ³n rÃ¡pida de codebases, bÃºsqueda de patrones, respuestas sobre arquitectura.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="card-base p-3 mb-0" style="border: 1px solid var(--primary-dim);">
                             <h6 class="fw-bold mb-1" style="font-size:.85rem; color: var(--primary);">Plan</h6>
-                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">Diseño de arquitectura, planes de implementación, análisis de trade-offs.</p>
+                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">DiseÃ±o de arquitectura, planes de implementaciÃ³n, anÃ¡lisis de trade-offs.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="card-base p-3 mb-0" style="border: 1px solid var(--primary-dim);">
                             <h6 class="fw-bold mb-1" style="font-size:.85rem; color: var(--primary);">frontend-ui-ux-expert</h6>
-                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">Diseño de componentes, UX/accesibilidad, sistemas de diseño.</p>
+                            <p style="font-size:.82rem; color: var(--text-muted); margin: 0;">DiseÃ±o de componentes, UX/accesibilidad, sistemas de diseÃ±o.</p>
                         </div>
                     </div>
                 </div>
@@ -488,14 +227,14 @@
 
             <!-- How They Work -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
-                <h5 class="fw-bold mb-3" style="font-size:.95rem;">Cómo funcionan</h5>
-                <h6 class="fw-bold mb-2" style="font-size:.9rem;">Flujo de invocación:</h6>
+                <h5 class="fw-bold mb-3" style="font-size:.95rem;">CÃ³mo funcionan</h5>
+                <h6 class="fw-bold mb-2" style="font-size:.9rem;">Flujo de invocaciÃ³n:</h6>
                 <ol class="feature-list" style="list-style: decimal; padding-left: 20px;">
-                    <li><span><strong>Descripción:</strong> describes la tarea que necesitas (feature, bug fix, investigación).</span></li>
-                    <li><span><strong>Selección:</strong> el sistema elige el agente o equipo más apropiado para el trabajo.</span></li>
-                    <li><span><strong>Análisis:</strong> el agente analiza el contexto, lee código relevante, identifica patrones.</span></li>
-                    <li><span><strong>Ejecución:</strong> realiza la tarea usando sus herramientas especializadas (búsqueda, edición, testing, etc.).</span></li>
-                    <li><span><strong>Reporte:</strong> documenta qué se hizo, decisiones tomadas, y aprende para futuras tareas.</span></li>
+                    <li><span><strong>DescripciÃ³n:</strong> describes la tarea que necesitas (feature, bug fix, investigaciÃ³n).</span></li>
+                    <li><span><strong>SelecciÃ³n:</strong> el sistema elige el agente o equipo mÃ¡s apropiado para el trabajo.</span></li>
+                    <li><span><strong>AnÃ¡lisis:</strong> el agente analiza el contexto, lee cÃ³digo relevante, identifica patrones.</span></li>
+                    <li><span><strong>EjecuciÃ³n:</strong> realiza la tarea usando sus herramientas especializadas (bÃºsqueda, ediciÃ³n, testing, etc.).</span></li>
+                    <li><span><strong>Reporte:</strong> documenta quÃ© se hizo, decisiones tomadas, y aprende para futuras tareas.</span></li>
                 </ol>
             </div>
 
@@ -504,25 +243,25 @@
                 <div class="col-12 col-md-6">
                     <div class="card-base h-100">
                         <h6 class="fw-bold mb-2" style="font-size:.9rem;"><i class="bi bi-lightning-charge me-2" style="color: var(--primary);"></i>Caso de uso 1: Refactor Backend</h6>
-                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El agente de Plan diseña la arquitectura, el general-purpose busca patrones, y el Explore valida que la refactorización no rompe nada.</p>
+                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El agente de Plan diseÃ±a la arquitectura, el general-purpose busca patrones, y el Explore valida que la refactorizaciÃ³n no rompe nada.</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card-base h-100">
                         <h6 class="fw-bold mb-2" style="font-size:.9rem;"><i class="bi bi-palette2 me-2" style="color: var(--primary);"></i>Caso de uso 2: Nueva UI</h6>
-                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El experto frontend diseña componentes accesibles, propone patrones, y el general-purpose integra con la API.</p>
+                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El experto frontend diseÃ±a componentes accesibles, propone patrones, y el general-purpose integra con la API.</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card-base h-100">
                         <h6 class="fw-bold mb-2" style="font-size:.9rem;"><i class="bi bi-bug me-2" style="color: var(--primary);"></i>Caso de uso 3: Bug Investigation</h6>
-                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El Explore busca el código afectado, el general-purpose analiza logs, identifica la raíz del problema.</p>
+                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El Explore busca el cÃ³digo afectado, el general-purpose analiza logs, identifica la raÃ­z del problema.</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card-base h-100">
                         <h6 class="fw-bold mb-2" style="font-size:.9rem;"><i class="bi bi-diagram-2 me-2" style="color: var(--primary);"></i>Caso de uso 4: Architecture Decision</h6>
-                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El Plan analiza trade-offs, el Explore valida con el codebase actual, documentan la decisión.</p>
+                        <p style="font-size:.85rem; color: var(--text-muted); margin: 0;">El Plan analiza trade-offs, el Explore valida con el codebase actual, documentan la decisiÃ³n.</p>
                     </div>
                 </div>
             </div>
@@ -535,7 +274,7 @@
             <div class="reveal">
                 <div class="section-label"><i class="bi bi-columns-gap"></i>Comparativa</div>
                 <h2 class="section-title">OpenSpec vs Skills Agent Teams</h2>
-                <p class="section-sub">Entender las diferencias y complementariedades entre ambas metodologías...</p>
+                <p class="section-sub">Entender las diferencias y complementariedades entre ambas metodologÃ­as...</p>
             </div>
             <div class="card-base reveal" style="margin-bottom: 32px;">
                 <!-- Row 1: Purpose -->
@@ -559,7 +298,7 @@
                     <div class="col-12 col-md-6 pe-md-2 mb-2 mb-md-0">
                         <div style="background: var(--surface-2); padding: 16px; border-radius: 8px;">
                             <h6 class="fw-bold mb-2" style="font-size:.9rem;">Workflow</h6>
-                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Explore → Propose → Spec → Design → Tasks → Apply → Verify → Archive</p>
+                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Explore â†’ Propose â†’ Spec â†’ Design â†’ Tasks â†’ Apply â†’ Verify â†’ Archive</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 ps-md-2">
@@ -623,13 +362,13 @@
                     <div class="col-12 col-md-6 pe-md-2 mb-2 mb-md-0">
                         <div style="background: var(--surface-2); padding: 16px; border-radius: 8px;">
                             <h6 class="fw-bold mb-2" style="font-size:.9rem;">Complementary?</h6>
-                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Yes — OpenSpec defines the WHAT, Skills Teams execute the HOW. Perfect synergy.</p>
+                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Yes â€” OpenSpec defines the WHAT, Skills Teams execute the HOW. Perfect synergy.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 ps-md-2">
                         <div style="padding: 16px; border-radius: 8px;">
                             <h6 class="fw-bold mb-2" style="font-size:.9rem;">Complementary?</h6>
-                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Yes — Skills Teams bring clarity through research, OpenSpec validates findings. Work together.</p>
+                            <p style="margin: 0; color: var(--text-muted); font-size:.9rem;">Yes â€” Skills Teams bring clarity through research, OpenSpec validates findings. Work together.</p>
                         </div>
                     </div>
                 </div>
@@ -641,54 +380,54 @@
     <div class="page-section" id="integracion">
         <div class="container">
             <div class="reveal">
-                <div class="section-label"><i class="bi bi-link-45deg"></i>Integración</div>
-                <h2 class="section-title">Cómo trabajan juntas</h2>
-                <p class="section-sub">Un ejemplo práctico de cómo OpenSpec y Skills Teams se complementan en este proyecto...</p>
+                <div class="section-label"><i class="bi bi-link-45deg"></i>IntegraciÃ³n</div>
+                <h2 class="section-title">CÃ³mo trabajan juntas</h2>
+                <p class="section-sub">Un ejemplo prÃ¡ctico de cÃ³mo OpenSpec y Skills Teams se complementan en este proyecto...</p>
             </div>
             <!-- Synergies Card -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Sinergias</h5>
-                <p style="margin-bottom: 16px;">OpenSpec define claramente QUÉ quieres hacer y POR QUÉ lo quieres hacer. Luego, Skills Agent Teams te ayudan a descubrir CÓMO hacerlo y a ejecutarlo con precisión. Juntos crean un ciclo de feedback que evita cambios improvisados y aceleran la ejecución.</p>
-                <p style="margin-bottom: 16px;">En este proyecto, cuando necesitas agregar una nueva característica o arreglar un bug, OpenSpec te obliga a pensar claramente en los requisitos, especificar comportamientos esperados, y documentar decisiones técnicas. Luego, Skills Teams (especialmente los agentes Explore y general-purpose) investigan el código, encuentran soluciones, y aplican cambios verificados.</p>
-                <p style="margin: 0;">El resultado: máxima claridad, máxima trazabilidad, y máxima velocidad. No hay ambigüedad sobre qué se hizo o por qué. Cada cambio es reproducible y documentado.</p>
+                <p style="margin-bottom: 16px;">OpenSpec define claramente QUÃ‰ quieres hacer y POR QUÃ‰ lo quieres hacer. Luego, Skills Agent Teams te ayudan a descubrir CÃ“MO hacerlo y a ejecutarlo con precisiÃ³n. Juntos crean un ciclo de feedback que evita cambios improvisados y aceleran la ejecuciÃ³n.</p>
+                <p style="margin-bottom: 16px;">En este proyecto, cuando necesitas agregar una nueva caracterÃ­stica o arreglar un bug, OpenSpec te obliga a pensar claramente en los requisitos, especificar comportamientos esperados, y documentar decisiones tÃ©cnicas. Luego, Skills Teams (especialmente los agentes Explore y general-purpose) investigan el cÃ³digo, encuentran soluciones, y aplican cambios verificados.</p>
+                <p style="margin: 0;">El resultado: mÃ¡xima claridad, mÃ¡xima trazabilidad, y mÃ¡xima velocidad. No hay ambigÃ¼edad sobre quÃ© se hizo o por quÃ©. Cada cambio es reproducible y documentado.</p>
             </div>
 
             <!-- Workflow Example Card -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Ejemplo: Agregar un nuevo endpoint API</h5>
-                <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 0.9rem;">Este es un flujo típico que usa ambas metodologías en armonía:</p>
+                <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 0.9rem;">Este es un flujo tÃ­pico que usa ambas metodologÃ­as en armonÃ­a:</p>
                 <ol class="feature-list" style="list-style: decimal; padding-left: 20px; margin-bottom: 16px;">
-                    <li><span><strong>Explore (Skills Teams):</strong> El agente Explore investiga la arquitectura actual de endpoints, patrones existentes, y módulos relacionados.</span></li>
-                    <li><span><strong>Propose (OpenSpec):</strong> Redactas <code>proposal.md</code> con intención clara: qué endpoint agregar, por qué, y qué cambios afecta.</span></li>
+                    <li><span><strong>Explore (Skills Teams):</strong> El agente Explore investiga la arquitectura actual de endpoints, patrones existentes, y mÃ³dulos relacionados.</span></li>
+                    <li><span><strong>Propose (OpenSpec):</strong> Redactas <code>proposal.md</code> con intenciÃ³n clara: quÃ© endpoint agregar, por quÃ©, y quÃ© cambios afecta.</span></li>
                     <li><span><strong>Spec (OpenSpec):</strong> Defines requisitos con escenarios Given/When/Then: validaciones, respuestas de error, formatos de datos.</span></li>
-                    <li><span><strong>Design (OpenSpec):</strong> Documentas decisiones técnicas: qué patrón usar, dónde colocar el código, qué se reutiliza.</span></li>
+                    <li><span><strong>Design (OpenSpec):</strong> Documentas decisiones tÃ©cnicas: quÃ© patrÃ³n usar, dÃ³nde colocar el cÃ³digo, quÃ© se reutiliza.</span></li>
                     <li><span><strong>Apply (Skills Teams):</strong> El agente general-purpose implementa el endpoint basado en specs y design, aplicando patrones del proyecto.</span></li>
-                    <li><span><strong>Verify (OpenSpec + Skills Teams):</strong> Validas que la implementación cumple specs, realizas testing manual, y archivas el cambio.</span></li>
+                    <li><span><strong>Verify (OpenSpec + Skills Teams):</strong> Validas que la implementaciÃ³n cumple specs, realizas testing manual, y archivas el cambio.</span></li>
                 </ol>
             </div>
 
             <!-- Workflow Diagram Card -->
             <div class="card-base reveal" style="margin-bottom: 32px;">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Diagrama de Flujo</h5>
-                <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.9rem;">Cómo OpenSpec y Skills Teams colaboran en un proyecto real:</p>
+                <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.9rem;">CÃ³mo OpenSpec y Skills Teams colaboran en un proyecto real:</p>
                 <div class="code-wrap mt-0">
                     <div class="code-header">
                         <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
                         <span class="code-file">workflow</span>
                     </div>
                     <pre id="diagram-workflow">OpenSpec                Skills Teams
-   │                          │
-   │ 1. Explore ◄─────────────┤ (investigar codebase)
-   │
-   ├─ 2. Propose
-   │
-   ├─ 3. Spec & Design (requisitos, decisiones)
-   │
-   │ 4. Apply ──────────────►│ (implementar código)
-   │                          │
-   ├◄─ 5. Verify ────────────┤ (validar, testing)
-   │
-   └─ 6. Archive (cambio completado)
+   â”‚                          â”‚
+   â”‚ 1. Explore â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ (investigar codebase)
+   â”‚
+   â”œâ”€ 2. Propose
+   â”‚
+   â”œâ”€ 3. Spec & Design (requisitos, decisiones)
+   â”‚
+   â”‚ 4. Apply â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–ºâ”‚ (implementar cÃ³digo)
+   â”‚                          â”‚
+   â”œâ—„â”€ 5. Verify â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ (validar, testing)
+   â”‚
+   â””â”€ 6. Archive (cambio completado)
 </pre>
                     <button class="btn-copy" style="top: 38px" onclick="copyCode('diagram-workflow',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
                 </div>
@@ -698,10 +437,10 @@
             <div class="card-base reveal">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Insights Clave</h5>
                 <ul class="feature-list">
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>OpenSpec es el "QUÉ":</strong> Define claramente qué se quiere lograr, por qué es importante, y cómo se valida. Sin esto, los agentes pueden sobreingeniería o tomar caminos equivocados.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Skills Teams son el "CÓMO":</strong> Proporcionan herramientas especializadas, acceso a APIs, y capacidad de investigar el código. Aceleran ejecución sin perder claridad.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Juntos evitan el caos:</strong> OpenSpec evita sobreingeniería (enfoque claro), Skills Teams evitan dilaciones (ejecución rápida). Resultado: velocidad + calidad.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad completa:</strong> Cada decisión queda documentada desde la propuesta inicial hasta la verificación final. Retomable meses después sin confusión.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>OpenSpec es el "QUÃ‰":</strong> Define claramente quÃ© se quiere lograr, por quÃ© es importante, y cÃ³mo se valida. Sin esto, los agentes pueden sobreingenierÃ­a o tomar caminos equivocados.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Skills Teams son el "CÃ“MO":</strong> Proporcionan herramientas especializadas, acceso a APIs, y capacidad de investigar el cÃ³digo. Aceleran ejecuciÃ³n sin perder claridad.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Juntos evitan el caos:</strong> OpenSpec evita sobreingenierÃ­a (enfoque claro), Skills Teams evitan dilaciones (ejecuciÃ³n rÃ¡pida). Resultado: velocidad + calidad.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad completa:</strong> Cada decisiÃ³n queda documentada desde la propuesta inicial hasta la verificaciÃ³n final. Retomable meses despuÃ©s sin confusiÃ³n.</span></li>
                 </ul>
             </div>
         </div>
@@ -714,7 +453,7 @@
         <div class="footer-inner">
             <div class="footer-brand">
                 <span class="brand-mark" style="width:22px;height:22px;font-size:.72rem;"><i class="bi bi-collection-fill"></i></span>
-                Álbumes &amp; Láminas API
+                Ãlbumes &amp; LÃ¡minas API
             </div>
             <div class="footer-links">
                 <a href="/swagger-ui.html"><i class="bi bi-arrow-up-right-square me-1"></i>Swagger</a>
@@ -747,58 +486,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-(function(){
-    // ── Scroll progress ──────────────────────────────────────────────────────
-    var prog = document.getElementById('scroll-progress');
-    window.addEventListener('scroll', function(){
-        var tot = document.documentElement.scrollHeight - window.innerHeight;
-        prog.style.width = (tot > 0 ? (window.scrollY / tot * 100) : 0) + '%';
-    }, {passive:true});
-
-    // ── Back to top ──────────────────────────────────────────────────────────
-    var btt = document.getElementById('backTop');
-    window.addEventListener('scroll', function(){ btt.classList.toggle('show', window.scrollY > 300); }, {passive:true});
-
-    // ── Active nav ───────────────────────────────────────────────────────────
-    var navLinks = document.querySelectorAll('#navbarDesktop .nav-link');
-    var secs = ['openspec','skills-teams','comparativa','integracion'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
-    secs.forEach(function(s){ new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ navLinks.forEach(function(l){ l.classList.remove('active'); }); var m = document.querySelector('#navbarDesktop a[href="#'+e.target.id+'"]'); if(m) m.classList.add('active'); } }); }, { rootMargin: '-50% 0px -45% 0px' }).observe(s); });
-
-    // ── Scroll-reveal ────────────────────────────────────────────────────────
-    var revIO = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); revIO.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(function(el){ revIO.observe(el); });
-
-    // ── Copy to clipboard ────────────────────────────────────────────────────
-    var toast = new bootstrap.Toast(document.getElementById('copyToast'), { delay: 2000 });
-    window.copyCode = function(id, btn){
-        navigator.clipboard.writeText(document.getElementById(id).innerText).then(function(){
-            btn.classList.add('copied');
-            btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copiado';
-            toast.show();
-            setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = '<i class="bi bi-copy me-1"></i>Copiar'; }, 2200);
-        });
-    };
-
-    // ── Theme toggle ─────────────────────────────────────────────────────────
-    var html    = document.documentElement;
-    var toggle  = document.getElementById('themeToggle');
-    var saved   = localStorage.getItem('theme');
-    var init    = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    function applyTheme(t){ html.setAttribute('data-bs-theme', t); localStorage.setItem('theme', t); }
-    applyTheme(init);
-    toggle.addEventListener('click', function(){ applyTheme(html.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'); });
-
-    // ── Smooth scroll ────────────────────────────────────────────────────────
-    document.querySelectorAll('a[href^="#"]').forEach(function(a){
-        a.addEventListener('click', function(e){
-            var t = document.querySelector(a.getAttribute('href'));
-            if(t){ e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
-        });
-    });
-})();
-</script>
+<script src="/js/openspec-y-skills-teams.js"></script>
 </body>
 </html>
+
