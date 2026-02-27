@@ -3,6 +3,7 @@ package ipss.web2.examen.controllers.api;
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.AlbumRequestDTO;
 import ipss.web2.examen.dtos.AlbumResponseDTO;
+import ipss.web2.examen.dtos.AlbumSummaryDTO;
 import ipss.web2.examen.dtos.GanadorAlbumDTO;
 import ipss.web2.examen.services.AlbumService;
 import ipss.web2.examen.services.GanadorAlbumService;
@@ -42,9 +43,19 @@ public class AlbumController {
     
     // GET /api/albums - Listar todos los álbumes
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<List<AlbumResponseDTO>>> obtenerTodosLosAlbumes() {
-        List<AlbumResponseDTO> response = albumService.obtenerTodosLosAlbums();
+    public ResponseEntity<ApiResponseDTO<List<AlbumResponseDTO>>> obtenerTodosLosAlbumes(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Boolean active) {
+        List<AlbumResponseDTO> response = albumService.obtenerAlbumsFiltrados(year, active);
         return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbumes recuperados exitosamente"));
+    }
+
+    // GET /api/albums/{id}/summary - Obtener resumen del álbum
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<ApiResponseDTO<AlbumSummaryDTO>> obtenerResumenAlbum(
+            @PathVariable Long id) {
+        AlbumSummaryDTO summary = albumService.obtenerResumenAlbum(id);
+        return ResponseEntity.ok(ApiResponseDTO.ok(summary, "Resumen del álbum recuperado exitosamente"));
     }
     
     // PUT /api/albums/{id} - Actualizar álbum

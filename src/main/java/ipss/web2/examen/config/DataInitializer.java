@@ -6,6 +6,7 @@ import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.RegionChile;
 import ipss.web2.examen.models.MinaChile;
+import ipss.web2.examen.models.ListadoOlimpiadas;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CancionRepository;
 import ipss.web2.examen.models.CampeonJockey;
@@ -14,6 +15,7 @@ import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import ipss.web2.examen.repositories.RegionRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
 import ipss.web2.examen.repositories.MinaChileRepository;
+import ipss.web2.examen.repositories.ListadoOlimpiadasRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,7 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionRepository regionRepository;
     private final CampeonJockeyRepository campeonJockeyRepository;
     private final MinaChileRepository minaChileRepository;
+    private final ListadoOlimpiadasRepository listadoOlimpiadasRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,6 +49,10 @@ public class DataInitializer implements CommandLineRunner {
 
         if (minaChileRepository.count() == 0) {
             poblarMinasChile();
+        }
+
+        if (listadoOlimpiadasRepository.count() == 0) {
+            poblarListadoOlimpiadas();
         }
 
         if (albumRepository.count() > 0) {
@@ -336,5 +343,30 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         System.out.println("   ✅ " + minaChileRepository.count() + " minas de Chile insertadas");
+    }
+
+    private void poblarListadoOlimpiadas() {
+        System.out.println("🏅 Cargando listado de olimpiadas...");
+
+        Object[][] olimpiadas = {
+                {"París 2024", "París", "Francia", 2024, "Verano"},
+                {"Tokio 2020", "Tokio", "Japón", 2020, "Verano"},
+                {"Río 2016", "Río de Janeiro", "Brasil", 2016, "Verano"},
+                {"Londres 2012", "Londres", "Reino Unido", 2012, "Verano"},
+                {"Beijing 2008", "Beijing", "China", 2008, "Verano"}
+        };
+
+        for (Object[] item : olimpiadas) {
+            ListadoOlimpiadas listado = new ListadoOlimpiadas();
+            listado.setNombre((String) item[0]);
+            listado.setCiudad((String) item[1]);
+            listado.setPais((String) item[2]);
+            listado.setAnio((Integer) item[3]);
+            listado.setTemporada((String) item[4]);
+            listado.setActive(true);
+            listadoOlimpiadasRepository.save(Objects.requireNonNull(listado));
+        }
+
+        System.out.println("   ✅ " + listadoOlimpiadasRepository.count() + " olimpiadas insertadas");
     }
 }

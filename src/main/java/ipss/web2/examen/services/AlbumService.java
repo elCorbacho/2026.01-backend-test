@@ -2,10 +2,13 @@ package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.AlbumRequestDTO;
 import ipss.web2.examen.dtos.AlbumResponseDTO;
+import ipss.web2.examen.dtos.AlbumSummaryDTO;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.mappers.AlbumMapper;
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.repositories.AlbumRepository;
+import ipss.web2.examen.repositories.LaminaCatalogoRepository;
+import ipss.web2.examen.repositories.LaminaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,8 @@ public class AlbumService {
     
     private final AlbumRepository albumRepository;
     private final AlbumMapper albumMapper;
+    private final LaminaRepository laminaRepository;
+    private final LaminaCatalogoRepository laminaCatalogoRepository;
     
     // Crear un nuevo album
     public AlbumResponseDTO crearAlbum(AlbumRequestDTO requestDTO) {
@@ -40,8 +45,25 @@ public class AlbumService {
     // Obtener todos los albums activos
     @Transactional(readOnly = true)
     public List<AlbumResponseDTO> obtenerTodosLosAlbums() {
-        return albumRepository.findByActiveTrue()
-                .stream()
+        return obtenerAlbumsFiltrados(null, null);
+    }
+
+    // Obtener albums aplicando filtros opcionales
+    @Transactional(readOnly = true)
+    public List<AlbumResponseDTO> obtenerAlbumsFiltrados(Integer year, Boolean active) {
+        List<Album> albums;
+
+        if (year == null && active == null) {
+            albums = albumRepository.findByActiveTrue();
+        } else if (year != null && active == null) {
+            albums = albumRepository.findByYearAndActiveTrue(year);
+        } else if (year == null) {
+            albums = albumRepository.findByActive(active);
+        } else {
+            albums = albumRepository.findByYearAndActive(year, active);
+        }
+
+        return albums.stream()
                 .map(albumMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -70,5 +92,29 @@ public class AlbumService {
     public Album obtenerAlbumEntityPorId(Long id) {
         return albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", "ID", id));
+    }
+
+    // Obtener resumen del album
+    @Transactional(readOnly = true)
+    public AlbumSummaryDTO obtenerResumenAlbum(Long id) {
+        Album album = albumRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Album", "ID", id));
+
+        long totalCatalogo = laminaCatalogoRepository.countByAlbumAndActiveTrue(album);
+        long totalLaminas = laminaRepository.countByAlbumAndActiveTrue(album);
+        long nombresUnicos = laminaRepository.countDistinctNombreByAlbumAndActiveTrue(album);
+        long repetidasTotal = Math.max(0, totalLaminas - nombresUnicos);
+        long faltantesTotal = Math.max(0, totalCatalogo - nombresUnicos);
+
+        return new AlbumSummaryDTO(
+                album.getId(),
+                album.getNombre(),
+                album.getYear(),
+                album.getActive(),
+                Math.toIntExact(totalCatalogo),
+                Math.toIntExact(totalLaminas),
+                Math.toIntExact(repetidasTotal),
+                Math.toIntExact(faltantesTotal)
+        );
     }
 }
