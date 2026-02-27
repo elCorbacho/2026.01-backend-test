@@ -1,5 +1,8 @@
 schema: spec-driven
 
+artifact_store:
+  mode: openspec
+
 context: |
   ## Proyecto: Sistema de Gestión de Álbumes y Láminas
   API REST desarrollada con Spring Boot 3.5.9 para gestionar álbumes de colección y sus láminas.
