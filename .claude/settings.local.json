@@ -13,7 +13,10 @@
       "Bash(./mvnw clean install -DskipTests)",
       "Bash(\"c:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\\\\openspec\\\\changes\\\\completar-fase-4-9-vista-openspec\\\\tasks.md\":*)",
       "Bash(python3:*)",
-      "mcp__plugin_engram_engram__mem_get_observation"
+      "mcp__plugin_engram_engram__mem_get_observation",
+      "Bash(./mvnw clean install -DskipTests=true)",
+      "Bash(curl -s -o /dev/null -w \"HTTP Status: %{http_code}\\\\n\" http://localhost:8080/openspec-y-skills-teams.html)",
+      "Bash(curl -s http://localhost:8080/openspec-y-skills-teams.html)"
     ]
   }
 }
