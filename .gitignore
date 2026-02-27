@@ -2,3 +2,7 @@
 .github\instructions\openmemory.instructions.md
 CLAUDE.md
 AGENTS.md
+
+# Ignorar archivos de compilación de Java
+target/
+*.class
