@@ -92,6 +92,12 @@ Una vez iniciada la aplicación, accede a:
 El proyecto utiliza **MySQL** montado en **AWS RDS** 
 ![ddbb](screenshots/ddbb-diagram2.png)
 
+### 🧾 Script de tabla `presidente_chile`
+
+Para crear la nueva tabla de presidentes se incluye el script:
+
+- `docs/db/presidentes_chile.sql`
+
 
 ## 📡 API Endpoints
 
