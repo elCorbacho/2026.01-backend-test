@@ -9,7 +9,7 @@ context: |
   ## Stack Tecnológico
   - **Lenguaje:** Java 21
   - **Framework:** Spring Boot 3.5.9
-  - **Base de datos:** MySQL en AWS RDS (`db-ipss.cb2es8a2cxpo.us-east-2.rds.amazonaws.com:3306/web2_examen`)
+  - **Base de datos:** MySQL en AWS RDS (`db-ipss.cb2qs8a2cxpo.us-east-2.rds.amazonaws.com:3306/web2_examen`)
   - **ORM:** Spring Data JPA / Hibernate (ddl-auto=validate)
   - **Validación:** Jakarta Validation (Bean Validation)
   - **Documentación:** SpringDoc OpenAPI 2.8.5 (Swagger UI en `/swagger-ui.html`)
