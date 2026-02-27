@@ -42,6 +42,13 @@
 			"args": ["mcp"]
 		},
 
+		"memory": {
+      	"command": "memory",
+      	"args": ["server"]
+    	},
+
+
+
 
 // SEQUENTIAL THINKING SERVER
 // gestiona el pensamiento secuencial, lo que permite a los modelos de lenguaje generar respuestas más coherentes y relevantes al considerar la información en un orden lógico.
