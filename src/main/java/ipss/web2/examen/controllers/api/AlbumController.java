@@ -3,7 +3,9 @@ package ipss.web2.examen.controllers.api;
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.AlbumRequestDTO;
 import ipss.web2.examen.dtos.AlbumResponseDTO;
+import ipss.web2.examen.dtos.GanadorAlbumDTO;
 import ipss.web2.examen.services.AlbumService;
+import ipss.web2.examen.services.GanadorAlbumService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 public class AlbumController {
     
     private final AlbumService albumService;
+    private final GanadorAlbumService ganadorAlbumService;
     
     // POST /api/albums - Crear nuevo álbum
     @PostMapping
@@ -58,5 +61,12 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<Void>> eliminarAlbum(@PathVariable Long id) {
         albumService.eliminarAlbum(id);
         return ResponseEntity.ok(ApiResponseDTO.ok("Álbum con ID: " + id + " ha sido marcado como inactivo"));
+    }
+
+    @GetMapping("/{albumId}/ganadores")
+    public ResponseEntity<ApiResponseDTO<List<GanadorAlbumDTO>>> obtenerGanadoresPorAlbum(
+            @PathVariable Long albumId) {
+        List<GanadorAlbumDTO> ganadores = ganadorAlbumService.obtenerGanadoresPorAlbum(albumId);
+        return ResponseEntity.ok(ApiResponseDTO.ok(ganadores, "Ganadores del álbum recuperados exitosamente"));
     }
 }

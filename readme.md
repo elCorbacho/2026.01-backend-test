@@ -123,6 +123,11 @@ El proyecto utiliza **MySQL** montado en **AWS RDS**
 <td>Obtener detalles de un álbum específico</td>
 </tr>
 <tr>
+<td><code>GET</code></td>
+<td><code>/api/albums/{id}/ganadores</code></td>
+<td>Listar los ganadores asociados a un álbum</td>
+</tr>
+<tr>
 <td><code>PUT</code></td>
 <td><code>/api/albums/{id}</code></td>
 <td>Actualizar información de un álbum</td>
