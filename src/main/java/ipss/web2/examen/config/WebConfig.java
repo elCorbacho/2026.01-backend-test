@@ -52,17 +52,6 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<CharacterEncodingFilter> characterEncodingFilter() {
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding(StandardCharsets.UTF_8.name());
-        filter.setForceEncoding(true);
-
-        FilterRegistrationBean<CharacterEncodingFilter> registration = new FilterRegistrationBean<>(filter);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
-    }
-
-    @Bean
     public FilterRegistrationBean<OncePerRequestFilter> contentLanguageFilter() {
         OncePerRequestFilter filter = new OncePerRequestFilter() {
             @Override
