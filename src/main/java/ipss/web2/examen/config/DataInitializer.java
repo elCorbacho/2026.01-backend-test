@@ -5,6 +5,7 @@ import ipss.web2.examen.models.Cancion;
 import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.RegionChile;
+import ipss.web2.examen.models.MinaChile;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CancionRepository;
 import ipss.web2.examen.models.CampeonJockey;
@@ -12,6 +13,7 @@ import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import ipss.web2.examen.repositories.RegionRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
+import ipss.web2.examen.repositories.MinaChileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,7 @@ public class DataInitializer implements CommandLineRunner {
     private final LaminaCatalogoRepository laminaCatalogoRepository;
     private final RegionRepository regionRepository;
     private final CampeonJockeyRepository campeonJockeyRepository;
+    private final MinaChileRepository minaChileRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -39,6 +42,10 @@ public class DataInitializer implements CommandLineRunner {
 
         if (campeonJockeyRepository.count() == 0) {
             poblarCampeonesJockey();
+        }
+
+        if (minaChileRepository.count() == 0) {
+            poblarMinasChile();
         }
 
         if (albumRepository.count() > 0) {
@@ -305,5 +312,29 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         System.out.println("   ✅ " + campeonJockeyRepository.count() + " campeones de jockey insertados");
+    }
+
+    private void poblarMinasChile() {
+        System.out.println("⛏️ Cargando minas representativas de Chile...");
+
+        Object[][] minas = {
+                {"Chuquicamata", "Región de Antofagasta", "Cobre", "ACTIVA"},
+                {"Escondida", "Región de Antofagasta", "Cobre", "ACTIVA"},
+                {"El Teniente", "Región del Libertador General Bernardo O’Higgins", "Cobre", "ACTIVA"},
+                {"La Disputada de Las Condes", "Región Metropolitana de Santiago", "Cobre", "CERRADA"}
+        };
+
+        for (Object[] m : minas) {
+            MinaChile mina = MinaChile.builder()
+                    .nombre((String) m[0])
+                    .region((String) m[1])
+                    .mineralPrincipal((String) m[2])
+                    .estado((String) m[3])
+                    .active(true)
+                    .build();
+            minaChileRepository.save(mina);
+        }
+
+        System.out.println("   ✅ " + minaChileRepository.count() + " minas de Chile insertadas");
     }
 }
