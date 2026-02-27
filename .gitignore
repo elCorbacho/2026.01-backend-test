@@ -6,3 +6,6 @@ AGENTS.md
 # Ignorar archivos de compilación de Java
 target/
 *.class
+
+# Ignorar preferencias locales de Eclipse/STS
+.settings/org.eclipse.jdt.core.prefs
