@@ -289,6 +289,30 @@ Para crear la nueva tabla de presidentes se incluye el script:
 
 ---
 
+### 🌎 6. Regiones de Chile
+**Base:** `/api/regiones`
+
+> ✅ Devuelve la lista canonica de regiones activas en formato `ApiResponseDTO`.
+
+<table>
+<thead>
+<tr>
+<th width="80">Método</th>
+<th width="250">Endpoint</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/regiones</code></td>
+<td>Listar todas las regiones activas de Chile ordenadas por código</td>
+</tr>
+</tbody>
+</table>
+
+---
+
 ## 🛠️ Stack Tecnológico
 
 ### Backend Framework
