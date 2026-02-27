@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.models;
+package ipss.web2.examen.models;
 
 import jakarta.persistence.*;
 import lombok.*;

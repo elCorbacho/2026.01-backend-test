@@ -1802,6 +1802,222 @@
           "_postman_previewlanguage": "json"
         }
       ]
+    },
+    {
+      "name": "Presidentes Rusia - GET por id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "Obtiene un presidente activo por ID",
+        "url": {
+          "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+          "protocol": "http",
+          "host": [
+            "localhost:8080"
+          ],
+          "path": [
+            "api",
+            "listado-presidente-rusia",
+            "5"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "example",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Obtiene un presidente activo por ID",
+            "url": {
+              "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "api",
+                "listado-presidente-rusia",
+                "5"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia recuperado exitosamente\",\n  \"data\": {\n    \"id\": 5,\n    \"nombre\": \"Vladimir Putin\",\n    \"periodoInicio\": \"2012-05-07\",\n    \"periodoFin\": null,\n    \"partido\": \"Rusia Unida\",\n    \"descripcion\": \"Presidente de Rusia desde 2012\"\n  },\n  \"timestamp\": \"2026-02-20T19:00:00.000000\"\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Presidentes Rusia - PATCH por id",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "Actualiza parcialmente los campos enviados",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descripcion\": \"Primer presidente ruso\",\n  \"partido\": \"Reformista\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+          "protocol": "http",
+          "host": [
+            "localhost:8080"
+          ],
+          "path": [
+            "api",
+            "listado-presidente-rusia",
+            "5"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "example",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Actualiza parcialmente los campos enviados",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Primer presidente ruso\",\n  \"partido\": \"Reformista\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "api",
+                "listado-presidente-rusia",
+                "5"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia actualizado correctamente\",\n  \"data\": {\n    \"id\": 5,\n    \"descripcion\": \"Primer presidente ruso\",\n    \"partido\": \"Reformista\"\n  },\n  \"timestamp\": \"2026-02-20T19:01:00.000000\"\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Presidentes Rusia - DELETE por id",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "Soft delete sobre un presidente activo",
+        "url": {
+          "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+          "protocol": "http",
+          "host": [
+            "localhost:8080"
+          ],
+          "path": [
+            "api",
+            "listado-presidente-rusia",
+            "5"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "example",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Soft delete sobre un presidente activo",
+            "url": {
+              "raw": "http://localhost:8080/api/listado-presidente-rusia/5",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "api",
+                "listado-presidente-rusia",
+                "5"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia eliminado correctamente\",\n  \"timestamp\": \"2026-02-20T19:02:00.000000\"\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
     }
   ],
   "variable": []

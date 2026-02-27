@@ -1468,6 +1468,214 @@
           "mode": "inherit"
         }
       }
+    },
+    {
+      "type": "http",
+      "name": "Presidentes Rusia - GET por id",
+      "filename": "Presidentes Rusia - GET por id.bru",
+      "seq": 200,
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0
+      },
+      "tags": [],
+      "examples": [
+        {
+          "name": "example",
+          "description": "",
+          "type": "http",
+          "request": {
+            "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "raw": null,
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            }
+          },
+          "response": {
+            "status": "200",
+            "statusText": "OK",
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "content": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia recuperado exitosamente\",\n  \"data\": {\n    \"id\": 5,\n    \"nombre\": \"Vladimir Putin\",\n    \"periodoInicio\": \"2012-05-07\",\n    \"periodoFin\": null,\n    \"partido\": \"Rusia Unida\",\n    \"descripcion\": \"Presidente de Rusia desde 2012\"\n  }\n}"
+            }
+          }
+        }
+      ],
+      "request": {
+        "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "raw": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Presidentes Rusia - PATCH por id",
+      "filename": "Presidentes Rusia - PATCH por id.bru",
+      "seq": 201,
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0
+      },
+      "tags": [],
+      "examples": [
+        {
+          "name": "example",
+          "description": "",
+          "type": "http",
+          "request": {
+            "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+            "method": "PATCH",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Primer presidente ruso\",\n  \"partido\": \"Reformista\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            }
+          },
+          "response": {
+            "status": "200",
+            "statusText": "OK",
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "content": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia actualizado correctamente\",\n  \"data\": {\n    \"id\": 5,\n    \"descripcion\": \"Primer presidente ruso\",\n    \"partido\": \"Reformista\"\n  }\n}"
+            }
+          }
+        }
+      ],
+      "request": {
+        "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+        "method": "PATCH",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descripcion\": \"Primer presidente ruso\",\n  \"partido\": \"Reformista\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Presidentes Rusia - DELETE por id",
+      "filename": "Presidentes Rusia - DELETE por id.bru",
+      "seq": 202,
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0
+      },
+      "tags": [],
+      "examples": [
+        {
+          "name": "example",
+          "description": "",
+          "type": "http",
+          "request": {
+            "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "raw": null,
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            }
+          },
+          "response": {
+            "status": "200",
+            "statusText": "OK",
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "content": "{\n  \"success\": true,\n  \"message\": \"Presidente de Rusia eliminado correctamente\"\n}"
+            }
+          }
+        }
+      ],
+      "request": {
+        "url": "http://localhost:8080/api/listado-presidente-rusia/5",
+        "method": "DELETE",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "raw": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
     }
   ],
   "environments": [],

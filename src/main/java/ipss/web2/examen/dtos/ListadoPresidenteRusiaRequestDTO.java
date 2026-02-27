@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.dtos;
+package ipss.web2.examen.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

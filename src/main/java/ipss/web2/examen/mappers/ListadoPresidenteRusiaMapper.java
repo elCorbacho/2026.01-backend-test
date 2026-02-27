@@ -1,5 +1,6 @@
-﻿package ipss.web2.examen.mappers;
+package ipss.web2.examen.mappers;
 
+import ipss.web2.examen.dtos.ListadoPresidenteRusiaPatchRequestDTO;
 import ipss.web2.examen.dtos.ListadoPresidenteRusiaRequestDTO;
 import ipss.web2.examen.dtos.ListadoPresidenteRusiaResponseDTO;
 import ipss.web2.examen.models.ListadoPresidenteRusia;
@@ -39,5 +40,27 @@ public class ListadoPresidenteRusiaMapper {
                 .descripcion(dto.getDescripcion())
                 .active(true)
                 .build();
+    }
+
+    public void applyPatch(ListadoPresidenteRusiaPatchRequestDTO patchDTO, ListadoPresidenteRusia entity) {
+        if (patchDTO == null || entity == null) {
+            return;
+        }
+
+        if (patchDTO.getNombre() != null) {
+            entity.setNombre(patchDTO.getNombre());
+        }
+        if (patchDTO.getPeriodoInicio() != null) {
+            entity.setPeriodoInicio(patchDTO.getPeriodoInicio());
+        }
+        if (patchDTO.getPeriodoFin() != null) {
+            entity.setPeriodoFin(patchDTO.getPeriodoFin());
+        }
+        if (patchDTO.getPartido() != null) {
+            entity.setPartido(patchDTO.getPartido());
+        }
+        if (patchDTO.getDescripcion() != null) {
+            entity.setDescripcion(patchDTO.getDescripcion());
+        }
     }
 }

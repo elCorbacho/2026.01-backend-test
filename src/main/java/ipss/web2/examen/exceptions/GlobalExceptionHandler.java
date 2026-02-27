@@ -30,10 +30,12 @@ public class GlobalExceptionHandler {
         
         log.warn("Recurso no encontrado: {}", ex.getMessage());
         
+        String errorCode = ex.getErrorCode() != null ? ex.getErrorCode() : "RESOURCE_NOT_FOUND";
+
         ApiResponseDTO<Object> response = ApiResponseDTO.builder()
             .success(false)
             .message(ex.getMessage())
-            .errorCode("RESOURCE_NOT_FOUND")
+            .errorCode(errorCode)
             .timestamp(LocalDateTime.now())
             .build();
         

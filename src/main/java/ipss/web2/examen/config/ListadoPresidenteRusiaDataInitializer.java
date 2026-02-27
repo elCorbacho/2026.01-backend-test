@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.config;
+package ipss.web2.examen.config;
 
 import ipss.web2.examen.models.ListadoPresidenteRusia;
 import ipss.web2.examen.repositories.ListadoPresidenteRusiaRepository;
