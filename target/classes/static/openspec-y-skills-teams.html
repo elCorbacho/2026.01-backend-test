@@ -15,8 +15,10 @@
 <body>
 <div id="scroll-progress"></div>
 
-<!-- NAVBAR -->
-<nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
+<header class="layout-header">
+    <div class="layout-header__bar">
+        <!-- NAVBAR -->
+        <nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
     <div class="container">
         <a class="navbar-brand" href="/">
             <span class="brand-mark"><i class="bi bi-collection-fill"></i></span>
@@ -48,8 +50,21 @@
                 <i class="bi bi-list fs-4" style="color:var(--text)"></i>
             </button>
         </div>
+        </div>
+    </nav>
     </div>
-</nav>
+
+    <!-- HERO -->
+    <div id="hero-section">
+        <div class="container">
+            <div class="hero-eyebrow">
+                <i class="bi bi-diagram-3"></i>Metodologías · SDD &amp; Skills
+            </div>
+            <h1 class="hero-title">OpenSpec y<br>Skills Agent Teams</h1>
+            <p class="hero-sub">Descubre cómo Spec-Driven Development y Skills Agent Teams trabajan juntos para organizar el desarrollo de features complejas de forma clara, verificable y mantenible.</p>
+        </div>
+    </div>
+</header>
 
 <!-- OFFCANVAS MOBILE -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
@@ -72,19 +87,9 @@
     </div>
 </div>
 
-<!-- HERO -->
-<div id="hero-section">
-    <div class="container">
-        <div class="hero-eyebrow">
-            <i class="bi bi-diagram-3"></i>MetodologÃ­as Â· SDD &amp; Skills
-        </div>
-        <h1 class="hero-title">OpenSpec y<br>Skills Agent Teams</h1>
-        <p class="hero-sub">Descubre cÃ³mo Spec-Driven Development y Skills Agent Teams trabajan juntos para organizar el desarrollo de features complejas de forma clara, verificable y mantenible.</p>
-    </div>
-</div>
-
 <!-- MAIN CONTENT -->
-<main>
+<div class="layout-shell">
+    <main class="layout-main">
     <!-- SEC: OpenSpec Explanation -->
     <div class="page-section" id="openspec">
         <div class="container">
@@ -437,18 +442,33 @@
             <div class="card-base reveal">
                 <h5 class="fw-bold mb-3" style="font-size:.95rem;">Insights Clave</h5>
                 <ul class="feature-list">
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>OpenSpec es el "QUÃ‰":</strong> Define claramente quÃ© se quiere lograr, por quÃ© es importante, y cÃ³mo se valida. Sin esto, los agentes pueden sobreingenierÃ­a o tomar caminos equivocados.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Skills Teams son el "CÃ“MO":</strong> Proporcionan herramientas especializadas, acceso a APIs, y capacidad de investigar el cÃ³digo. Aceleran ejecuciÃ³n sin perder claridad.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Juntos evitan el caos:</strong> OpenSpec evita sobreingenierÃ­a (enfoque claro), Skills Teams evitan dilaciones (ejecuciÃ³n rÃ¡pida). Resultado: velocidad + calidad.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad completa:</strong> Cada decisiÃ³n queda documentada desde la propuesta inicial hasta la verificaciÃ³n final. Retomable meses despuÃ©s sin confusiÃ³n.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>OpenSpec es el "QUÉ":</strong> Define claramente qué se quiere lograr, por qué es importante, y cómo se valida. Sin esto, los agentes pueden sobreingeniería o tomar caminos equivocados.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Skills Teams son el "CÓMO":</strong> Proporcionan herramientas especializadas, acceso a APIs, y capacidad de investigar el código. Aceleran ejecución sin perder claridad.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Juntos evitan el caos:</strong> OpenSpec evita sobreingeniería (enfoque claro), Skills Teams evitan dilaciones (ejecución rápida). Resultado: velocidad + calidad.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span><strong>Trazabilidad completa:</strong> Cada decisión queda documentada desde la propuesta inicial hasta la verificación final. Retomable meses después sin confusión.</span></li>
                 </ul>
             </div>
         </div>
     </div>
-</main>
+    </main>
+    <aside class="layout-aside reveal" aria-label="Resumen de metodologías">
+        <div class="card-base">
+            <h6 class="fw-bold mb-2" style="font-size:.9rem;">Explora la comparativa</h6>
+            <p style="margin-bottom: 16px; color: var(--text-muted); font-size:.95rem;">Salta rápidamente entre las secciones clave y entiende cómo OpenSpec y Skills Teams colaboran con claridad.</p>
+            <ul class="feature-list aside-link-list">
+                <li><i class="bi bi-arrow-right-short"></i><a href="#comparativa">Comparativa OpenSpec vs Skills Teams</a></li>
+                <li><i class="bi bi-arrow-right-short"></i><a href="#integracion">Integración y workflow conjunto</a></li>
+            </ul>
+            <div class="aside-actions">
+                <a class="btn btn-ghost btn-sm" href="/#vistas">Ver otras vistas</a>
+                <a class="btn btn-primary-solid btn-sm" href="/swagger-ui.html">Explorar API</a>
+            </div>
+        </div>
+    </aside>
+</div>
 
 <!-- FOOTER -->
-<footer class="site-footer">
+<footer class="site-footer layout-footer" aria-label="Pie de página">
     <div class="container">
         <div class="footer-inner">
             <div class="footer-brand">
@@ -465,8 +485,12 @@
                 <a href="/#vistas"><i class="bi bi-window-stack me-1"></i>Vistas</a>
                 <a href="/#sdd"><i class="bi bi-diagram-3 me-1"></i>SDD</a>
             </div>
-            <div class="footer-copy">Spring Boot 3.5.9 &middot; Java 21 &middot; 2026</div>
+            <div class="footer-actions">
+                <a class="btn btn-ghost btn-sm" href="/#estructura-app">Explorar estructura</a>
+                <a class="btn btn-primary-solid btn-sm" href="/swagger-ui.html">Explorar API</a>
+            </div>
         </div>
+        <div class="footer-copy">Spring Boot 3.5.9 &middot; Java 21 &middot; 2026</div>
     </div>
 </footer>
 

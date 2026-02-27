@@ -13,6 +13,8 @@
             --text-muted:    #5b6678;
             --radius:        12px;
             --radius-lg:     16px;
+            --layout-gap:    2.5rem;
+            --aside-width:   320px;
         }
 
         /* â”€â”€â”€ Light mode tokens â”€â”€â”€ */
@@ -53,12 +55,28 @@
             background: rgba(255,255,255,.92) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            border-bottom: none !important;
         }
         html[data-bs-theme="dark"] #mainNav {
             background: rgba(13,17,23,.92) !important;
-            border-bottom: 1px solid var(--border);
+            border-bottom: none !important;
         }
+
+        .layout-header {
+            background: var(--surface-1);
+            position: relative;
+            z-index: 70;
+        }
+        .layout-header__bar {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: var(--surface-1);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
         .navbar-brand {
             font-weight: 700; font-size: .95rem;
             color: var(--text) !important;
@@ -145,6 +163,71 @@
         .hero-sub {
             font-size: 1.05rem; color: var(--text-muted);
             max-width: 580px; margin-bottom: 32px; line-height: 1.65;
+        }
+
+        .layout-shell {
+            width: min(1200px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(240px, var(--aside-width));
+            gap: var(--layout-gap);
+            padding: 40px 0 80px;
+        }
+        .layout-main {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .layout-aside {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-self: flex-start;
+        }
+        .layout-aside .card-base {
+            padding: 20px;
+        }
+        .aside-link-list {
+            list-style: none;
+            margin: 0; padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .aside-link-list li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .95rem;
+        }
+        .aside-link-list li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color .2s;
+        }
+        .aside-link-list li a:hover { color: var(--primary); }
+        .aside-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .layout-footer { background: var(--surface); }
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        @media (max-width: 991px) {
+            .layout-shell {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .layout-aside { order: 2; }
+        }
+        @media (max-width: 576px) {
+            .layout-shell { padding: 32px 0 64px; }
         }
 
         /* â”€â”€â”€ Section layout â”€â”€â”€ */
