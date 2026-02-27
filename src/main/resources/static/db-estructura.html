@@ -1,378 +1,1134 @@
-﻿<!DOCTYPE html>
-<html lang="es-CL" data-bs-theme="dark">
+<!DOCTYPE html>
+
+
+<html lang="es" data-bs-theme="dark">
+
+
 <head>
-    <meta charset="UTF-8"/>
+
+
+    <meta charset="UTF-8" />
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Estructura de Base de Datos â€” API Ãlbumes y LÃ¡minas Â· Spring Boot 3.5.9"/>
-    <title>DB Schema â€” Ãlbumes &amp; LÃ¡minas</title>
+
+
+    <meta name="description" content="Estructura de Base de Datos — API Álbumes y Láminas · Spring Boot 3.5.9"/>
+
+
+    <title>DB Schema — Álbumes &amp; Láminas</title>
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
+
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+
     <link rel="stylesheet" href="/css/db-estructura.css" />
+
+
 </head>
+
+
 <body>
+
+
 <div id="scroll-progress"></div>
 
+
+
+
+
 <!-- NAVBAR -->
+
+
 <nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
+
+
     <div class="container">
+
+
         <a class="navbar-brand fw-bold text-white" href="/"><span class="dot"></span>&#193;lbumes &amp; L&#225;minas</a>
+
+
         <div class="d-flex align-items-center gap-2 ms-auto">
+
+
             <a class="btn btn-outline-dim btn-sm d-none d-md-inline-flex" href="/"><i class="bi bi-house me-1"></i>Inicio</a>
+
+
             <a class="btn btn-emerald btn-sm d-none d-md-inline-flex" href="/swagger-ui.html"><i class="bi bi-box-arrow-up-right me-1"></i>Swagger</a>
+
+
             <button id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema"><i class="bi bi-moon-stars-fill"></i></button>
+
+
         </div>
+
+
     </div>
+
+
 </nav>
+
+
+
+
 
 <div class="container py-4">
 
+
+
+
+
     <!-- HERO -->
+
+
     <div class="page-hero">
+
+
         <div class="hero-inner">
+
+
             <div class="d-flex flex-wrap gap-2 mb-3">
+
+
                 <span class="sec-badge"><i class="bi bi-database-fill"></i>Schema</span>
+
+
                 <span class="sec-badge" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.1);color:#f59e0b;"><i class="bi bi-diagram-3"></i>3 tablas</span>
+
+
                 <span class="sec-badge" style="border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.1);color:#93c5fd;"><i class="bi bi-link-45deg"></i>2 relaciones</span>
+
+
             </div>
+
+
             <h1 class="fw-bold mb-2" style="font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.02em;">Estructura de Base de Datos</h1>
+
+
             <p style="max-width:680px;color:var(--muted);">Diagrama ERD, columnas, tipos, restricciones, SQL DDL y convenciones de persistencia del proyecto.</p>
+
+
             <div class="d-flex flex-wrap gap-2 mt-3">
+
+
                 <a class="btn btn-outline-dim btn-sm" href="#erd"><i class="bi bi-diagram-3 me-1"></i>Diagrama ERD</a>
+
+
                 <a class="btn btn-outline-dim btn-sm" href="#tablas"><i class="bi bi-table me-1"></i>Tablas</a>
+
+
                 <a class="btn btn-outline-dim btn-sm" href="#ddl"><i class="bi bi-code-slash me-1"></i>DDL SQL</a>
+
+
                 <a class="btn btn-outline-dim btn-sm" href="#reglas"><i class="bi bi-shield-check me-1"></i>Reglas</a>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
     <!-- LEYENDA -->
+
+
     <div class="g-card mb-4 d-flex flex-wrap gap-3">
+
+
         <span class="legend-item"><span class="tag tag-pk">PK</span> Clave primaria</span>
-        <span class="legend-item"><span class="tag tag-fk">FK</span> Clave forÃ¡nea</span>
+
+
+        <span class="legend-item"><span class="tag tag-fk">FK</span> Clave foránea</span>
+
+
         <span class="legend-item"><span class="tag tag-uq">UQ</span> Unique constraint</span>
+
+
         <span class="legend-item"><span class="tag tag-nn">NN</span> NOT NULL</span>
+
+
         <span class="legend-item"><span class="tag tag-sd">SD</span> Soft delete</span>
-        <span class="legend-item"><span class="tag tag-au">AU</span> AuditorÃ­a JPA</span>
+
+
+        <span class="legend-item"><span class="tag tag-au">AU</span> Auditoría JPA</span>
+
+
     </div>
 
+
+
+
+
     <!-- ERD DIAGRAM -->
+
+
     <div id="erd" class="sec-divider pt-4 mb-4">
+
+
         <div class="d-flex align-items-center gap-2 mb-4">
+
+
             <span class="sec-badge"><i class="bi bi-diagram-3-fill"></i>ERD</span>
+
+
             <h2 class="mb-0 fs-4 fw-bold">Diagrama de relaciones</h2>
+
+
         </div>
+
+
+
+
 
         <div class="erd-wrap">
 
+
+
+
+
             <!-- ALBUM -->
+
+
             <div class="erd-box">
+
+
                 <div class="erd-head">
+
+
                     <i class="bi bi-collection-fill" style="color:var(--primary)"></i>
+
+
                     <div>
+
+
                         <div class="erd-head-title">Album</div>
+
+
                         <div class="erd-head-sub">tabla: album</div>
+
+
                     </div>
+
+
                 </div>
+
+
                 <div class="erd-row"><span class="tag tag-pk">PK</span><span class="erd-col-name">id</span><span class="erd-col-type">BIGINT</span></div>
+
+
                 <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">nombre</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                 <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">year</span><span class="erd-col-type">INT</span></div>
+
+
                 <div class="erd-row"><span style="width:28px"></span><span class="erd-col-name">descripcion</span><span class="erd-col-type">VARCHAR(500)</span></div>
+
+
                 <div class="erd-row"><span class="tag tag-sd">SD</span><span class="erd-col-name">is_active</span><span class="erd-col-type">BOOLEAN</span></div>
+
+
                 <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">created_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
                 <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">updated_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
             </div>
+
+
+
+
 
             <!-- ARROWS -->
+
+
             <div class="d-flex flex-column gap-5 justify-content-center">
+
+
                 <div class="erd-arrow">
-                    <div class="arr-label">1 â”€â”€â”€â”€ N</div>
+
+
+                    <div class="arr-label">1 ──── N</div>
+
+
                     <div class="arr-line"></div>
-                    <div style="font-size:.68rem;color:var(--muted);">lÃ¡minas</div>
+
+
+                    <div style="font-size:.68rem;color:var(--muted);">láminas</div>
+
+
                 </div>
+
+
                 <div class="erd-arrow">
-                    <div class="arr-label">1 â”€â”€â”€â”€ N</div>
+
+
+                    <div class="arr-label">1 ──── N</div>
+
+
                     <div class="arr-line"></div>
-                    <div style="font-size:.68rem;color:var(--muted);">catÃ¡logo</div>
+
+
+                    <div style="font-size:.68rem;color:var(--muted);">catálogo</div>
+
+
                 </div>
+
+
             </div>
+
+
+
+
 
             <!-- RIGHT COLUMN -->
+
+
             <div class="d-flex flex-column gap-4">
 
+
+
+
+
                 <!-- LAMINA -->
+
+
                 <div class="erd-box">
+
+
                     <div class="erd-head">
+
+
                         <i class="bi bi-image-fill" style="color:#93c5fd"></i>
+
+
                         <div>
+
+
                             <div class="erd-head-title" style="color:#93c5fd;">Lamina</div>
+
+
                             <div class="erd-head-sub">tabla: lamina</div>
+
+
                         </div>
+
+
                     </div>
+
+
                     <div class="erd-row"><span class="tag tag-pk">PK</span><span class="erd-col-name">id</span><span class="erd-col-type">BIGINT</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-fk">FK</span><span class="erd-col-name">album_id</span><span class="erd-col-type">BIGINT</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">nombre</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span style="width:28px"></span><span class="erd-col-name">imagen</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">fecha_lanzamiento</span><span class="erd-col-type">DATE</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">tipo_lamina</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-sd">SD</span><span class="erd-col-name">is_active</span><span class="erd-col-type">BOOLEAN</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">created_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">updated_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
                 </div>
+
+
+
+
 
                 <!-- LAMINA CATALOGO -->
+
+
                 <div class="erd-box">
+
+
                     <div class="erd-head">
+
+
                         <i class="bi bi-bookmark-star-fill" style="color:#c4b5fd"></i>
+
+
                         <div>
+
+
                             <div class="erd-head-title" style="color:#c4b5fd;">LaminaCatalogo</div>
+
+
                             <div class="erd-head-sub">tabla: lamina_catalogo</div>
+
+
                         </div>
+
+
                     </div>
+
+
                     <div class="erd-row"><span class="tag tag-pk">PK</span><span class="erd-col-name">id</span><span class="erd-col-type">BIGINT</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-fk">FK</span><span class="erd-col-name">album_id</span><span class="erd-col-type">BIGINT</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-uq">UQ</span><span class="erd-col-name">nombre</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span style="width:28px"></span><span class="erd-col-name">imagen</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">fecha_lanzamiento</span><span class="erd-col-type">DATE</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-nn">NN</span><span class="erd-col-name">tipo_lamina</span><span class="erd-col-type">VARCHAR</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-sd">SD</span><span class="erd-col-name">is_active</span><span class="erd-col-type">BOOLEAN</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">created_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
                     <div class="erd-row"><span class="tag tag-au">AU</span><span class="erd-col-name">updated_at</span><span class="erd-col-type">DATETIME</span></div>
+
+
                     <div class="erd-row" style="background:rgba(167,139,250,.05);">
+
+
                         <span class="tag tag-uq">UQ</span>
+
+
                         <span class="erd-col-name" style="font-size:.72rem;color:var(--muted);">(album_id, nombre)</span>
+
+
                     </div>
+
+
                 </div>
 
+
+
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
     <!-- TABLAS DETALLE -->
+
+
     <div id="tablas" class="sec-divider pt-4 mb-4">
+
+
         <div class="d-flex align-items-center gap-2 mb-4">
+
+
             <span class="sec-badge"><i class="bi bi-table"></i>Tablas</span>
+
+
             <h2 class="mb-0 fs-4 fw-bold">Detalle de columnas</h2>
+
+
         </div>
+
+
+
+
 
         <!-- ALBUM -->
+
+
         <div class="g-card mb-4">
+
+
             <div class="d-flex align-items-center gap-2 mb-3">
+
+
                 <i class="bi bi-collection-fill fs-5" style="color:var(--primary)"></i>
+
+
                 <h3 class="mb-0 fw-bold fs-5">album</h3>
+
+
                 <span class="tag tag-sd ms-auto">soft delete</span>
-                <span class="tag tag-au">auditorÃ­a</span>
+
+
+                <span class="tag tag-au">auditoría</span>
+
+
             </div>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead>
+
+
                         <tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Nullable</th><th>Restricciones</th><th>Notas</th></tr>
+
+
                     </thead>
+
+
                     <tbody>
+
+
                         <tr><td><code>id</code></td><td><code>BIGINT</code></td><td><code>Long</code></td><td>No</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>Generado por la BD</td></tr>
-                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Nombre del Ã¡lbum</td></tr>
-                        <tr><td><code>year</code></td><td><code>INT</code></td><td><code>Integer</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>AÃ±o del Ã¡lbum</td></tr>
-                        <tr><td><code>descripcion</code></td><td><code>VARCHAR(500)</code></td><td><code>String</code></td><td>SÃ­</td><td>â€”</td><td>MÃ¡x. 500 caracteres</td></tr>
-                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>SÃ­</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete â€” false = eliminado</td></tr>
-                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate automÃ¡tico</td></tr>
-                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate automÃ¡tico</td></tr>
+
+
+                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Nombre del álbum</td></tr>
+
+
+                        <tr><td><code>year</code></td><td><code>INT</code></td><td><code>Integer</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Año del álbum</td></tr>
+
+
+                        <tr><td><code>descripcion</code></td><td><code>VARCHAR(500)</code></td><td><code>String</code></td><td>Sí</td><td>—</td><td>Máx. 500 caracteres</td></tr>
+
+
+                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>Sí</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete — false = eliminado</td></tr>
+
+
+                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate automático</td></tr>
+
+
+                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate automático</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
+
+
         </div>
+
+
+
+
 
         <!-- LAMINA -->
+
+
         <div class="g-card mb-4">
+
+
             <div class="d-flex align-items-center gap-2 mb-3">
+
+
                 <i class="bi bi-image-fill fs-5" style="color:#93c5fd"></i>
+
+
                 <h3 class="mb-0 fw-bold fs-5">lamina</h3>
-                <span class="tag tag-fk ms-auto">FK â†’ album</span>
+
+
+                <span class="tag tag-fk ms-auto">FK → album</span>
+
+
                 <span class="tag tag-sd">soft delete</span>
-                <span class="tag tag-au">auditorÃ­a</span>
+
+
+                <span class="tag tag-au">auditoría</span>
+
+
             </div>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead>
+
+
                         <tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Nullable</th><th>Restricciones</th><th>Notas</th></tr>
+
+
                     </thead>
+
+
                     <tbody>
-                        <tr><td><code>id</code></td><td><code>BIGINT</code></td><td><code>Long</code></td><td>No</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>â€”</td></tr>
-                        <tr><td><code>album_id</code></td><td><code>BIGINT</code></td><td><code>Album</code></td><td>No</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-nn">NN</span></td><td>ManyToOne â†’ album.id</td></tr>
-                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Nombre de la lÃ¡mina</td></tr>
-                        <tr><td><code>imagen</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>SÃ­</td><td>â€”</td><td>URL o path de imagen</td></tr>
-                        <tr><td><code>fecha_lanzamiento</code></td><td><code>DATE</code></td><td><code>LocalDate</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>â€”</td></tr>
-                        <tr><td><code>tipo_lamina</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Tipo/categorÃ­a de la lÃ¡mina</td></tr>
-                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>SÃ­</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete</td></tr>
-                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate</td></tr>
-                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate</td></tr>
+
+
+                        <tr><td><code>id</code></td><td><code>BIGINT</code></td><td><code>Long</code></td><td>No</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>—</td></tr>
+
+
+                        <tr><td><code>album_id</code></td><td><code>BIGINT</code></td><td><code>Album</code></td><td>No</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-nn">NN</span></td><td>ManyToOne → album.id</td></tr>
+
+
+                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Nombre de la lámina</td></tr>
+
+
+                        <tr><td><code>imagen</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>Sí</td><td>—</td><td>URL o path de imagen</td></tr>
+
+
+                        <tr><td><code>fecha_lanzamiento</code></td><td><code>DATE</code></td><td><code>LocalDate</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>—</td></tr>
+
+
+                        <tr><td><code>tipo_lamina</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>Tipo/categoría de la lámina</td></tr>
+
+
+                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>Sí</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete</td></tr>
+
+
+                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate</td></tr>
+
+
+                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
+
+
         </div>
+
+
+
+
 
         <!-- LAMINA CATALOGO -->
+
+
         <div class="g-card mb-4">
+
+
             <div class="d-flex align-items-center gap-2 mb-3">
+
+
                 <i class="bi bi-bookmark-star-fill fs-5" style="color:#c4b5fd"></i>
+
+
                 <h3 class="mb-0 fw-bold fs-5">lamina_catalogo</h3>
-                <span class="tag tag-fk ms-auto">FK â†’ album</span>
+
+
+                <span class="tag tag-fk ms-auto">FK → album</span>
+
+
                 <span class="tag tag-uq">UQ (album_id, nombre)</span>
+
+
                 <span class="tag tag-sd">soft delete</span>
-                <span class="tag tag-au">auditorÃ­a</span>
+
+
+                <span class="tag tag-au">auditoría</span>
+
+
             </div>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead>
+
+
                         <tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Nullable</th><th>Restricciones</th><th>Notas</th></tr>
+
+
                     </thead>
+
+
                     <tbody>
-                        <tr><td><code>id</code></td><td><code>BIGINT</code></td><td><code>Long</code></td><td>No</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>â€”</td></tr>
-                        <tr><td><code>album_id</code></td><td><code>BIGINT</code></td><td><code>Album</code></td><td>No</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-nn">NN</span></td><td>ManyToOne â†’ album.id</td></tr>
-                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span> <span class="tag tag-uq">UQ*</span></td><td>Ãšnico por Ã¡lbum (constraint compuesto)</td></tr>
-                        <tr><td><code>imagen</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>SÃ­</td><td>â€”</td><td>URL o path de imagen</td></tr>
-                        <tr><td><code>fecha_lanzamiento</code></td><td><code>DATE</code></td><td><code>LocalDate</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>â€”</td></tr>
-                        <tr><td><code>tipo_lamina</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>â€”</td></tr>
-                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>SÃ­</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete</td></tr>
-                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate</td></tr>
-                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>SÃ­</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate</td></tr>
+
+
+                        <tr><td><code>id</code></td><td><code>BIGINT</code></td><td><code>Long</code></td><td>No</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>—</td></tr>
+
+
+                        <tr><td><code>album_id</code></td><td><code>BIGINT</code></td><td><code>Album</code></td><td>No</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-nn">NN</span></td><td>ManyToOne → album.id</td></tr>
+
+
+                        <tr><td><code>nombre</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span> <span class="tag tag-uq">UQ*</span></td><td>Único por álbum (constraint compuesto)</td></tr>
+
+
+                        <tr><td><code>imagen</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>Sí</td><td>—</td><td>URL o path de imagen</td></tr>
+
+
+                        <tr><td><code>fecha_lanzamiento</code></td><td><code>DATE</code></td><td><code>LocalDate</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>—</td></tr>
+
+
+                        <tr><td><code>tipo_lamina</code></td><td><code>VARCHAR(255)</code></td><td><code>String</code></td><td>No</td><td><span class="tag tag-nn">NN</span></td><td>—</td></tr>
+
+
+                        <tr><td><code>is_active</code></td><td><code>BOOLEAN</code></td><td><code>Boolean</code></td><td>Sí</td><td><span class="tag tag-sd">SD</span> DEFAULT true</td><td>Soft delete</td></tr>
+
+
+                        <tr><td><code>created_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @CreatedDate</td></tr>
+
+
+                        <tr><td><code>updated_at</code></td><td><code>DATETIME</code></td><td><code>LocalDateTime</code></td><td>Sí</td><td><span class="tag tag-au">AU</span></td><td>JPA @LastModifiedDate</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
-            <p class="mt-2 mb-0" style="font-size:.8rem;color:var(--muted);"><span class="tag tag-uq">UQ*</span> El constraint Ãºnico es compuesto: <code>(album_id, nombre)</code>. El nombre debe ser Ãºnico dentro de cada Ã¡lbum, no globalmente.</p>
+
+
+            <p class="mt-2 mb-0" style="font-size:.8rem;color:var(--muted);"><span class="tag tag-uq">UQ*</span> El constraint único es compuesto: <code>(album_id, nombre)</code>. El nombre debe ser único dentro de cada álbum, no globalmente.</p>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
     <!-- DDL SQL -->
+
+
     <div id="ddl" class="sec-divider pt-4 mb-4">
+
+
         <div class="d-flex align-items-center gap-2 mb-4">
+
+
             <span class="sec-badge"><i class="bi bi-code-slash"></i>DDL</span>
-            <h2 class="mb-0 fs-4 fw-bold">SQL â€” CREATE TABLE</h2>
+
+
+            <h2 class="mb-0 fs-4 fw-bold">SQL — CREATE TABLE</h2>
+
+
         </div>
+
+
         <p style="color:var(--muted);font-size:.88rem;">Generado por Hibernate (Spring Boot JPA). La BD crea estas tablas al iniciar si <code>spring.jpa.hibernate.ddl-auto=update</code> o <code>create</code>.</p>
 
+
+
+
+
         <div class="g-card mb-3">
+
+
             <div class="d-flex align-items-center gap-2 mb-1">
+
+
                 <i class="bi bi-collection-fill" style="color:var(--primary)"></i>
+
+
                 <strong>album</strong>
+
+
             </div>
+
+
             <div class="code-wrap">
+
+
                 <button class="btn-copy" onclick="copyCode('sql-album', this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                 <pre id="sql-album">CREATE TABLE album (
+
+
   id          BIGINT       NOT NULL AUTO_INCREMENT,
+
+
   nombre      VARCHAR(255) NOT NULL,
+
+
   year        INT          NOT NULL,
+
+
   descripcion VARCHAR(500),
+
+
   is_active   BOOLEAN      DEFAULT TRUE,
+
+
   created_at  DATETIME(6),
+
+
   updated_at  DATETIME(6),
+
+
   PRIMARY KEY (id)
+
+
 );</pre>
+
+
             </div>
+
+
         </div>
 
+
+
+
+
         <div class="g-card mb-3">
+
+
             <div class="d-flex align-items-center gap-2 mb-1">
+
+
                 <i class="bi bi-image-fill" style="color:#93c5fd"></i>
+
+
                 <strong>lamina</strong>
+
+
             </div>
+
+
             <div class="code-wrap">
+
+
                 <button class="btn-copy" onclick="copyCode('sql-lamina', this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                 <pre id="sql-lamina">CREATE TABLE lamina (
+
+
   id                 BIGINT       NOT NULL AUTO_INCREMENT,
+
+
   album_id           BIGINT       NOT NULL,
+
+
   nombre             VARCHAR(255) NOT NULL,
+
+
   imagen             VARCHAR(255),
+
+
   fecha_lanzamiento  DATE         NOT NULL,
+
+
   tipo_lamina        VARCHAR(255) NOT NULL,
+
+
   is_active          BOOLEAN      DEFAULT TRUE,
+
+
   created_at         DATETIME(6),
+
+
   updated_at         DATETIME(6),
+
+
   PRIMARY KEY (id),
+
+
   CONSTRAINT fk_lamina_album FOREIGN KEY (album_id) REFERENCES album(id)
+
+
 );</pre>
+
+
             </div>
+
+
         </div>
 
+
+
+
+
         <div class="g-card mb-3">
+
+
             <div class="d-flex align-items-center gap-2 mb-1">
+
+
                 <i class="bi bi-bookmark-star-fill" style="color:#c4b5fd"></i>
+
+
                 <strong>lamina_catalogo</strong>
+
+
             </div>
+
+
             <div class="code-wrap">
+
+
                 <button class="btn-copy" onclick="copyCode('sql-catalogo', this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                 <pre id="sql-catalogo">CREATE TABLE lamina_catalogo (
+
+
   id                 BIGINT       NOT NULL AUTO_INCREMENT,
+
+
   album_id           BIGINT       NOT NULL,
+
+
   nombre             VARCHAR(255) NOT NULL,
+
+
   imagen             VARCHAR(255),
+
+
   fecha_lanzamiento  DATE         NOT NULL,
+
+
   tipo_lamina        VARCHAR(255) NOT NULL,
+
+
   is_active          BOOLEAN      DEFAULT TRUE,
+
+
   created_at         DATETIME(6),
+
+
   updated_at         DATETIME(6),
+
+
   PRIMARY KEY (id),
+
+
   CONSTRAINT uq_catalogo_album_nombre UNIQUE (album_id, nombre),
+
+
   CONSTRAINT fk_catalogo_album FOREIGN KEY (album_id) REFERENCES album(id)
+
+
 );</pre>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
     <!-- REGLAS -->
+
+
     <div id="reglas" class="sec-divider pt-4 mb-5">
+
+
         <div class="d-flex align-items-center gap-2 mb-4">
+
+
             <span class="sec-badge"><i class="bi bi-shield-check-fill"></i>Reglas</span>
+
+
             <h2 class="mb-0 fs-4 fw-bold">Convenciones de persistencia</h2>
+
+
         </div>
+
+
         <div class="row g-3">
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="g-card h-100">
+
+
                     <div class="d-flex align-items-center gap-2 mb-2">
+
+
                         <span class="tag tag-sd" style="font-size:.8rem;padding:3px 10px;">SD</span>
+
+
                         <strong>Soft Delete</strong>
+
+
                     </div>
-                    <p style="color:var(--muted);font-size:.88rem;margin:0;">Ninguna entidad se elimina fÃ­sicamente. El campo <code>is_active = false</code> marca el registro como eliminado. Todos los repositorios filtran por <code>findByActiveTrue()</code>.</p>
+
+
+                    <p style="color:var(--muted);font-size:.88rem;margin:0;">Ninguna entidad se elimina físicamente. El campo <code>is_active = false</code> marca el registro como eliminado. Todos los repositorios filtran por <code>findByActiveTrue()</code>.</p>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="g-card h-100">
+
+
                     <div class="d-flex align-items-center gap-2 mb-2">
+
+
                         <span class="tag tag-au" style="font-size:.8rem;padding:3px 10px;">AU</span>
-                        <strong>AuditorÃ­a JPA</strong>
+
+
+                        <strong>Auditoría JPA</strong>
+
+
                     </div>
-                    <p style="color:var(--muted);font-size:.88rem;margin:0;"><code>created_at</code> y <code>updated_at</code> se gestionan automÃ¡ticamente con <code>@EntityListeners(AuditingEntityListener.class)</code>. Habilitado vÃ­a <code>JpaAuditingConfig</code>.</p>
+
+
+                    <p style="color:var(--muted);font-size:.88rem;margin:0;"><code>created_at</code> y <code>updated_at</code> se gestionan automáticamente con <code>@EntityListeners(AuditingEntityListener.class)</code>. Habilitado vía <code>JpaAuditingConfig</code>.</p>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="g-card h-100">
+
+
                     <div class="d-flex align-items-center gap-2 mb-2">
+
+
                         <span class="tag tag-uq" style="font-size:.8rem;padding:3px 10px;">UQ</span>
-                        <strong>CatÃ¡logo Ãºnico</strong>
+
+
+                        <strong>Catálogo único</strong>
+
+
                     </div>
-                    <p style="color:var(--muted);font-size:.88rem;margin:0;">Un Ã¡lbum no puede tener dos lÃ¡minas de catÃ¡logo con el mismo nombre. El constraint compuesto <code>(album_id, nombre)</code> en <code>lamina_catalogo</code> lo garantiza a nivel de BD.</p>
+
+
+                    <p style="color:var(--muted);font-size:.88rem;margin:0;">Un álbum no puede tener dos láminas de catálogo con el mismo nombre. El constraint compuesto <code>(album_id, nombre)</code> en <code>lamina_catalogo</code> lo garantiza a nivel de BD.</p>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
 </div><!-- /container -->
 
+
+
+
+
 <!-- BACK TOP -->
+
+
 <button id="backTop" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+
+
     <i class="bi bi-chevron-up"></i>
+
+
 </button>
 
+
+
+
+
 <!-- TOAST copy -->
+
+
 <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+
+
     <div id="copyToast" class="toast align-items-center text-bg-success border-0" role="alert">
+
+
         <div class="d-flex"><div class="toast-body fw-semibold"><i class="bi bi-check2-circle me-2"></i>SQL copiado al portapapeles</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>
+
+
     </div>
+
+
 </div>
 
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmzEHzRmVLTfS4B6KXecpxLfB3P" crossorigin="anonymous"></script>
+
+
 <script src="/js/db-estructura.js"></script>
+
+
 </body>
+
+
 </html>
+
+
+
+
 

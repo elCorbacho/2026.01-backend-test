@@ -1,64 +1,192 @@
-﻿<!doctype html>
-<html lang="es-CL">
+<!doctype html>
+
+
+<html lang="es">
+
+
 <head>
-  <meta charset="utf-8" />
+
+
+  <meta charset="UTF-8" />
+
+
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pedidos â€” Panel</title>
+
+
+  <title>Pedidos — Panel</title>
+
+
   <link rel="stylesheet" href="/css/pedidos.css">
+
+
 </head>
+
+
 <body>
+
+
   <main class="container">
+
+
     <div class="decor">
+
+
       <svg class="blob blob-1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+
+
         <g transform="translate(300,300)">
+
+
           <path d="M120,-170C160,-130,200,-90,214,-46C228,-2,217,48,195,86C173,125,140,152,99,173C58,193,10,207,-36,204C-82,200,-128,179,-173,150C-218,121,-261,84,-268,36C-275,-13,-246,-71,-206,-114C-166,-158,-116,-187,-66,-205C-16,-223,34,-231,80,-216C126,-201,160,-210,120,-170" fill="url(#g1)"/>
+
+
         </g>
+
+
         <defs>
+
+
           <linearGradient id="g1" x1="0%" x2="100%">
+
+
             <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.85"/>
+
+
             <stop offset="100%" stop-color="#22c55e" stop-opacity="0.85"/>
+
+
           </linearGradient>
+
+
         </defs>
+
+
       </svg>
+
+
     </div>
 
+
+
+
+
     <header class="hero">
+
+
       <h1><span class="gradient">Pedidos</span></h1>
+
+
       <p class="lead">Interfaz elegante y animada para crear y explorar pedidos.</p>
+
+
     </header>
 
+
+
+
+
     <section class="card form-card">
+
+
       <h2>Crear pedido</h2>
+
+
       <form id="pedidoForm">
+
+
         <label>Nombre del cliente<span class="req">*</span>
+
+
           <input id="clienteNombre" name="clienteNombre" required minlength="2" maxlength="150">
+
+
         </label>
+
+
+
+
 
         <label>Total (USD)<span class="req">*</span>
+
+
           <input id="total" name="total" type="number" step="0.01" min="0" required>
+
+
         </label>
 
-        <label>Ãtems (uno por lÃ­nea)<span class="req">*</span>
+
+
+
+
+        <label>Ítems (uno por línea)<span class="req">*</span>
+
+
           <textarea id="items" name="items" rows="4" required></textarea>
+
+
         </label>
+
+
+
+
 
         <div class="actions">
+
+
           <button type="submit">Crear</button>
+
+
           <button type="button" id="limpiar">Limpiar</button>
+
+
         </div>
 
+
+
+
+
         <div id="formError" class="error" aria-live="polite"></div>
+
+
       </form>
+
+
     </section>
+
+
+
+
 
     <section class="card list-card">
+
+
       <h2>Pedidos existentes</h2>
+
+
       <div id="listPlaceholder">Cargando...</div>
+
+
       <ul id="pedidosList" class="list"></ul>
+
+
     </section>
+
+
   </main>
 
+
+
+
+
   <script src="/js/pedidos.js" defer></script>
+
+
 </body>
+
+
 </html>
+
+
+
+
 

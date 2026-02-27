@@ -1,91 +1,273 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+
+
 <html lang="es">
+
+
 <head>
+
+
   <meta charset="UTF-8" />
+
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
   <title>html_prueba - Estructura de la aplicación</title>
+
+
   <style>
+
+
     body {
+
+
       font-family: Consolas, "Courier New", monospace;
+
+
       background: #0b1020;
+
+
       color: #e2e8f0;
+
+
       margin: 0;
+
+
       padding: 24px;
+
+
     }
+
+
     .card {
+
+
       max-width: 1100px;
+
+
       margin: 0 auto;
+
+
       background: #121a33;
+
+
       border: 1px solid #2a365f;
+
+
       border-radius: 12px;
+
+
       padding: 20px;
+
+
       box-shadow: 0 8px 24px rgba(0,0,0,.3);
+
+
     }
+
+
     h1 { margin-top: 0; color: #93c5fd; }
+
+
     p { color: #cbd5e1; }
+
+
     pre {
+
+
       white-space: pre-wrap;
+
+
       background: #0a122b;
+
+
       border: 1px solid #243157;
+
+
       border-radius: 10px;
+
+
       padding: 16px;
+
+
       overflow-x: auto;
+
+
       line-height: 1.45;
+
+
     }
+
+
     .note { font-size: 12px; opacity: .8; }
+
+
   </style>
+
+
 </head>
+
+
 <body>
+
+
   <main class="card">
+
+
     <h1>html_prueba</h1>
+
+
     <p>Vista de prueba con la estructura principal de la aplicación backend (Spring Boot).</p>
+
+
 <pre>
+
+
 2026.01-backend-test/
+
+
 ├── src/
+
+
 │   ├── main/
+
+
 │   │   ├── java/ipss/web2/examen/
+
+
 │   │   │   ├── Application.java
+
+
 │   │   │   ├── config/
+
+
 │   │   │   │   ├── DataInitializer.java
+
+
 │   │   │   │   ├── JpaAuditingConfig.java
+
+
 │   │   │   │   └── WebConfig.java
+
+
 │   │   │   ├── controllers/
+
+
 │   │   │   │   ├── api/ (AlbumController, CancionController, PedidosController, ...)
+
+
 │   │   │   │   └── web/ (DatabaseStructureViewController)
+
+
 │   │   │   ├── dtos/
+
+
 │   │   │   ├── exceptions/
+
+
 │   │   │   ├── mappers/
+
+
 │   │   │   ├── models/
+
+
 │   │   │   ├── repositories/
+
+
 │   │   │   ├── security/
+
+
 │   │   │   └── services/
+
+
 │   │   └── resources/
+
+
 │   │       ├── application.properties
+
+
 │   │       ├── logback-spring.xml
+
+
 │   │       ├── static/
+
+
 │   │       │   ├── index.html
+
+
 │   │       │   ├── pedidos.html / pedidos.css / pedidos.js
+
+
 │   │       │   ├── db-estructura.html
+
+
 │   │       │   ├── openspec-y-skills-teams.html
+
+
 │   │       │   └── ...
+
+
 │   │       └── templates/fragments/
+
+
 │   └── test/java/ipss/web2/examen/
+
+
 │       ├── controllers/api/
+
+
 │       ├── integration/
+
+
 │       ├── repositories/
+
+
 │       └── services/
+
+
 ├── openspec/
+
+
 │   ├── config.yaml
+
+
 │   └── changes/
+
+
 ├── api-collections/
+
+
 ├── docs/
+
+
 ├── screenshots/
+
+
 ├── pom.xml
+
+
 ├── Dockerfile
+
+
 └── readme.md
+
+
 </pre>
+
+
     <p class="note">Archivo generado como prueba: <strong>html-prueba.html</strong></p>
+
+
   </main>
+
+
 </body>
+
+
 </html>
+
+
+
+
 

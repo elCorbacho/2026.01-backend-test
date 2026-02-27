@@ -1,872 +1,2607 @@
-﻿<!DOCTYPE html>
-<html lang="es-CL" data-bs-theme="light">
+<!DOCTYPE html>
+
+
+<html lang="es" data-bs-theme="light">
+
+
 <head>
+
+
     <meta charset="UTF-8" />
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <meta http-equiv="Content-Language" content="es-CL" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="API de Ãlbumes y LÃ¡minas â€” Spring Boot 3.5.9 Â· Java 21" />
-    <title>API Ãlbumes y LÃ¡minas</title>
+
+    <meta name="description" content="API de Álbumes y Láminas — Spring Boot 3.5.9 · Java 21" />
+
+
+    <title>API Álbumes y Láminas</title>
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" href="/css/index.css" />
+
 </head>
+
+
 <body>
+
+
 <div id="scroll-progress"></div>
 
+
+
+
+
 <!-- NAVBAR -->
+
+
 <nav id="mainNav" class="navbar navbar-expand-lg sticky-top py-2">
+
+
     <div class="container">
+
+
         <a class="navbar-brand" href="#inicio">
+
+
             <span class="brand-mark"><i class="bi bi-collection-fill"></i></span>
-            Ãlbumes &amp; LÃ¡minas
+
+
+            Álbumes &amp; Láminas
+
+
         </a>
+
+
         <div class="collapse navbar-collapse" id="navbarDesktop">
+
+
             <ul class="navbar-nav mx-auto gap-1">
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#overview">API</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#setup">Setup</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#db-embebida">DB embebida</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#datos">Base de datos</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#estructura-app">Estructura app</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#vistas">Vistas</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-1" href="/openspec-y-skills-teams.html">MetodologÃ­as</a></li>
+
+
+                <li class="nav-item"><a class="nav-link px-3 py-1" href="/openspec-y-skills-teams.html">Metodologías</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#recursos">Recursos</a></li>
+
+
                 <li class="nav-item"><a class="nav-link px-3 py-1" href="#sdd">SDD</a></li>
+
+
             </ul>
+
+
         </div>
+
+
         <div class="d-flex align-items-center gap-2">
+
+
             <div class="theme-toggle" id="themeToggle" role="button" aria-label="Cambiar tema" title="Cambiar tema">
+
+
                 <i class="bi bi-sun-fill toggle-icon sun"></i>
+
+
                 <div class="toggle-track"><div class="toggle-thumb"></div></div>
+
+
                 <i class="bi bi-moon-stars-fill toggle-icon moon"></i>
+
+
             </div>
+
+
             <a class="btn btn-primary-solid btn-sm d-none d-lg-inline-flex" href="/swagger-ui.html">
+
+
                 <i class="bi bi-arrow-up-right-square me-1"></i>Swagger UI
+
+
             </a>
+
+
             <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+
+
                 <i class="bi bi-list fs-4" style="color:var(--text)"></i>
+
+
             </button>
+
+
         </div>
+
+
     </div>
+
+
 </nav>
 
+
+
+
+
 <!-- OFFCANVAS MOBILE -->
+
+
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+
+
     <div class="offcanvas-header" style="border-bottom:1px solid var(--border)">
-        <span class="fw-bold" style="color:var(--text)">NavegaciÃ³n</span>
+
+
+        <span class="fw-bold" style="color:var(--text)">Navegación</span>
+
+
         <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+
+
     </div>
+
+
     <div class="offcanvas-body d-flex flex-column gap-2 pt-4">
+
+
         <a href="#overview" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-lightning-charge me-2"></i>API Overview</a>
+
+
         <a href="#setup"    class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-terminal me-2"></i>Setup</a>
+
+
         <a href="#db-embebida" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-database-gear me-2"></i>DB embebida</a>
+
+
         <a href="#datos"    class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-database me-2"></i>Base de datos</a>
+
+
         <a href="#estructura-app" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-2 me-2"></i>Estructura app</a>
+
+
         <a href="#vistas"   class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-window me-2"></i>Vistas</a>
-        <a href="/openspec-y-skills-teams.html" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>MetodologÃ­as</a>
+
+
+        <a href="/openspec-y-skills-teams.html" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>Metodologías</a>
+
+
         <a href="#recursos" class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-link-45deg me-2"></i>Recursos</a>
+
+
         <a href="#sdd"      class="btn btn-ghost text-start" data-bs-dismiss="offcanvas"><i class="bi bi-diagram-3 me-2"></i>SDD</a>
+
+
         <hr style="border-color:var(--border)" />
+
+
         <a href="/swagger-ui.html" class="btn btn-primary-solid"><i class="bi bi-arrow-up-right-square me-2"></i>Abrir Swagger</a>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- HERO -->
+
+
 <div id="hero-section" id="inicio">
+
+
     <div class="container">
+
+
         <div class="row align-items-center gy-4">
+
+
             <div class="col-lg-8">
+
+
                 <div class="hero-eyebrow">
+
+
                     <i class="bi bi-server"></i>Spring Boot 3.5.9 &middot; Java 21
+
+
                 </div>
-                <h1 class="hero-title">API Ãlbumes<br class="d-none d-md-block"> y LÃ¡minas</h1>
-                <p class="hero-sub">Landing unificada con resumen de arquitectura, guÃ­a de montaje, estructura de base de datos y acceso directo a la documentaciÃ³n interactiva.</p>
+
+
+                <h1 class="hero-title">API Álbumes<br class="d-none d-md-block"> y Láminas</h1>
+
+
+                <p class="hero-sub">Landing unificada con resumen de arquitectura, guía de montaje, estructura de base de datos y acceso directo a la documentación interactiva.</p>
+
+
                 <div class="d-flex flex-wrap gap-2 mb-4">
+
+
                     <a class="btn btn-primary-solid" href="/swagger-ui.html"><i class="bi bi-play-circle me-1"></i>Abrir Swagger</a>
+
+
                     <a class="btn btn-ghost" href="/v3/api-docs"><i class="bi bi-braces me-1"></i>OpenAPI JSON</a>
+
+
                     <a class="btn btn-ghost" href="/actuator/health"><i class="bi bi-activity me-1"></i>Health Check</a>
+
+
                 </div>
+
+
                 <div class="health-pill">
+
+
                     <span id="health-dot"></span>
-                    <span id="health-label">Verificandoâ€¦</span>
+
+
+                    <span id="health-label">Verificando…</span>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-lg-4 d-none d-lg-block">
+
+
                 <div class="card-base">
+
+
                     <div class="d-flex flex-wrap gap-2">
+
+
                         <span class="ftag"><i class="bi bi-layers me-1"></i>Arquitectura en capas</span>
+
+
                         <span class="ftag"><i class="bi bi-shuffle me-1"></i>DTOs + Mappers</span>
+
+
                         <span class="ftag soft"><i class="bi bi-trash me-1"></i>Soft delete</span>
-                        <span class="ftag audit"><i class="bi bi-clock-history me-1"></i>AuditorÃ­a JPA</span>
+
+
+                        <span class="ftag audit"><i class="bi bi-clock-history me-1"></i>Auditoría JPA</span>
+
+
                         <span class="ftag"><i class="bi bi-shield-check me-1"></i>Jakarta Validation</span>
+
+
                         <span class="ftag"><i class="bi bi-exclamation-octagon me-1"></i>GlobalExceptionHandler</span>
+
+
                         <span class="ftag"><i class="bi bi-book me-1"></i>OpenAPI 3.0</span>
+
+
                         <span class="ftag"><i class="bi bi-activity me-1"></i>Actuator</span>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- STATS BAR -->
+
+
 <div class="stats-bar reveal">
+
+
     <div class="container">
+
+
         <div class="row g-0">
+
+
             <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num" data-count="4">0</div><div class="stat-lbl">Entidades JPA</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num" data-count="18">0</div><div class="stat-lbl">Endpoints REST</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num" data-count="6">0</div><div class="stat-lbl">Capas de arquitectura</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num" data-count="21">0</div><div class="stat-lbl">Java version</div></div></div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: API OVERVIEW -->
+
+
 <div class="page-section" id="overview">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-lightning-charge-fill"></i>API Overview</div>
-            <h2 class="section-title">Resumen rÃ¡pido</h2>
-            <p class="section-sub">Accede a la documentaciÃ³n, especificaciÃ³n y estado del servicio.</p>
+
+
+            <h2 class="section-title">Resumen rápido</h2>
+
+
+            <p class="section-sub">Accede a la documentación, especificación y estado del servicio.</p>
+
+
         </div>
+
+
         <div class="row g-3 mb-4 reveal">
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-book-half"></i></div>
-                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">DocumentaciÃ³n interactiva</h5>
+
+
+                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">Documentación interactiva</h5>
+
+
                     <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Explora y prueba todos los endpoints directamente desde Swagger UI en el browser.</p>
+
+
                     <a class="btn btn-primary-solid btn-sm mt-3" href="/swagger-ui.html"><i class="bi bi-arrow-up-right-square me-1"></i>Abrir Swagger</a>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-braces-asterisk"></i></div>
-                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">EspecificaciÃ³n OpenAPI</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">OpenAPI 3.0 en JSON para generar SDKs, clientes o contract tests automÃ¡ticos.</p>
+
+
+                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">Especificación OpenAPI</h5>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">OpenAPI 3.0 en JSON para generar SDKs, clientes o contract tests automáticos.</p>
+
+
                     <a class="btn btn-ghost btn-sm mt-3" href="/v3/api-docs"><i class="bi bi-download me-1"></i>Ver JSON</a>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-activity"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Estado del servicio</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Consulta la salud del servicio y readiness vÃ­a Spring Actuator.</p>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Consulta la salud del servicio y readiness vía Spring Actuator.</p>
+
+
                     <a class="btn btn-ghost btn-sm mt-3" href="/actuator/health"><i class="bi bi-activity me-1"></i>Ver health</a>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
         <div class="card-base reveal">
+
+
             <h5 class="fw-bold mb-3" style="font-size:.95rem;">Pilares y contrato de respuesta</h5>
+
+
             <div class="row g-4">
+
+
                 <div class="col-12 col-lg-6">
+
+
                     <ul class="feature-list">
-                        <li><i class="bi bi-check-circle-fill"></i><span><strong>ValidaciÃ³n</strong> con anotaciones Jakarta en cada DTO de entrada.</span></li>
+
+
+                        <li><i class="bi bi-check-circle-fill"></i><span><strong>Validación</strong> con anotaciones Jakarta en cada DTO de entrada.</span></li>
+
+
                         <li><i class="bi bi-check-circle-fill"></i><span><strong>Servicios transaccionales</strong> con <code>@Transactional</code> y <code>readOnly=true</code> en lecturas.</span></li>
+
+
                         <li><i class="bi bi-check-circle-fill"></i><span><strong>GlobalExceptionHandler</strong>: <code>ResourceNotFoundException</code>, <code>InvalidOperationException</code>.</span></li>
-                        <li><i class="bi bi-check-circle-fill"></i><span><strong>Soft delete</strong> con campo <code>active</code> â€” nunca se borra una fila fÃ­sicamente.</span></li>
-                        <li><i class="bi bi-check-circle-fill"></i><span><strong>AuditorÃ­a JPA</strong> automÃ¡tica vÃ­a <code>@CreatedDate</code> / <code>@LastModifiedDate</code>.</span></li>
+
+
+                        <li><i class="bi bi-check-circle-fill"></i><span><strong>Soft delete</strong> con campo <code>active</code> — nunca se borra una fila físicamente.</span></li>
+
+
+                        <li><i class="bi bi-check-circle-fill"></i><span><strong>Auditoría JPA</strong> automática vía <code>@CreatedDate</code> / <code>@LastModifiedDate</code>.</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
                 <div class="col-12 col-lg-6">
+
+
                     <p style="font-size:.85rem;color:var(--text-muted);" class="mb-2">Todas las respuestas usan <code>ApiResponseDTO&lt;T&gt;</code>:</p>
+
+
                     <div class="code-wrap">
+
+
                         <div class="code-header">
+
+
                             <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                             <span class="code-file">ApiResponseDTO.java</span>
+
+
                         </div>
+
+
                         <pre id="pre-apiresp">{
+
+
   "success":   true,
+
+
   "message":   "OK",
+
+
   "data":      { ... },
+
+
   "timestamp": "2026-02-26T12:00:00Z"
+
+
 }</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('pre-apiresp',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: SETUP -->
+
+
 <div class="page-section" id="setup">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-terminal-fill"></i>Setup</div>
-            <h2 class="section-title">GuÃ­a rÃ¡pida de montaje</h2>
+
+
+            <h2 class="section-title">Guía rápida de montaje</h2>
+
+
             <p class="section-sub">Cuatro pasos para levantar el servicio localmente.</p>
+
+
         </div>
+
+
         <div class="row g-2 mb-3 reveal">
+
+
             <div class="col-6 col-md-3"><div class="card-base text-center py-3"><div class="step-num mx-auto mb-2">1</div><div class="fw-semibold" style="font-size:.82rem;">Prerrequisitos</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="card-base text-center py-3"><div class="step-num mx-auto mb-2">2</div><div class="fw-semibold" style="font-size:.82rem;">Clonar y arrancar</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="card-base text-center py-3"><div class="step-num mx-auto mb-2">3</div><div class="fw-semibold" style="font-size:.82rem;">Configurar BD</div></div></div>
+
+
             <div class="col-6 col-md-3"><div class="card-base text-center py-3"><div class="step-num mx-auto mb-2">4</div><div class="fw-semibold" style="font-size:.82rem;">Verificar</div></div></div>
+
+
         </div>
+
+
         <div class="accordion mb-0 reveal" id="setupAccordion">
+
+
             <div class="accordion-item">
+
+
                 <h2 class="accordion-header">
+
+
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+
+
                         <span class="step-num me-3">1</span>Prerrequisitos
+
+
                     </button>
+
+
                 </h2>
+
+
                 <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#setupAccordion">
+
+
                     <div class="accordion-body">
+
+
                         <ul class="feature-list">
+
+
                             <li><i class="bi bi-check2-circle"></i><span><strong>Java 21</strong> en el PATH.</span></li>
+
+
                             <li><i class="bi bi-check2-circle"></i><span>Maven wrapper (<code>mvnw</code> / <code>mvnw.cmd</code>) incluido en el repo.</span></li>
+
+
                             <li><i class="bi bi-check2-circle"></i><span>Puerto <strong>8080</strong> libre (configurable en <code>application.properties</code>).</span></li>
-                            <li><i class="bi bi-check2-circle"></i><span>Opcional: <strong>MySQL / MariaDB</strong> para producciÃ³n.</span></li>
+
+
+                            <li><i class="bi bi-check2-circle"></i><span>Opcional: <strong>MySQL / MariaDB</strong> para producción.</span></li>
+
+
                         </ul>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="accordion-item">
+
+
                 <h2 class="accordion-header">
+
+
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+
+
                         <span class="step-num me-3">2</span>Clonar y arrancar
+
+
                     </button>
+
+
                 </h2>
+
+
                 <div id="step2" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+
+
                     <div class="accordion-body">
+
+
                         <div class="code-wrap">
+
+
                             <div class="code-header">
+
+
                                 <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                                 <span class="code-file">bash</span>
+
+
                             </div>
+
+
                             <pre id="pre-clone">git clone &lt;repo-url&gt;
+
+
 cd 2026.01-backend-test
 
+
+
+
+
 # Windows
+
+
 ./mvnw.cmd clean install
+
+
 ./mvnw.cmd spring-boot:run
 
+
+
+
+
 # Linux / Mac
+
+
 ./mvnw clean install
+
+
 ./mvnw spring-boot:run</pre>
+
+
                             <button class="btn-copy" style="top:38px" onclick="copyCode('pre-clone',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                         </div>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="accordion-item">
+
+
                 <h2 class="accordion-header">
+
+
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+
+
                         <span class="step-num me-3">3</span>Configurar base de datos
+
+
                     </button>
+
+
                 </h2>
+
+
                 <div id="step3" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+
+
                     <div class="accordion-body">
+
+
                         <p style="font-size:.875rem;margin-bottom:8px;">Edita <code>src/main/resources/application.properties</code>:</p>
+
+
                         <div class="code-wrap">
+
+
                             <div class="code-header">
+
+
                                 <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                                 <span class="code-file">application.properties</span>
+
+
                             </div>
+
+
                             <pre id="pre-props">spring.datasource.url=jdbc:mysql://localhost:3306/albumes
+
+
 spring.datasource.username=usuario
+
+
 spring.datasource.password=clave
+
+
 server.port=8080</pre>
+
+
                             <button class="btn-copy" style="top:38px" onclick="copyCode('pre-props',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                         </div>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="accordion-item">
+
+
                 <h2 class="accordion-header">
+
+
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4">
+
+
                         <span class="step-num me-3">4</span>Verificar el arranque
+
+
                     </button>
+
+
                 </h2>
+
+
                 <div id="step4" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+
+
                     <div class="accordion-body">
+
+
                         <ul class="feature-list">
-                            <li><i class="bi bi-arrow-right-circle"></i><span>Swagger UI â†’ <a href="/swagger-ui.html">/swagger-ui.html</a></span></li>
-                            <li><i class="bi bi-arrow-right-circle"></i><span>Health check â†’ <a href="/actuator/health">/actuator/health</a></span></li>
-                            <li><i class="bi bi-arrow-right-circle"></i><span>OpenAPI JSON â†’ <a href="/v3/api-docs">/v3/api-docs</a></span></li>
+
+
+                            <li><i class="bi bi-arrow-right-circle"></i><span>Swagger UI → <a href="/swagger-ui.html">/swagger-ui.html</a></span></li>
+
+
+                            <li><i class="bi bi-arrow-right-circle"></i><span>Health check → <a href="/actuator/health">/actuator/health</a></span></li>
+
+
+                            <li><i class="bi bi-arrow-right-circle"></i><span>OpenAPI JSON → <a href="/v3/api-docs">/v3/api-docs</a></span></li>
+
+
                             <li><i class="bi bi-arrow-right-circle"></i><span>Arranque en <strong>~2-3 segundos</strong> tras el build.</span></li>
+
+
                         </ul>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: DB EMBEBIDA -->
+
+
 <div class="page-section" id="db-embebida">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-database-gear"></i>DB embebida (H2 local)</div>
-            <h2 class="section-title">Acceso rÃ¡pido a base de datos embebida</h2>
+
+
+            <h2 class="section-title">Acceso rápido a base de datos embebida</h2>
+
+
             <p class="section-sub">Enlaces y credenciales de desarrollo local para ingresar a la consola H2 desde esta misma vista one single page.</p>
+
+
         </div>
 
+
+
+
+
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-lg-7">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-box-arrow-up-right"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.96rem;">Consola H2</h5>
+
+
                     <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:14px;">Accede directamente a la consola embebida habilitada en local:</p>
+
+
                     <a class="btn btn-primary-solid btn-sm" href="/h2-console"><i class="bi bi-database-check me-1"></i>Abrir H2 Console</a>
+
+
                     <ul class="feature-list mt-3">
+
+
                         <li><i class="bi bi-check2-circle"></i><span>Ruta local: <code>/h2-console</code></span></li>
+
+
                         <li><i class="bi bi-check2-circle"></i><span>Base: <code>H2 in-memory</code></span></li>
+
+
                         <li><i class="bi bi-check2-circle"></i><span>Solo uso local/desarrollo</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-5">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-key"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.96rem;">Credenciales de ingreso (local)</h5>
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header">
+
+
                             <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                             <span class="code-file">h2-console-login</span>
+
+
                         </div>
+
+
                         <pre id="pre-h2-login">JDBC URL: jdbc:h2:mem:web2examen;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+
+
 User: sa
-Password: (vacÃ­a)</pre>
+
+
+Password: (vacía)</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('pre-h2-login',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                     <p class="mb-0 mt-3" style="font-size:.84rem;color:var(--text-muted);">
+
+
                         <i class="bi bi-shield-check me-1"></i>
-                        Esta vista muestra solo datos de entorno local embebido. No expone credenciales de producciÃ³n.
+
+
+                        Esta vista muestra solo datos de entorno local embebido. No expone credenciales de producción.
+
+
                     </p>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: BASE DE DATOS -->
+
+
 <div class="page-section" id="datos">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-database-fill"></i>Base de datos</div>
+
+
             <h2 class="section-title">Estructura completa integrada</h2>
+
+
             <p class="section-sub">Contenido incorporado desde <code>db-estructura.html</code> manteniendo el estilo visual actual del sitio principal.</p>
+
+
         </div>
+
+
+
+
 
         <div class="d-flex flex-wrap gap-2 mb-4 reveal">
+
+
             <span class="db-pill"><i class="bi bi-diagram-3"></i>ERD</span>
+
+
             <span class="db-pill"><i class="bi bi-table"></i>Detalle de columnas</span>
+
+
             <span class="db-pill"><i class="bi bi-code-slash"></i>DDL SQL</span>
+
+
             <span class="db-pill"><i class="bi bi-shield-check"></i>Reglas de persistencia</span>
+
+
         </div>
+
+
         <div class="mb-4 reveal">
+
+
             <a class="btn btn-primary btn-sm" href="/db/estructura-detallada">
+
+
                 <i class="bi bi-box-arrow-up-right me-1"></i>Ver vista detallada independiente
+
+
             </a>
+
+
         </div>
 
+
+
+
+
         <div class="card-base mb-4 reveal">
+
+
             <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-diagram-2 me-2 text-primary-em"></i>Diagrama de relaciones</h5>
+
+
             <div class="erd-grid">
+
+
                 <div class="card-base p-0">
+
+
                     <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-collection-fill me-2"></i>album</div>
+
+
                     <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), nombre, year, descripcion, is_active, created_at, updated_at</div>
+
+
                 </div>
+
+
                 <div class="erd-link">
+
+
                     1 ? N
+
+
                     <div class="line"></div>
+
+
                     l?minas / cat?logo
+
+
                 </div>
+
+
                 <div class="d-grid gap-3">
+
+
                     <div class="card-base p-0">
+
+
                         <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-image-fill me-2"></i>lamina</div>
+
+
                         <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), album_id (FK), nombre, imagen, fecha_lanzamiento, tipo_lamina, is_active...</div>
+
+
                     </div>
+
+
                     <div class="card-base p-0">
+
+
                         <div class="px-3 py-2 border-bottom border-subtle fw-bold" style="font-size:.85rem;"><i class="bi bi-bookmark-star-fill me-2"></i>lamina_catalogo</div>
+
+
                         <div class="px-3 py-2" style="font-size:.8rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">id (PK), album_id (FK), nombre (UQ por ?lbum), imagen, fecha_lanzamiento, tipo_lamina...</div>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="d-flex flex-wrap gap-2 mt-3">
+
+
                 <span class="ftag pk">PK</span>
+
+
                 <span class="ftag fk">FK</span>
+
+
                 <span class="ftag">UQ (album_id, nombre)</span>
+
+
                 <span class="ftag soft">Soft delete</span>
+
+
                 <span class="ftag audit">Auditor?a</span>
+
+
             </div>
+
+
         </div>
+
+
+
+
 
         <div class="reveal mb-3">
+
+
             <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-table me-2 text-primary-em"></i>Detalle de columnas</h5>
+
+
         </div>
 
+
+
+
+
         <div class="card-base mb-3 reveal">
+
+
             <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-collection-fill me-2"></i>Tabla <code>album</code></h6>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+
+
                     <tbody>
+
+
                         <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+
+
                         <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+
+
                         <tr><td><code>year</code></td><td>INT</td><td>Integer</td><td>NOT NULL</td></tr>
+
+
                         <tr><td><code>descripcion</code></td><td>VARCHAR(500)</td><td>String</td><td>Opcional</td></tr>
+
+
                         <tr><td><code>is_active</code></td><td>BOOLEAN</td><td>Boolean</td><td>Soft delete</td></tr>
+
+
                         <tr><td><code>created_at</code>, <code>updated_at</code></td><td>DATETIME</td><td>LocalDateTime</td><td>Auditor?a JPA</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
+
+
         </div>
 
+
+
+
+
         <div class="card-base mb-3 reveal">
+
+
             <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-image-fill me-2"></i>Tabla <code>lamina</code></h6>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+
+
                     <tbody>
+
+
                         <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+
+
                         <tr><td><code>album_id</code></td><td>BIGINT</td><td>Album</td><td>FK ? album(id), NOT NULL</td></tr>
+
+
                         <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+
+
                         <tr><td><code>imagen</code></td><td>VARCHAR(255)</td><td>String</td><td>Opcional</td></tr>
+
+
                         <tr><td><code>fecha_lanzamiento</code></td><td>DATE</td><td>LocalDate</td><td>NOT NULL</td></tr>
+
+
                         <tr><td><code>tipo_lamina</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
+
+
         </div>
+
+
+
+
 
         <div class="card-base mb-4 reveal">
+
+
             <h6 class="fw-bold mb-3" style="font-size:.9rem;"><i class="bi bi-bookmark-star-fill me-2"></i>Tabla <code>lamina_catalogo</code></h6>
+
+
             <div class="table-responsive">
+
+
                 <table class="schema-col-table">
+
+
                     <thead><tr><th>Columna</th><th>Tipo SQL</th><th>Java</th><th>Restricciones</th></tr></thead>
+
+
                     <tbody>
+
+
                         <tr><td><code>id</code></td><td>BIGINT</td><td>Long</td><td>PK + auto increment</td></tr>
+
+
                         <tr><td><code>album_id</code></td><td>BIGINT</td><td>Album</td><td>FK ? album(id), NOT NULL</td></tr>
+
+
                         <tr><td><code>nombre</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL + UQ compuesto</td></tr>
+
+
                         <tr><td><code>imagen</code></td><td>VARCHAR(255)</td><td>String</td><td>Opcional</td></tr>
+
+
                         <tr><td><code>fecha_lanzamiento</code></td><td>DATE</td><td>LocalDate</td><td>NOT NULL</td></tr>
+
+
                         <tr><td><code>tipo_lamina</code></td><td>VARCHAR(255)</td><td>String</td><td>NOT NULL</td></tr>
+
+
                     </tbody>
+
+
                 </table>
+
+
             </div>
+
+
             <p class="mt-3 mb-0" style="font-size:.82rem;color:var(--text-muted);">La restricci?n ?nica es <code>(album_id, nombre)</code>: el nombre no se repite dentro del mismo ?lbum.</p>
+
+
         </div>
 
+
+
+
+
         <div class="reveal mb-3">
+
+
             <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-code-slash me-2 text-primary-em"></i>DDL SQL</h5>
+
+
         </div>
+
+
+
+
 
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-lg-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">album.sql</span></div>
+
+
                         <pre id="sql-album">CREATE TABLE album (
+
+
   id BIGINT NOT NULL AUTO_INCREMENT,
+
+
   nombre VARCHAR(255) NOT NULL,
+
+
   year INT NOT NULL,
+
+
   descripcion VARCHAR(500),
+
+
   is_active BOOLEAN DEFAULT TRUE,
+
+
   created_at DATETIME(6),
+
+
   updated_at DATETIME(6),
+
+
   PRIMARY KEY (id)
+
+
 );</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('sql-album',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">lamina.sql</span></div>
+
+
                         <pre id="sql-lamina">CREATE TABLE lamina (
+
+
   id BIGINT NOT NULL AUTO_INCREMENT,
+
+
   album_id BIGINT NOT NULL,
+
+
   nombre VARCHAR(255) NOT NULL,
+
+
   imagen VARCHAR(255),
+
+
   fecha_lanzamiento DATE NOT NULL,
+
+
   tipo_lamina VARCHAR(255) NOT NULL,
+
+
   is_active BOOLEAN DEFAULT TRUE,
+
+
   created_at DATETIME(6),
+
+
   updated_at DATETIME(6),
+
+
   PRIMARY KEY (id),
+
+
   CONSTRAINT fk_lamina_album
+
+
     FOREIGN KEY (album_id) REFERENCES album(id)
+
+
 );</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('sql-lamina',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-file">lamina_catalogo.sql</span></div>
+
+
                         <pre id="sql-catalogo">CREATE TABLE lamina_catalogo (
+
+
   id BIGINT NOT NULL AUTO_INCREMENT,
+
+
   album_id BIGINT NOT NULL,
+
+
   nombre VARCHAR(255) NOT NULL,
+
+
   imagen VARCHAR(255),
+
+
   fecha_lanzamiento DATE NOT NULL,
+
+
   tipo_lamina VARCHAR(255) NOT NULL,
+
+
   is_active BOOLEAN DEFAULT TRUE,
+
+
   created_at DATETIME(6),
+
+
   updated_at DATETIME(6),
+
+
   PRIMARY KEY (id),
+
+
   CONSTRAINT uq_catalogo_album_nombre UNIQUE (album_id, nombre),
+
+
   CONSTRAINT fk_catalogo_album
+
+
     FOREIGN KEY (album_id) REFERENCES album(id)
+
+
 );</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('sql-catalogo',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
+
+
 
         <div class="reveal mt-4 mb-3">
+
+
             <h5 class="fw-bold mb-3" style="font-size:.95rem;"><i class="bi bi-shield-check me-2 text-primary-em"></i>Reglas de persistencia</h5>
+
+
         </div>
+
+
+
+
 
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="rule-title"><span class="ftag soft me-2">SD</span>Soft delete</div>
+
+
                     <p class="rule-copy">Los registros se marcan con <code>is_active=false</code>; no se eliminan f?sicamente.</p>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="rule-title"><span class="ftag audit me-2">AU</span>Auditor?a JPA</div>
+
+
                     <p class="rule-copy"><code>created_at</code> y <code>updated_at</code> se completan autom?ticamente con <code>@CreatedDate</code> y <code>@LastModifiedDate</code>.</p>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="rule-title"><span class="ftag me-2">UQ</span>Cat?logo ?nico por ?lbum</div>
+
+
                     <p class="rule-copy">La BD asegura unicidad con <code>(album_id, nombre)</code> en <code>lamina_catalogo</code>.</p>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
 
-<!-- SEC: ESTRUCTURA DE LA APLICACIÃ“N -->
+
+
+
+
+<!-- SEC: ESTRUCTURA DE LA APLICACIÓN -->
+
+
 <div class="page-section" id="estructura-app">
+
+
     <div class="container">
+
+
         <div class="reveal">
-            <div class="section-label"><i class="bi bi-diagram-2-fill"></i>Estructura de la aplicaciÃ³n</div>
-            <h2 class="section-title">CÃ³mo estÃ¡ organizada la app</h2>
-            <p class="section-sub">Resumen integrado del HTML de estructura de aplicaciÃ³n, adaptado al formato one single page del <code>index</code>.</p>
+
+
+            <div class="section-label"><i class="bi bi-diagram-2-fill"></i>Estructura de la aplicación</div>
+
+
+            <h2 class="section-title">Cómo está organizada la app</h2>
+
+
+            <p class="section-sub">Resumen integrado del HTML de estructura de aplicación, adaptado al formato one single page del <code>index</code>.</p>
+
+
         </div>
+
+
+
+
 
         <div class="row g-3 mb-3 reveal">
+
+
             <div class="col-12 col-lg-6">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-folder2-open"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Directorio de skills</h5>
+
+
                     <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:10px;">Las habilidades del proyecto viven en <code>.agents/skills/</code> y cada una define rol, reglas y formato de salida en su <code>SKILL.md</code>.</p>
+
+
                     <ul class="feature-list">
-                        <li><i class="bi bi-check2-circle"></i><span><strong>spring-boot-engineer:</strong> diseÃ±o backend avanzado y arquitectura en capas.</span></li>
-                        <li><i class="bi bi-check2-circle"></i><span><strong>java-spring-boot:</strong> implementaciÃ³n REST, seguridad, validaciÃ³n y operaciones.</span></li>
+
+
+                        <li><i class="bi bi-check2-circle"></i><span><strong>spring-boot-engineer:</strong> diseño backend avanzado y arquitectura en capas.</span></li>
+
+
+                        <li><i class="bi bi-check2-circle"></i><span><strong>java-spring-boot:</strong> implementación REST, seguridad, validación y operaciones.</span></li>
+
+
                         <li><i class="bi bi-check2-circle"></i><span><strong>frontend-design:</strong> interfaz visual y consistencia UX/UI.</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-6">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-diagram-3"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Flujo de trabajo de agente</h5>
+
+
                     <ul class="feature-list">
+
+
                         <li><span class="step-num">1</span><span><strong>Reconocer necesidad:</strong> detectar si la tarea requiere skill especializado.</span></li>
+
+
                         <li><span class="step-num">2</span><span><strong>Aplicar restricciones:</strong> respetar MUST DO / MUST NOT DO del skill.</span></li>
-                        <li><span class="step-num">3</span><span><strong>Implementar con patrÃ³n:</strong> usar plantilla y convenciones del proyecto.</span></li>
+
+
+                        <li><span class="step-num">3</span><span><strong>Implementar con patrón:</strong> usar plantilla y convenciones del proyecto.</span></li>
+
+
                         <li><span class="step-num">4</span><span><strong>Persistir contexto:</strong> registrar decisiones y aprendizajes en memoria.</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
 
+
+
+
+
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-lg-7">
+
+
                 <div class="card-base h-100">
-                    <div class="rule-title mb-2"><span class="ftag me-2">ÃRBOL</span>Estructura resumida</div>
+
+
+                    <div class="rule-title mb-2"><span class="ftag me-2">ÁRBOL</span>Estructura resumida</div>
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header">
+
+
                             <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                             <span class="code-file">project-structure</span>
+
+
                         </div>
+
+
                         <pre id="pre-estructura-app">.agents/
-â””â”€â”€ skills/
-    â”œâ”€â”€ spring-boot-engineer/
-    â”‚   â”œâ”€â”€ SKILL.md
-    â”‚   â””â”€â”€ references/
-    â”œâ”€â”€ java-spring-boot/
-    â”‚   â”œâ”€â”€ SKILL.md
-    â”‚   â”œâ”€â”€ scripts/
-    â”‚   â””â”€â”€ assets/
-    â””â”€â”€ frontend-design/
-        â””â”€â”€ SKILL.md</pre>
+
+
+└── skills/
+
+
+    ├── spring-boot-engineer/
+
+
+    │   ├── SKILL.md
+
+
+    │   └── references/
+
+
+    ├── java-spring-boot/
+
+
+    │   ├── SKILL.md
+
+
+    │   ├── scripts/
+
+
+    │   └── assets/
+
+
+    └── frontend-design/
+
+
+        └── SKILL.md</pre>
+
+
                         <button class="btn-copy" style="top:38px" onclick="copyCode('pre-estructura-app',this)"><i class="bi bi-copy me-1"></i>Copiar</button>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-5">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-journal-check"></i></div>
-                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">DocumentaciÃ³n complementaria</h5>
+
+
+                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">Documentación complementaria</h5>
+
+
                     <ul class="feature-list">
+
+
                         <li><i class="bi bi-file-earmark-text"></i><span><code>.github/templates/mcp_engram_mem_session_summary_TEMPLATE.md</code></span></li>
+
+
                         <li><i class="bi bi-file-earmark-text"></i><span><code>.github/templates/mcp_engram_mem_save_TEMPLATE.md</code></span></li>
+
+
                     </ul>
-                    <p class="mb-0 mt-2" style="font-size:.86rem;color:var(--text-muted);">Si se requiere mÃ¡s detalle, se puede conservar la vista standalone como referencia histÃ³rica sin romper la experiencia single-page.</p>
+
+
+                    <p class="mb-0 mt-2" style="font-size:.86rem;color:var(--text-muted);">Si se requiere más detalle, se puede conservar la vista standalone como referencia histórica sin romper la experiencia single-page.</p>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: SDD -->
+
+
 <div class="page-section" id="sdd">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-diagram-3-fill"></i>Spec-Driven Development</div>
-            <h2 class="section-title">CÃ³mo funciona SDD en este proyecto</h2>
-            <p class="section-sub">Flujo de trabajo para cambios pequeÃ±os, trazables y verificables en <code>openspec/</code>.</p>
+
+
+            <h2 class="section-title">Cómo funciona SDD en este proyecto</h2>
+
+
+            <p class="section-sub">Flujo de trabajo para cambios pequeños, trazables y verificables en <code>openspec/</code>.</p>
+
+
         </div>
+
+
+
+
 
         <div class="row g-3 mb-3 reveal">
+
+
             <div class="col-12 col-lg-7">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-lightbulb"></i></div>
-                    <h5 class="fw-bold mb-2" style="font-size:.96rem;">Â¿QuÃ© es SDD?</h5>
-                    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:12px;">Define primero quÃ© se cambia y cÃ³mo se valida, y despuÃ©s se implementa.</p>
+
+
+                    <h5 class="fw-bold mb-2" style="font-size:.96rem;">¿Qué es SDD?</h5>
+
+
+                    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:12px;">Define primero qué se cambia y cómo se valida, y después se implementa.</p>
+
+
                     <ul class="feature-list">
+
+
                         <li><i class="bi bi-check-circle-fill"></i><span>Evita cambios improvisados sin contexto.</span></li>
-                        <li><i class="bi bi-check-circle-fill"></i><span>Mejora la trazabilidad de decisiones tÃ©cnicas.</span></li>
+
+
+                        <li><i class="bi bi-check-circle-fill"></i><span>Mejora la trazabilidad de decisiones técnicas.</span></li>
+
+
                         <li><i class="bi bi-check-circle-fill"></i><span>Facilita retomar trabajo entre sesiones.</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-5">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-terminal"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.96rem;">Comando inicial</h5>
+
+
                     <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:10px;">Inicia un cambio con un nombre claro:</p>
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header">
+
+
                             <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                             <span class="code-file">terminal</span>
+
+
                         </div>
+
+
                         <pre id="code-sdd-new">sdd:new agregar-explicacion-sdd-html</pre>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
 
+
+
+
+
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-lg-6">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="rule-title mb-3"><span class="ftag me-2">FLUJO</span>Pasos recomendados</div>
+
+
                     <ul class="feature-list">
+
+
                         <li><span class="step-num">1</span><span><strong>Explore:</strong> entender alcance y riesgos.</span></li>
+
+
                         <li><span class="step-num">2</span><span><strong>Propose:</strong> redactar <code>proposal.md</code>.</span></li>
+
+
                         <li><span class="step-num">3</span><span><strong>Spec:</strong> definir requisitos y escenarios.</span></li>
+
+
                         <li><span class="step-num">4</span><span><strong>Design:</strong> documentar decisiones y tradeoffs.</span></li>
+
+
                         <li><span class="step-num">5</span><span><strong>Tasks:</strong> dividir en tareas concretas.</span></li>
+
+
                         <li><span class="step-num">6</span><span><strong>Apply / Verify / Archive:</strong> implementar, validar y cerrar.</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-lg-6">
+
+
                 <div class="card-base h-100">
-                    <div class="rule-title mb-2"><span class="ftag audit me-2">ESTRUCTURA</span>Ãrbol base</div>
+
+
+                    <div class="rule-title mb-2"><span class="ftag audit me-2">ESTRUCTURA</span>Árbol base</div>
+
+
                     <div class="code-wrap mt-0">
+
+
                         <div class="code-header">
+
+
                             <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+
+
                             <span class="code-file">openspec</span>
+
+
                         </div>
+
+
                         <pre id="code-sdd-tree">openspec/
-â”œâ”€â”€ config.yaml
-â”œâ”€â”€ specs/
-â””â”€â”€ changes/
-    â”œâ”€â”€ archive/
-    â””â”€â”€ &lt;cambio&gt;/
-        â”œâ”€â”€ proposal.md
-        â”œâ”€â”€ design.md
-        â”œâ”€â”€ tasks.md
-        â””â”€â”€ specs/</pre>
+
+
+├── config.yaml
+
+
+├── specs/
+
+
+└── changes/
+
+
+    ├── archive/
+
+
+    └── &lt;cambio&gt;/
+
+
+        ├── proposal.md
+
+
+        ├── design.md
+
+
+        ├── tasks.md
+
+
+        └── specs/</pre>
+
+
                     </div>
+
+
                     <p class="mt-3 mb-0" style="font-size:.85rem;color:var(--text-muted);">
+
+
                         <i class="bi bi-info-circle me-1"></i>
-                        Consejo: mantÃ©n cada cambio pequeÃ±o y con un objetivo claro.
+
+
+                        Consejo: mantén cada cambio pequeño y con un objetivo claro.
+
+
                     </p>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: VISTAS INTEGRADAS -->
+
+
 <div class="page-section" id="vistas">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-window-stack"></i>Vistas integradas</div>
+
+
             <h2 class="section-title">HTML revisados e incorporados al single-page</h2>
+
+
             <p class="section-sub">Resumen de vistas auxiliares del repositorio integradas como contenido de referencia dentro del <code>index</code>.</p>
+
+
         </div>
+
+
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-music-note-beamed"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Canciones</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">MÃ³dulo UI para gestiÃ³n de canciones con filtros, tabla y acciones CRUD.</p>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Módulo UI para gestión de canciones con filtros, tabla y acciones CRUD.</p>
+
+
                     <ul class="feature-list mb-3">
-                        <li><i class="bi bi-check2"></i><span>Listado + bÃºsqueda rÃ¡pida</span></li>
+
+
+                        <li><i class="bi bi-check2"></i><span>Listado + búsqueda rápida</span></li>
+
+
                         <li><i class="bi bi-check2"></i><span>Crear, editar y eliminar</span></li>
+
+
                     </ul>
+
+
                     <a class="btn btn-ghost btn-sm mt-auto" href="/swagger-ui.html"><i class="bi bi-arrow-up-right-square me-1"></i>Probar endpoints</a>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-bag-check"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Pedidos</h5>
+
+
                     <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Panel frontend con formulario validado y listado de pedidos existentes.</p>
+
+
                     <ul class="feature-list mb-3">
+
+
                         <li><i class="bi bi-check2"></i><span>Alta con validaciones</span></li>
-                        <li><i class="bi bi-check2"></i><span>VisualizaciÃ³n del histÃ³rico</span></li>
+
+
+                        <li><i class="bi bi-check2"></i><span>Visualización del histórico</span></li>
+
+
                     </ul>
+
+
                     <span class="ftag">Assets: <code>pedidos.css</code> + <code>pedidos.js</code></span>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-box-seam"></i></div>
-                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">Docker (cÃ³mo funciona)</h5>
-                    <p style="font-size:.875rem;color:var(--text-muted);">GuÃ­a operativa del flujo: build, tag, push y deploy en Cloud Run.</p>
+
+
+                    <h5 class="fw-bold mb-2" style="font-size:.95rem;">Docker (cómo funciona)</h5>
+
+
+                    <p style="font-size:.875rem;color:var(--text-muted);">Guía operativa del flujo: build, tag, push y deploy en Cloud Run.</p>
+
+
                     <ul class="feature-list">
+
+
                         <li><i class="bi bi-check2"></i><span>Artifact Registry</span></li>
+
+
                         <li><i class="bi bi-check2"></i><span>Comandos <code>gcloud</code> clave</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-journal-code"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Agentes</h5>
+
+
                     <p style="font-size:.875rem;color:var(--text-muted);">Mapa de skills del proyecto y flujo de uso de agentes especializados.</p>
+
+
                     <ul class="feature-list">
+
+
                         <li><i class="bi bi-check2"></i><span><code>.agents/skills/*</code></span></li>
+
+
                         <li><i class="bi bi-check2"></i><span>Roles + referencias por dominio</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-memory"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Engram</h5>
+
+
                     <p style="font-size:.875rem;color:var(--text-muted);">Protocolo de memoria persistente para guardar decisiones, bugs y descubrimientos.</p>
+
+
                     <ul class="feature-list">
+
+
                         <li><i class="bi bi-check2"></i><span><code>mem_save</code> para hitos</span></li>
+
+
                         <li><i class="bi bi-check2"></i><span><code>mem_session_summary</code> al cerrar</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-6 col-xl-4">
+
+
                 <div class="card-base h-100">
+
+
                     <div class="card-icon"><i class="bi bi-palette2"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Frontend UI/UX</h5>
-                    <p style="font-size:.875rem;color:var(--text-muted);">GuÃ­a de revisiÃ³n y mejora visual para componentes y flujos de interfaz.</p>
+
+
+                    <p style="font-size:.875rem;color:var(--text-muted);">Guía de revisión y mejora visual para componentes y flujos de interfaz.</p>
+
+
                     <ul class="feature-list">
-                        <li><i class="bi bi-check2"></i><span>PriorizaciÃ³n por criticidad</span></li>
+
+
+                        <li><i class="bi bi-check2"></i><span>Priorización por criticidad</span></li>
+
+
                         <li><i class="bi bi-check2"></i><span>Accesibilidad y consistencia</span></li>
+
+
                     </ul>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- SEC: RECURSOS -->
+
+
 <div class="page-section" id="recursos">
+
+
     <div class="container">
+
+
         <div class="reveal">
+
+
             <div class="section-label"><i class="bi bi-link-45deg"></i>Recursos</div>
+
+
             <h2 class="section-title">Enlaces útiles</h2>
+
             <p class="section-sub">Accesos directos a las herramientas del proyecto.</p>
+
+
         </div>
+
+
         <div class="row g-3 reveal">
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-play-circle"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Swagger UI</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Interface interactiva para probar todos los endpoints con formularios generados automÃ¡ticamente.</p>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Interface interactiva para probar todos los endpoints con formularios generados automáticamente.</p>
+
+
                     <a class="btn btn-primary-solid btn-sm mt-3" href="/swagger-ui.html"><i class="bi bi-arrow-up-right-square me-1"></i>Abrir</a>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-file-code"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">OpenAPI JSON</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">EspecificaciÃ³n completa en formato machine-readable para SDKs y clientes.</p>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Especificación completa en formato machine-readable para SDKs y clientes.</p>
+
+
                     <a class="btn btn-ghost btn-sm mt-3" href="/v3/api-docs"><i class="bi bi-braces me-1"></i>Descargar</a>
+
+
                 </div>
+
+
             </div>
+
+
             <div class="col-12 col-md-4">
+
+
                 <div class="card-base h-100 d-flex flex-column">
+
+
                     <div class="card-icon"><i class="bi bi-heart-pulse"></i></div>
+
+
                     <h5 class="fw-bold mb-2" style="font-size:.95rem;">Health &amp; Actuator</h5>
-                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Monitorea el estado del servicio y mÃ©tricas de Spring Actuator en tiempo real.</p>
+
+
+                    <p class="flex-grow-1" style="font-size:.875rem;color:var(--text-muted);">Monitorea el estado del servicio y métricas de Spring Actuator en tiempo real.</p>
+
+
                     <a class="btn btn-ghost btn-sm mt-3" href="/actuator/health"><i class="bi bi-activity me-1"></i>Ver health</a>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>
+
+
+
+
 
 <!-- FOOTER -->
+
+
 <footer class="site-footer">
+
+
     <div class="container">
+
+
         <div class="footer-inner">
+
+
             <div class="footer-brand">
+
+
                 <span class="brand-mark" style="width:22px;height:22px;font-size:.72rem;"><i class="bi bi-collection-fill"></i></span>
-                Ãlbumes &amp; LÃ¡minas API
+
+
+                Álbumes &amp; Láminas API
+
+
             </div>
+
+
             <div class="footer-contact-info" role="contentinfo" aria-label="Datos de contacto del desarrollador">
+
+
                 <span>Developer Andrés Corbacho</span>
+
+
                 <a href="mailto:histopat.cor@gmail.com" class="footer-contact-link">histopat.cor@gmail.com</a>
+
+
             </div>
+
+
             <div class="footer-links">
+
+
                 <a href="/swagger-ui.html"><i class="bi bi-arrow-up-right-square me-1"></i>Swagger</a>
+
+
                 <a href="/v3/api-docs"><i class="bi bi-braces me-1"></i>OpenAPI</a>
+
+
                 <a href="/actuator/health"><i class="bi bi-activity me-1"></i>Health</a>
+
+
                 <a href="/h2-console"><i class="bi bi-database me-1"></i>H2 Console</a>
+
+
                 <a href="#db-embebida"><i class="bi bi-database-gear me-1"></i>DB embebida</a>
+
+
                 <a href="#estructura-app"><i class="bi bi-diagram-2 me-1"></i>Estructura app</a>
+
+
                 <a href="#vistas"><i class="bi bi-window-stack me-1"></i>Vistas</a>
+
+
                 <a href="#sdd"><i class="bi bi-diagram-3 me-1"></i>SDD</a>
+
+
             </div>
+
+
             <div class="footer-copy">Spring Boot 3.5.9 &middot; Java 21 &middot; 2026</div>
+
+
         </div>
+
+
     </div>
+
+
 </footer>
 
+
+
+
+
 <!-- BACK TO TOP -->
+
+
 <button id="backTop" title="Volver arriba">
+
+
     <i class="bi bi-arrow-up"></i>
+
+
 </button>
 
+
+
+
+
 <!-- TOAST -->
+
+
 <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x pb-3">
+
+
     <div id="copyToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="polite">
+
+
         <div class="d-flex">
+
+
             <div class="toast-body fw-semibold"><i class="bi bi-check2 me-2"></i>Copiado al portapapeles</div>
+
+
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+
+
         </div>
+
+
     </div>
+
+
 </div>
 
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
 <script src="/js/index.js"></script>
+
+
 </body>
+
+
 </html>
+
+
+
+
+
+
 
 
