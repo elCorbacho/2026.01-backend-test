@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.controllers.api;
+package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.PresidenteChileResponseDTO;
 import ipss.web2.examen.exceptions.GlobalExceptionHandler;

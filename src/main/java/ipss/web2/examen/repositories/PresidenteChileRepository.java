@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.repositories;
+package ipss.web2.examen.repositories;
 
 import ipss.web2.examen.models.PresidenteChile;
 import org.springframework.data.jpa.repository.JpaRepository;

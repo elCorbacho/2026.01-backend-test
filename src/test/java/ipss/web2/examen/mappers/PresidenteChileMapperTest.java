@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.mappers;
+package ipss.web2.examen.mappers;
 
 import ipss.web2.examen.dtos.PresidenteChileResponseDTO;
 import ipss.web2.examen.models.PresidenteChile;

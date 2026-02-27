@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.controllers.api;
+package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.PresidenteChileResponseDTO;

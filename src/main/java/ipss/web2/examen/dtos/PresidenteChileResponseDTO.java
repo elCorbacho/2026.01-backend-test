@@ -1,4 +1,4 @@
-﻿package ipss.web2.examen.dtos;
+package ipss.web2.examen.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
