@@ -2,11 +2,19 @@ package ipss.web2.examen.config;
 
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.models.Cancion;
+import ipss.web2.examen.models.DemoWidget;
+import ipss.web2.examen.models.EmpresaInsumos;
+import ipss.web2.examen.models.GanadorAlbum;
+import ipss.web2.examen.models.GanadorGuinness;
+import ipss.web2.examen.models.GanadorPremioAlbum;
 import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
-import ipss.web2.examen.models.RegionChile;
-import ipss.web2.examen.models.MinaChile;
 import ipss.web2.examen.models.ListadoOlimpiadas;
+import ipss.web2.examen.models.MinaChile;
+import ipss.web2.examen.models.PaisDistribucion;
+import ipss.web2.examen.models.RegionChile;
+import ipss.web2.examen.models.TestModel;
+import ipss.web2.examen.models.TiendaLamina;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CancionRepository;
 import ipss.web2.examen.models.CampeonJockey;
@@ -14,14 +22,23 @@ import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import ipss.web2.examen.repositories.RegionRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
+import ipss.web2.examen.repositories.DemoWidgetRepository;
+import ipss.web2.examen.repositories.EmpresaInsumosRepository;
+import ipss.web2.examen.repositories.GanadorAlbumRepository;
+import ipss.web2.examen.repositories.GanadorGuinnessRepository;
+import ipss.web2.examen.repositories.GanadorPremioAlbumRepository;
 import ipss.web2.examen.repositories.MinaChileRepository;
 import ipss.web2.examen.repositories.ListadoOlimpiadasRepository;
+import ipss.web2.examen.repositories.PaisDistribucionRepository;
+import ipss.web2.examen.repositories.TestModelRepository;
+import ipss.web2.examen.repositories.TiendaLaminaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -36,6 +53,53 @@ public class DataInitializer implements CommandLineRunner {
     private final CampeonJockeyRepository campeonJockeyRepository;
     private final MinaChileRepository minaChileRepository;
     private final ListadoOlimpiadasRepository listadoOlimpiadasRepository;
+    private final GanadorGuinnessRepository ganadorGuinnessRepository;
+    private final GanadorAlbumRepository ganadorAlbumRepository;
+    private final GanadorPremioAlbumRepository ganadorPremioAlbumRepository;
+    private final DemoWidgetRepository demoWidgetRepository;
+    private final PaisDistribucionRepository paisDistribucionRepository;
+    private final TestModelRepository testModelRepository;
+    private final EmpresaInsumosRepository empresaInsumosRepository;
+    private final TiendaLaminaRepository tiendaLaminaRepository;
+
+    private static final int TARGET_SEED_COUNT = 30;
+    private static final String[] GUINNESS_CATEGORIES = {
+            "Musica", "Deportes", "Ciencia", "Tecnologia", "Naturaleza", "Cultura"
+    };
+    private static final String[] WIDGET_TYPES = {
+            "catalogo", "ranking", "estadistica", "noticia", "resumen"
+    };
+    private static final String[] COUNTRY_NAMES = {
+            "Argentina", "Bolivia", "Brasil", "Canada", "Chile", "Colombia", "Costa Rica", "Cuba",
+            "Ecuador", "Egipto", "Espana", "Estados Unidos", "Francia", "Guatemala", "Honduras", "India",
+            "Italia", "Japon", "Mexico", "Noruega", "Panama", "Paraguay", "Peru", "Portugal",
+            "Reino Unido", "Republica Checa", "Suiza", "Uruguay", "Venezuela", "Vietnam"
+    };
+    private static final String[] COUNTRY_ISO_CODES = {
+            "ARG", "BOL", "BRA", "CAN", "CHL", "COL", "CRI", "CUB", "ECU", "EGY",
+            "ESP", "USA", "FRA", "GTM", "HND", "IND", "ITA", "JPN", "MEX", "NOR",
+            "PAN", "PRY", "PER", "PRT", "GBR", "CZE", "CHE", "URY", "VEN", "VNM"
+    };
+    private static final String[] SUPPLIER_RUBROS = {
+            "Impresion", "Distribucion", "Merchandising", "Logistica", "Editorial"
+    };
+    private static final String[] STORE_CITIES = {
+            "Santiago", "Valparaiso", "Concepcion", "Antofagasta", "Temuco", "Puerto Montt"
+    };
+    private static final String[] PREMIO_ARTISTAS = {
+            "Daft Punk", "Adele", "Coldplay", "Rosalia", "Radiohead",
+            "The Weeknd", "Mon Laferte", "Dua Lipa", "Billie Eilish", "Kendrick Lamar"
+    };
+    private static final String[] PREMIO_ALBUMES = {
+            "Discovery", "25", "Parachutes", "Motomami", "OK Computer",
+            "After Hours", "Norma", "Future Nostalgia", "Happier Than Ever", "DAMN"
+    };
+    private static final String[] PREMIO_TYPES = {
+            "Album del Ano", "Mejor Produccion", "Critica Internacional", "Popularidad Global"
+    };
+    private static final String[] PREMIO_GENEROS = {
+            "Pop", "Rock", "Electro", "Urbano", "Indie"
+    };
 
     @Override
     public void run(String... args) throws Exception {
@@ -55,11 +119,46 @@ public class DataInitializer implements CommandLineRunner {
             poblarListadoOlimpiadas();
         }
 
-        if (albumRepository.count() > 0) {
-            System.out.println("⚠️ Base de datos ya contiene datos. Saltando inicialización.");
-            return;
+        if (albumRepository.count() == 0) {
+            poblarAlbumesYCanciones();
+        } else {
+            System.out.println("⚠️ Base de datos ya contiene álbumes. Saltando seed de álbumes/canciones.");
         }
 
+        if (ganadorGuinnessRepository.count() == 0) {
+            poblarGanadorGuinness();
+        }
+
+        if (demoWidgetRepository.count() == 0) {
+            poblarDemoWidget();
+        }
+
+        if (testModelRepository.count() == 0) {
+            poblarTestModel();
+        }
+
+        if (paisDistribucionRepository.count() == 0) {
+            poblarPaisDistribucion();
+        }
+
+        if (empresaInsumosRepository.count() == 0) {
+            poblarEmpresaInsumos();
+        }
+
+        if (tiendaLaminaRepository.count() == 0) {
+            poblarTiendaLamina();
+        }
+
+        if (ganadorPremioAlbumRepository.count() == 0) {
+            poblarGanadorPremioAlbum();
+        }
+
+        if (ganadorAlbumRepository.count() == 0) {
+            poblarGanadorAlbum();
+        }
+    }
+
+    private void poblarAlbumesYCanciones() {
         System.out.println("🚀 Iniciando población de base de datos con anime populares...");
 
         // Album 1
@@ -176,7 +275,6 @@ public class DataInitializer implements CommandLineRunner {
 
         syncLaminasFromCatalog(savedAlbum5);
 
-        // Canciones
         Object[][] canciones = {
                 {"Pegasus Fantasy", "Make-Up", 210, "J-Pop"},
                 {"Cha-La Head-Cha-La", "Hironobu Kageyama", 228, "J-Pop"},
@@ -186,15 +284,15 @@ public class DataInitializer implements CommandLineRunner {
                 {"A Cruel Angel's Thesis", "Yoko Takahashi", 230, "J-Pop"},
                 {"The Hero", "JAM Project", 256, "Anime"}
         };
-    for (Object[] c : canciones) {
-        Cancion nueva = Cancion.builder()
-            .titulo((String) c[0])
-            .artista((String) c[1])
-            .duracion((Integer) c[2])
-            .genero((String) c[3])
-            .active(true)
-            .build();
-        cancionRepository.save(Objects.requireNonNull(nueva));
+        for (Object[] c : canciones) {
+            Cancion nueva = Cancion.builder()
+                    .titulo((String) c[0])
+                    .artista((String) c[1])
+                    .duracion((Integer) c[2])
+                    .genero((String) c[3])
+                    .active(true)
+                    .build();
+            cancionRepository.save(Objects.requireNonNull(nueva));
         }
 
         long albumCount = albumRepository.count();
@@ -208,6 +306,133 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("   🎵 " + cancionesCount + " Canciones cargadas");
         System.out.println("   📋 Resumen de estado (estimado):");
         System.out.println("      - Álbumes: " + albumCount + ", Láminas en posesión: " + laminaCount);
+    }
+
+    private void poblarGanadorGuinness() {
+        System.out.println("🏆 Cargando ganadores Guinness...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            String categoria = GUINNESS_CATEGORIES[i % GUINNESS_CATEGORIES.length];
+            GanadorGuinness ganador = GanadorGuinness.builder()
+                    .nombre("Ganador Guinness " + (i + 1))
+                    .categoria(categoria)
+                    .record("Marca destacada #" + (i + 1) + " en " + categoria)
+                    .anio(1990 + (i % 35))
+                    .active(true)
+                    .build();
+            ganadorGuinnessRepository.save(Objects.requireNonNull(ganador));
+        }
+        System.out.println("   ✅ " + ganadorGuinnessRepository.count() + " ganadores Guinness insertados");
+    }
+
+    private void poblarDemoWidget() {
+        System.out.println("🧩 Cargando demo widgets...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            DemoWidget widget = DemoWidget.builder()
+                    .nombre("Demo Widget " + (i + 1))
+                    .tipo(i % 5 == 0 ? null : WIDGET_TYPES[i % WIDGET_TYPES.length])
+                    .active(true)
+                    .build();
+            demoWidgetRepository.save(Objects.requireNonNull(widget));
+        }
+        System.out.println("   ✅ " + demoWidgetRepository.count() + " demo widgets insertados");
+    }
+
+    private void poblarTestModel() {
+        System.out.println("🧪 Cargando registros de test model...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            TestModel registro = TestModel.builder()
+                    .nombre("Registro de prueba " + (i + 1))
+                    .active(true)
+                    .build();
+            testModelRepository.save(Objects.requireNonNull(registro));
+        }
+        System.out.println("   ✅ " + testModelRepository.count() + " registros test model insertados");
+    }
+
+    private void poblarPaisDistribucion() {
+        System.out.println("🌐 Cargando paises de distribucion...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            PaisDistribucion pais = PaisDistribucion.builder()
+                    .nombre(COUNTRY_NAMES[i])
+                    .codigoIso(i % 6 == 0 ? null : COUNTRY_ISO_CODES[i])
+                    .descripcion(i % 7 == 0 ? null : "Mercado prioritario para distribucion en " + COUNTRY_NAMES[i])
+                    .active(true)
+                    .build();
+            paisDistribucionRepository.save(Objects.requireNonNull(pais));
+        }
+        System.out.println("   ✅ " + paisDistribucionRepository.count() + " paises de distribucion insertados");
+    }
+
+    private void poblarEmpresaInsumos() {
+        System.out.println("🏢 Cargando empresas de insumos...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            EmpresaInsumos empresa = EmpresaInsumos.builder()
+                    .nombre("Empresa Insumos " + (i + 1))
+                    .rubro(SUPPLIER_RUBROS[i % SUPPLIER_RUBROS.length])
+                    .contacto(i % 4 == 0 ? null : "Contacto " + (i + 1))
+                    .telefono(i % 6 == 0 ? null : "+56 9 " + String.format("%04d%04d", i + 1000, i + 2000))
+                    .email(i % 5 == 0 ? null : "contacto" + (i + 1) + "@insumos.cl")
+                    .sitioWeb(i % 3 == 0 ? null : "https://insumos" + (i + 1) + ".cl")
+                    .active(true)
+                    .build();
+            empresaInsumosRepository.save(Objects.requireNonNull(empresa));
+        }
+        System.out.println("   ✅ " + empresaInsumosRepository.count() + " empresas de insumos insertadas");
+    }
+
+    private void poblarTiendaLamina() {
+        System.out.println("🏪 Cargando tiendas de laminas...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            TiendaLamina tienda = TiendaLamina.builder()
+                    .nombre("Tienda Lamina " + (i + 1))
+                    .ciudad(STORE_CITIES[i % STORE_CITIES.length])
+                    .direccion(i % 4 == 0 ? null : "Avenida Coleccion " + (100 + i))
+                    .telefono(i % 5 == 0 ? null : "+56 2 " + String.format("%04d%04d", i + 3000, i + 4000))
+                    .email(i % 6 == 0 ? null : "tienda" + (i + 1) + "@laminas.cl")
+                    .fechaApertura(i % 3 == 0 ? null : LocalDate.of(2010 + (i % 14), (i % 12) + 1, (i % 27) + 1))
+                    .active(true)
+                    .build();
+            tiendaLaminaRepository.save(Objects.requireNonNull(tienda));
+        }
+        System.out.println("   ✅ " + tiendaLaminaRepository.count() + " tiendas de laminas insertadas");
+    }
+
+    private void poblarGanadorPremioAlbum() {
+        System.out.println("🎶 Cargando ganadores de premios de album...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            GanadorPremioAlbum ganador = GanadorPremioAlbum.builder()
+                    .artista(PREMIO_ARTISTAS[i % PREMIO_ARTISTAS.length])
+                    .album(PREMIO_ALBUMES[i % PREMIO_ALBUMES.length] + " Edition " + ((i / PREMIO_ALBUMES.length) + 1))
+                    .premio(PREMIO_TYPES[i % PREMIO_TYPES.length])
+                    .anio(1995 + (i % 30))
+                    .genero(i % 4 == 0 ? null : PREMIO_GENEROS[i % PREMIO_GENEROS.length])
+                    .active(true)
+                    .build();
+            ganadorPremioAlbumRepository.save(Objects.requireNonNull(ganador));
+        }
+        System.out.println("   ✅ " + ganadorPremioAlbumRepository.count() + " ganadores premio album insertados");
+    }
+
+    private void poblarGanadorAlbum() {
+        List<Album> albums = albumRepository.findAll();
+        if (albums.isEmpty()) {
+            System.out.println("⚠️ No existen albums para poblar ganador_album. Seed omitido para evitar FK invalidas.");
+            return;
+        }
+
+        System.out.println("🥇 Cargando ganadores por album...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            Album album = albums.get(i % albums.size());
+            GanadorAlbum ganador = GanadorAlbum.builder()
+                    .album(album)
+                    .artista(PREMIO_ARTISTAS[i % PREMIO_ARTISTAS.length])
+                    .premio(PREMIO_TYPES[i % PREMIO_TYPES.length])
+                    .anio(1995 + (i % 30))
+                    .active(true)
+                    .build();
+            ganadorAlbumRepository.save(Objects.requireNonNull(ganador));
+        }
+        System.out.println("   ✅ " + ganadorAlbumRepository.count() + " ganadores por album insertados");
     }
 
     private void crearCatalogo(Album album, String[][] laminasData, int year) {
