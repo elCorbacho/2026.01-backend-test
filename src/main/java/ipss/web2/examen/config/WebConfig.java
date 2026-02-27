@@ -1,11 +1,26 @@
 package ipss.web2.examen.config;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.lang.NonNull;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.lang.NonNull;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -34,5 +49,42 @@ public class WebConfig implements WebMvcConfigurer {
         filter.setAfterMessagePrefix("HTTP ► ");
         filter.setBeforeMessagePrefix("HTTP ▶ ");
         return filter;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CharacterEncodingFilter> characterEncodingFilter() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding(StandardCharsets.UTF_8.name());
+        filter.setForceEncoding(true);
+
+        FilterRegistrationBean<CharacterEncodingFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean<OncePerRequestFilter> contentLanguageFilter() {
+        OncePerRequestFilter filter = new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain filterChain) throws ServletException, IOException {
+                if (!response.containsHeader("Content-Language")) {
+                    response.setHeader("Content-Language", "es-CL");
+                }
+                filterChain.doFilter(request, response);
+            }
+        };
+
+        FilterRegistrationBean<OncePerRequestFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
+        return registration;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver resolver = new SessionLocaleResolver();
+        resolver.setDefaultLocale(Locale.forLanguageTag("es-CL"));
+        return resolver;
     }
 }
