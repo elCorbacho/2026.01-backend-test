@@ -7,9 +7,11 @@ import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.RegionChile;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CancionRepository;
+import ipss.web2.examen.models.CampeonJockey;
 import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import ipss.web2.examen.repositories.RegionRepository;
+import ipss.web2.examen.repositories.CampeonJockeyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,11 +29,16 @@ public class DataInitializer implements CommandLineRunner {
     private final LaminaRepository laminaRepository;
     private final LaminaCatalogoRepository laminaCatalogoRepository;
     private final RegionRepository regionRepository;
+    private final CampeonJockeyRepository campeonJockeyRepository;
 
     @Override
     public void run(String... args) throws Exception {
         if (regionRepository.count() == 0) {
             poblarRegionesChile();
+        }
+
+        if (campeonJockeyRepository.count() == 0) {
+            poblarCampeonesJockey();
         }
 
         if (albumRepository.count() > 0) {
@@ -274,5 +281,29 @@ public class DataInitializer implements CommandLineRunner {
             regionRepository.save(region);
         }
         System.out.println("   ✅ " + regionRepository.count() + " regiones insertadas");
+    }
+
+    private void poblarCampeonesJockey() {
+        System.out.println("🏇 Cargando campeones históricos de jockey...");
+
+        Object[][] campeones = {
+                {"Frankie Dettori", "Reino Unido", "Ganador múltiple de la Dubai World Cup", 2019},
+                {"Lanfranco Dettori", "Italia", "Triple Corona de carreras europeas", 2018},
+                {"Mike Smith", "Estados Unidos", "Triple Corona estadounidense con Justify", 2018},
+                {"Christophe Soumillon", "Bélgica", "Récord de victorias en Francia en una temporada", 2017}
+        };
+
+        for (Object[] c : campeones) {
+            CampeonJockey campeon = CampeonJockey.builder()
+                    .nombreJockey((String) c[0])
+                    .pais((String) c[1])
+                    .titulo((String) c[2])
+                    .anio((Integer) c[3])
+                    .active(true)
+                    .build();
+            campeonJockeyRepository.save(campeon);
+        }
+
+        System.out.println("   ✅ " + campeonJockeyRepository.count() + " campeones de jockey insertados");
     }
 }
