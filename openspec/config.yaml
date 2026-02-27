@@ -1,7 +1,6 @@
 schema: spec-driven
 
-artifact_store:
-  mode: openspec
+
 
 context: |
   ## Proyecto: Sistema de Gestión de Álbumes y Láminas
