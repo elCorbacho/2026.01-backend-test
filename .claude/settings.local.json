@@ -10,7 +10,10 @@
       "mcp__plugin_engram_engram__mem_session_end",
       "mcp__plugin_engram_engram__mem_session_start",
       "Bash(mvn clean install -DskipTests)",
-      "Bash(./mvnw clean install -DskipTests)"
+      "Bash(./mvnw clean install -DskipTests)",
+      "Bash(\"c:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\\\\openspec\\\\changes\\\\completar-fase-4-9-vista-openspec\\\\tasks.md\":*)",
+      "Bash(python3:*)",
+      "mcp__plugin_engram_engram__mem_get_observation"
     ]
   }
 }
