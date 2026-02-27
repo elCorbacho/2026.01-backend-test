@@ -2,43 +2,43 @@
 
 ## Phase 1: Foundation & Structure Setup
 
-- [ ] 1.1 Create `src/main/resources/static/openspec-y-skills-teams.html` as empty file with basic HTML skeleton
-- [ ] 1.2 Copy the entire `<style>` block from `index.html` (lines 13-396) into the new file's `<head>`
-- [ ] 1.3 Copy the entire navbar HTML from `index.html` (lines 401-434) into new file, excluding nav-item links
-- [ ] 1.4 Copy the offcanvas mobile menu structure from `index.html` (lines 436-454) into new file
-- [ ] 1.5 Create hero section with title "OpenSpec y Skills Agent Teams", subtitle, and eyebrow badge
-- [ ] 1.6 Copy footer HTML from `index.html` (lines 1204-1225) into new file
-- [ ] 1.7 Copy back-to-top button from `index.html` (lines 1227-1230) into new file
-- [ ] 1.8 Copy toast notification container from `index.html` (lines 1232-1240) into new file
-- [ ] 1.9 Add all required Bootstrap and font CDN links from `index.html` (lines 8-12) to new file `<head>`
+- [x] 1.1 Create `src/main/resources/static/openspec-y-skills-teams.html` as empty file with basic HTML skeleton
+- [x] 1.2 Copy the entire `<style>` block from `index.html` (lines 13-396) into the new file's `<head>`
+- [x] 1.3 Copy the entire navbar HTML from `index.html` (lines 401-434) into new file, excluding nav-item links
+- [x] 1.4 Copy the offcanvas mobile menu structure from `index.html` (lines 436-454) into new file
+- [x] 1.5 Create hero section with title "OpenSpec y Skills Agent Teams", subtitle, and eyebrow badge
+- [x] 1.6 Copy footer HTML from `index.html` (lines 1204-1225) into new file
+- [x] 1.7 Copy back-to-top button from `index.html` (lines 1227-1230) into new file
+- [x] 1.8 Copy toast notification container from `index.html` (lines 1232-1240) into new file
+- [x] 1.9 Add all required Bootstrap and font CDN links from `index.html` (lines 8-12) to new file `<head>`
 
 ## Phase 2: Navbar & Navigation Links
 
-- [ ] 2.1 Add new `<li class="nav-item">` in navbar's `<ul class="navbar-nav mx-auto gap-1">` with text "Metodologías" and link `/openspec-y-skills-teams.html`
-- [ ] 2.2 Position new link between "Vistas" and "Recursos" items in navbar
-- [ ] 2.3 Add corresponding button in offcanvas mobile menu with same icon (bi-diagram-3) and text "Metodologías"
-- [ ] 2.4 Update `index.html` navbar to include the new link (same changes as 2.1-2.3)
-- [ ] 2.5 Verify navbar link style is consistent: `class="nav-link px-3 py-1"`
+- [x] 2.1 Add new `<li class="nav-item">` in navbar's `<ul class="navbar-nav mx-auto gap-1">` with text "Metodologías" and link `/openspec-y-skills-teams.html`
+- [x] 2.2 Position new link between "Vistas" and "Recursos" items in navbar
+- [x] 2.3 Add corresponding button in offcanvas mobile menu with same icon (bi-diagram-3) and text "Metodologías"
+- [x] 2.4 Update `index.html` navbar to include the new link (same changes as 2.1-2.3)
+- [x] 2.5 Verify navbar link style is consistent: `class="nav-link px-3 py-1"`
 
 ## Phase 3: Content Sections - Part A (OpenSpec & Skills Teams)
 
 ### Section 1: OpenSpec Explanation
 
-- [ ] 3.1 Create `<div class="page-section" id="openspec">` with section-label, section-title, section-sub
-- [ ] 3.2 Add card explaining "¿Qué es OpenSpec?" with definition and list of key benefits (at least 3)
-- [ ] 3.3 Add subsection "Flujo recomendado" with 8-step ordered list (Explore → Propose → Spec → Design → Tasks → Apply → Verify → Archive)
-- [ ] 3.4 Add code example block showing `sdd-propose "cambio-nombre"` with copy button (use code-wrap pattern from index.html)
-- [ ] 3.5 Add code example showing directory structure of `openspec/changes/`
-- [ ] 3.6 Add "Buenas prácticas" card with 4-5 best practices for using OpenSpec
+- [x] 3.1 Create `<div class="page-section" id="openspec">` with section-label, section-title, section-sub
+- [x] 3.2 Add card explaining "¿Qué es OpenSpec?" with definition and list of key benefits (at least 3)
+- [x] 3.3 Add subsection "Flujo recomendado" with 8-step ordered list (Explore → Propose → Spec → Design → Tasks → Apply → Verify → Archive)
+- [x] 3.4 Add code example block showing `sdd-propose "cambio-nombre"` with copy button (use code-wrap pattern from index.html)
+- [x] 3.5 Add code example showing directory structure of `openspec/changes/`
+- [x] 3.6 Add "Buenas prácticas" card with 4-5 best practices for using OpenSpec
 
 ### Section 2: Skills Agent Teams Explanation
 
-- [ ] 3.7 Create `<div class="page-section" id="skills-teams">` with section-label, section-title, section-sub
-- [ ] 3.8 Add card explaining "¿Qué son Skills Agent Teams?" with definition and overview
-- [ ] 3.9 Add list of available agents with brief description (general-purpose, Explore, Plan, frontend-ui-ux-expert, etc.)
-- [ ] 3.10 Add "Cómo funcionan" subsection describing agent invocation and tool access
-- [ ] 3.11 Add code example showing how to invoke an agent (e.g., task structure)
-- [ ] 3.12 Add "Casos de uso" card with 3-4 real examples from project context
+- [x] 3.7 Create `<div class="page-section" id="skills-teams">` with section-label, section-title, section-sub
+- [x] 3.8 Add card explaining "¿Qué son Skills Agent Teams?" with definition and overview
+- [x] 3.9 Add list of available agents with brief description (general-purpose, Explore, Plan, frontend-ui-ux-expert, etc.)
+- [x] 3.10 Add "Cómo funcionan" subsection describing agent invocation and tool access
+- [x] 3.11 Add code example showing how to invoke an agent (e.g., task structure)
+- [x] 3.12 Add "Casos de uso" card with 3-4 real examples from project context
 
 ## Phase 4: Content Sections - Part B (Comparison & Integration)
 
