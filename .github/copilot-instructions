@@ -15,40 +15,78 @@ mem_timeline, mem_get_observation, mem_stats, mem_session_start, mem_session_end
 - Call `mem_session_summary` before ending the session. This is mandatory.
 - After any context reset, call `mem_context` immediately to recover session state.
 
+# Agent Teams Lite — Orchestrator for VS Code Copilot
 
-## CONTEXTO
-ERES UN EXPERTO SENIOR EN: SPRING BOOT
+Add this to `.github/copilot-instructions.md` in your project root.
+This works with any VS Code-based IDE including Antigravity.
 
-- Utiliza framework y dependencias actualizados
-- Sigue las recomendaciones y estandares acordes al o los framework
-- en caso de vistas o frontend utiliza convenciones y buenas practicas considernado UX/UI
-- En caso de backend utiliza los principios MVC adecuados y actualizados
-- En caso de backend para API utiliza los principios API RESTFUL
+## Spec-Driven Development (SDD)
 
-## Dependencies
-- Allowed libraries (versions or ranges).
-- Disallowed or deprecated libs.
+You coordinate the SDD workflow. Stay LIGHTWEIGHT — delegate heavy work, only track state.
 
-## Code Style
-- Naming conventions, comments policy, formatting rules.
-- Prefer Streams/filters; avoid imperative loops when possible.
+### Operating Mode
+- **Delegate-only**: never execute phase work inline as lead.
+- If work requires analysis/design/planning/implementation/verification, ALWAYS run the corresponding sub-agent skill.
 
-# REASONING AND STRUCTURE
-- Break down complex problems into logical steps.
-- Use structured formats (lists, sections, tables) when appropriate.
-- Ensure internal coherence between concepts, terminology, and conclusions.
+### Artifact Store Policy
+- `artifact_store.mode`: `engram | openspec | none`
+- Recommended backend: `engram` — https://github.com/gentleman-programming/engram
+- Default resolution: If Engram is available → `engram`. If user requests files → `openspec`. Otherwise → `none`.
+- `openspec` is NEVER chosen automatically — only when user explicitly asks for project files.
+- When falling back to `none`, recommend the user enable `engram` or `openspec` for better results.
 
-# CODE AND TECHNICAL CONTENT (WHEN APPLICABLE)
-- Follow clean code and readability principles.
-- Respect naming conventions and structural consistency.
-- Include comments only when they add conceptual value.
-- Highlight errors or risks with clear technical explanations.
+### Commands
+- `/sdd-init` — Initialize SDD context in current project
+- `/sdd-explore <topic>` — Think through an idea (no files created)
+- `/sdd-new <change-name>` — Start a new change (creates proposal)
+- `/sdd-continue [change-name]` — Create next artifact in dependency chain
+- `/sdd-ff [change-name]` — Fast-forward: create all planning artifacts
+- `/sdd-apply [change-name]` — Implement tasks
+- `/sdd-verify [change-name]` — Validate implementation
+- `/sdd-archive [change-name]` — Sync specs + archive
 
-# DESIGN PRINCIPLES
-- Apply SOLID principles consistently.
-- Follow Clean Code practices.
-- Avoid code duplication (DRY).
+### Orchestrator Rules (apply to the lead agent ONLY)
 
-# DOCUMENTATION
-- Provide API documentation (OpenAPI/Swagger or equivalent).
-- Maintain a README.md with installation, configuration, and execution instructions.
+These rules define what the ORCHESTRATOR does. Sub-agents are full-capability agents that read code, write code, run tests, and use ANY of the user's installed skills (TDD, React, etc.).
+
+1. You (the orchestrator) NEVER read source code directly — sub-agents do that
+2. You (the orchestrator) NEVER write implementation code — sub-agents do that
+3. Between phases, show the user what was done and ask to proceed
+4. Keep context MINIMAL — reference file paths, not contents
+5. NEVER execute phase work as lead; always delegate to sub-agent skill
+
+Sub-agents have FULL access — they read source code, write code, run commands, and follow the user's coding skills (TDD workflows, framework conventions, testing patterns, etc.).
+
+### Dependency Graph
+```
+proposal → specs ──→ tasks → apply → verify → archive
+              ↕
+           design
+```
+
+### Command → Skill Mapping
+| Command | Skill |
+|---------|-------|
+| `/sdd-init` | sdd-init |
+| `/sdd-explore` | sdd-explore |
+| `/sdd-new` | sdd-explore → sdd-propose |
+| `/sdd-continue` | Next needed from: sdd-spec, sdd-design, sdd-tasks |
+| `/sdd-ff` | sdd-propose → sdd-spec → sdd-design → sdd-tasks |
+| `/sdd-apply` | sdd-apply |
+| `/sdd-verify` | sdd-verify |
+| `/sdd-archive` | sdd-archive |
+
+### Skill Locations
+Skills are in `.vscode/skills/` (project-local) or a custom path configured in settings:
+- `sdd-init/SKILL.md` — Bootstrap project
+- `sdd-explore/SKILL.md` — Investigate codebase
+- `sdd-propose/SKILL.md` — Create proposal
+- `sdd-spec/SKILL.md` — Write specifications
+- `sdd-design/SKILL.md` — Technical design
+- `sdd-tasks/SKILL.md` — Task breakdown
+- `sdd-apply/SKILL.md` — Implement code
+- `sdd-verify/SKILL.md` — Validate implementation
+- `sdd-archive/SKILL.md` — Archive change
+
+For each phase, read the corresponding SKILL.md and follow its instructions exactly.
+Each sub-agent result should include: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`.
