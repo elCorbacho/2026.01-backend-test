@@ -11,6 +11,7 @@ import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.ListadoOlimpiadas;
 import ipss.web2.examen.models.MinaChile;
+import ipss.web2.examen.models.MarcaAutomovil;
 import ipss.web2.examen.models.PaisDistribucion;
 import ipss.web2.examen.models.RegionChile;
 import ipss.web2.examen.models.TestModel;
@@ -29,6 +30,7 @@ import ipss.web2.examen.repositories.GanadorGuinnessRepository;
 import ipss.web2.examen.repositories.GanadorPremioAlbumRepository;
 import ipss.web2.examen.repositories.MinaChileRepository;
 import ipss.web2.examen.repositories.ListadoOlimpiadasRepository;
+import ipss.web2.examen.repositories.MarcaAutomovilRepository;
 import ipss.web2.examen.repositories.PaisDistribucionRepository;
 import ipss.web2.examen.repositories.TestModelRepository;
 import ipss.web2.examen.repositories.TiendaLaminaRepository;
@@ -61,6 +63,7 @@ public class DataInitializer implements CommandLineRunner {
     private final TestModelRepository testModelRepository;
     private final EmpresaInsumosRepository empresaInsumosRepository;
     private final TiendaLaminaRepository tiendaLaminaRepository;
+    private final MarcaAutomovilRepository marcaAutomovilRepository;
 
     private static final int TARGET_SEED_COUNT = 30;
     private static final String[] GUINNESS_CATEGORIES = {
@@ -99,6 +102,39 @@ public class DataInitializer implements CommandLineRunner {
     };
     private static final String[] PREMIO_GENEROS = {
             "Pop", "Rock", "Electro", "Urbano", "Indie"
+    };
+    private static final String[][] AUTOMOTIVE_BRANDS = {
+            {"Toyota", "Japón", "Referente global en sedanes confiables"},
+            {"Ford", "Estados Unidos", "Camionetas y pick-ups icónicas"},
+            {"Chevrolet", "Estados Unidos", "Calidad consolidada en América Latina"},
+            {"Honda", "Japón", "Tecnología híbrida y motocicletas"},
+            {"BMW", "Alemania", "Lujo deportivo premium"},
+            {"Mercedes-Benz", "Alemania", "Ingeniería de lujo y confort"},
+            {"Audi", "Alemania", "Innovación y tracción quattro"},
+            {"Volkswagen", "Alemania", "Movilidad masiva con diseño sólido"},
+            {"Nissan", "Japón", "Autos familiares y eléctricos"},
+            {"Hyundai", "Corea del Sur", "Valor y garantía extendida"},
+            {"Kia", "Corea del Sur", "Diseño atrevido y tecnología accesible"},
+            {"Subaru", "Japón", "Tracción integral y seguridad"},
+            {"Mazda", "Japón", "Dinámica de conducción y SKYACTIV"},
+            {"Tesla", "Estados Unidos", "Pionero en movilidad eléctrica"},
+            {"Renault", "Francia", "Diseño europeo y motores eficientes"},
+            {"Peugeot", "Francia", "Elegancia urbana y confort"},
+            {"Fiat", "Italia", "Autos compactos y urbanos"},
+            {"Citroën", "Francia", "Confort innovador y suspensión única"},
+            {"Volvo", "Suecia", "Seguridad y soluciones híbridas"},
+            {"Jaguar", "Reino Unido", "Lujo británico y motores potentes"},
+            {"Land Rover", "Reino Unido", "4x4 todoterreno premium"},
+            {"Porsche", "Alemania", "Performance deportiva icónica"},
+            {"Lamborghini", "Italia", "Superdeportivos exóticos"},
+            {"Ferrari", "Italia", "Tradición en Fórmula 1 y lujo extremo"},
+            {"Aston Martin", "Reino Unido", "Elegancia británica deportiva"},
+            {"Bentley", "Reino Unido", "Lujo artesanal y motores V8/V12"},
+            {"Rolls-Royce", "Reino Unido", "Máximo lujo y personalización"},
+            {"Bugatti", "Francia", "Velocidad e ingeniería límite"},
+            {"Alfa Romeo", "Italia", "Herencia deportiva italiana"},
+            {"Mitsubishi", "Japón", "SUVs robustos y electrificación"},
+            {"Suzuki", "Japón", "Autos compactos y movilidad ágil"}
     };
 
     @Override
@@ -155,6 +191,10 @@ public class DataInitializer implements CommandLineRunner {
 
         if (ganadorAlbumRepository.count() == 0) {
             poblarGanadorAlbum();
+        }
+
+        if (marcaAutomovilRepository.count() == 0) {
+            poblarMarcasAutomovil();
         }
     }
 
@@ -433,6 +473,21 @@ public class DataInitializer implements CommandLineRunner {
             ganadorAlbumRepository.save(Objects.requireNonNull(ganador));
         }
         System.out.println("   ✅ " + ganadorAlbumRepository.count() + " ganadores por album insertados");
+    }
+
+    private void poblarMarcasAutomovil() {
+        System.out.println("🚗 Cargando marcas de automóviles...");
+        for (int i = 0; i < TARGET_SEED_COUNT; i++) {
+            String[] datos = AUTOMOTIVE_BRANDS[i % AUTOMOTIVE_BRANDS.length];
+            MarcaAutomovil marca = MarcaAutomovil.builder()
+                    .nombre(datos[0])
+                    .paisOrigen(datos[1])
+                    .descripcion(datos[2])
+                    .active(true)
+                    .build();
+            marcaAutomovilRepository.save(Objects.requireNonNull(marca));
+        }
+        System.out.println("   ✅ " + marcaAutomovilRepository.count() + " marcas automotrices insertadas");
     }
 
     private void crearCatalogo(Album album, String[][] laminasData, int year) {

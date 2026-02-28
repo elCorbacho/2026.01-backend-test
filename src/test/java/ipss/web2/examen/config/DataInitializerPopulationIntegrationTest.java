@@ -6,6 +6,7 @@ import ipss.web2.examen.models.EmpresaInsumos;
 import ipss.web2.examen.models.GanadorAlbum;
 import ipss.web2.examen.models.GanadorGuinness;
 import ipss.web2.examen.models.GanadorPremioAlbum;
+import ipss.web2.examen.models.MarcaAutomovil;
 import ipss.web2.examen.models.PaisDistribucion;
 import ipss.web2.examen.models.TestModel;
 import ipss.web2.examen.models.TiendaLamina;
@@ -15,6 +16,7 @@ import ipss.web2.examen.repositories.EmpresaInsumosRepository;
 import ipss.web2.examen.repositories.GanadorAlbumRepository;
 import ipss.web2.examen.repositories.GanadorGuinnessRepository;
 import ipss.web2.examen.repositories.GanadorPremioAlbumRepository;
+import ipss.web2.examen.repositories.MarcaAutomovilRepository;
 import ipss.web2.examen.repositories.PaisDistribucionRepository;
 import ipss.web2.examen.repositories.TestModelRepository;
 import ipss.web2.examen.repositories.TiendaLaminaRepository;
@@ -63,6 +65,9 @@ class DataInitializerPopulationIntegrationTest {
     private TiendaLaminaRepository tiendaLaminaRepository;
 
     @Autowired
+    private MarcaAutomovilRepository marcaAutomovilRepository;
+
+    @Autowired
     private AlbumRepository albumRepository;
 
     @Test
@@ -76,6 +81,7 @@ class DataInitializerPopulationIntegrationTest {
         assertThat(testModelRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(empresaInsumosRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(tiendaLaminaRepository.count()).isEqualTo(EXPECTED_COUNT);
+        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_COUNT);
     }
 
     @Test
@@ -89,6 +95,7 @@ class DataInitializerPopulationIntegrationTest {
         assertThat(testModelRepository.findAll()).allMatch(item -> Boolean.TRUE.equals(item.getActive()));
         assertThat(empresaInsumosRepository.findAll()).allMatch(item -> Boolean.TRUE.equals(item.getActive()));
         assertThat(tiendaLaminaRepository.findAll()).allMatch(item -> Boolean.TRUE.equals(item.getActive()));
+        assertThat(marcaAutomovilRepository.findAll()).allMatch(item -> Boolean.TRUE.equals(item.getActive()));
     }
 
     @Test
@@ -119,6 +126,7 @@ class DataInitializerPopulationIntegrationTest {
         assertThat(testModelRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(empresaInsumosRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(tiendaLaminaRepository.count()).isEqualTo(EXPECTED_COUNT);
+        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_COUNT);
     }
 
     @Test
@@ -247,6 +255,19 @@ class DataInitializerPopulationIntegrationTest {
                 .anyMatch(item -> item.getEmail() == null)
                 .anyMatch(item -> item.getFechaApertura() == null)
                 .anyMatch(item -> item.getFechaApertura() != null);
+    }
+
+    @Test
+    @DisplayName("MarcaAutomovil se popula con 30 entradas activas y nombres válidos")
+    void shouldSeedMarcaAutomovilWithValidData() {
+        assertThat(marcaAutomovilRepository.findAll())
+                .hasSize((int) EXPECTED_COUNT)
+                .allMatch(marca -> marca.getNombre() != null && !marca.getNombre().isBlank())
+                .allMatch(marca -> marca.getPaisOrigen() != null && !marca.getPaisOrigen().isBlank())
+                .allMatch(marca -> marca.getDescripcion() != null && !marca.getDescripcion().isBlank())
+                .allMatch(marca -> Boolean.TRUE.equals(marca.getActive()))
+                .allMatch(marca -> marca.getCreatedAt() != null)
+                .allMatch(marca -> marca.getUpdatedAt() != null);
     }
 
     @Test

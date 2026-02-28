@@ -197,6 +197,30 @@ Para crear la nueva tabla de presidentes se incluye el script:
 
 ---
 
+### 🚗 3. Catálogo de Marcas de Automóvil
+**Base:** `/api/marcas`
+
+> 💡 El endpoint entrega una lista auditada de marcas activas disponibles para filtros, catálogos o UI que necesite referencias de fabricantes.
+
+<table>
+<thead>
+<tr>
+<th width="80">Método</th>
+<th width="300">Endpoint</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/marcas</code></td>
+<td>Listar todas las marcas de automóviles activas (30 registros semilla) en `ApiResponseDTO`.</td>
+</tr>
+</tbody>
+</table>
+
+---
+
 ### 📖 3. Catálogo y Estadísticas
 **Base:** `/api/albums/{albumId}/catalogo`
 
