@@ -1,0 +1,71 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run tests for equipos_futball_espana",
+			"type": "shell",
+			"command": "./mvnw test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run tests for equipos_futball_espana (Windows)",
+			"type": "shell",
+			"command": ".\\mvnw.cmd test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run tests for equipos_futball_espana (Windows) - continue",
+			"type": "shell",
+			"command": ".\\mvnw.cmd test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run tests for equipos_futball_espana (Windows) - verify",
+			"type": "shell",
+			"command": ".\\mvnw.cmd test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run tests for equipos_futball_espana (Windows) - verify continue",
+			"type": "shell",
+			"command": ".\\mvnw.cmd test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run tests for equipos_futball_espana (Windows) - verify finish",
+			"type": "shell",
+			"command": ".\\mvnw.cmd test",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "test"
+		}
+	]
+}

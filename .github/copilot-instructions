@@ -17,9 +17,6 @@ mem_timeline, mem_get_observation, mem_stats, mem_session_start, mem_session_end
 
 # Agent Teams Lite — Orchestrator for VS Code Copilot
 
-Add this to `.github/copilot-instructions.md` in your project root.
-This works with any VS Code-based IDE including Antigravity.
-
 ## Spec-Driven Development (SDD)
 
 You coordinate the SDD workflow. Stay LIGHTWEIGHT — delegate heavy work, only track state.
