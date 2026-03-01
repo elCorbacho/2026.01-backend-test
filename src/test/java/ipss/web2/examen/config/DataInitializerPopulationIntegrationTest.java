@@ -36,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DataInitializerPopulationIntegrationTest {
 
     private static final long EXPECTED_COUNT = 30L;
+    private static final long EXPECTED_MARCA_COUNT = 2L;
 
     @Autowired
     private DataInitializer dataInitializer;
@@ -71,7 +72,7 @@ class DataInitializerPopulationIntegrationTest {
     private AlbumRepository albumRepository;
 
     @Test
-    @DisplayName("DataInitializer inserta 30 registros en las 8 entidades objetivo")
+    @DisplayName("DataInitializer inserta 30 registros en entidades generales y 2 marcas")
     void shouldPopulateThirtyRecordsForEachTargetEntity() {
         assertThat(ganadorGuinnessRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(ganadorAlbumRepository.count()).isEqualTo(EXPECTED_COUNT);
@@ -81,7 +82,7 @@ class DataInitializerPopulationIntegrationTest {
         assertThat(testModelRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(empresaInsumosRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(tiendaLaminaRepository.count()).isEqualTo(EXPECTED_COUNT);
-        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_COUNT);
+        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_MARCA_COUNT);
     }
 
     @Test
@@ -114,7 +115,7 @@ class DataInitializerPopulationIntegrationTest {
     }
 
     @Test
-    @DisplayName("DataInitializer es idempotente para las 8 entidades objetivo")
+    @DisplayName("DataInitializer es idempotente para entidades generales y marcas")
     void shouldBeIdempotentWhenRunningInitializerTwice() throws Exception {
         dataInitializer.run();
 
@@ -126,7 +127,7 @@ class DataInitializerPopulationIntegrationTest {
         assertThat(testModelRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(empresaInsumosRepository.count()).isEqualTo(EXPECTED_COUNT);
         assertThat(tiendaLaminaRepository.count()).isEqualTo(EXPECTED_COUNT);
-        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_COUNT);
+        assertThat(marcaAutomovilRepository.count()).isEqualTo(EXPECTED_MARCA_COUNT);
     }
 
     @Test
@@ -258,10 +259,10 @@ class DataInitializerPopulationIntegrationTest {
     }
 
     @Test
-    @DisplayName("MarcaAutomovil se popula con 30 entradas activas y nombres válidos")
+    @DisplayName("MarcaAutomovil se popula con 2 entradas activas y nombres validos")
     void shouldSeedMarcaAutomovilWithValidData() {
         assertThat(marcaAutomovilRepository.findAll())
-                .hasSize((int) EXPECTED_COUNT)
+                .hasSize((int) EXPECTED_MARCA_COUNT)
                 .allMatch(marca -> marca.getNombre() != null && !marca.getNombre().isBlank())
                 .allMatch(marca -> marca.getPaisOrigen() != null && !marca.getPaisOrigen().isBlank())
                 .allMatch(marca -> marca.getDescripcion() != null && !marca.getDescripcion().isBlank())

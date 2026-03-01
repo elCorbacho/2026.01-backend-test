@@ -35,13 +35,13 @@ class MarcaAutomovilServiceTest {
     }
 
     @Test
-    @DisplayName("Service debe devolver marcas activas ordenadas")
+    @DisplayName("Service debe devolver 2 marcas activas ordenadas")
     void shouldReturnActiveBrandsOrdered() {
-        MarcaAutomovil primera = MarcaAutomovil.builder().nombre("Audi").active(true).build();
+        MarcaAutomovil primera = MarcaAutomovil.builder().nombre("Ford").active(true).build();
         MarcaAutomovil segunda = MarcaAutomovil.builder().nombre("Toyota").active(true).build();
         when(marcaRepository.findByActiveTrueOrderByNombreAsc()).thenReturn(List.of(primera, segunda));
 
-        MarcaAutomovilResponseDTO dtoPrimera = MarcaAutomovilResponseDTO.builder().nombre("Audi").build();
+        MarcaAutomovilResponseDTO dtoPrimera = MarcaAutomovilResponseDTO.builder().nombre("Ford").build();
         MarcaAutomovilResponseDTO dtoSegunda = MarcaAutomovilResponseDTO.builder().nombre("Toyota").build();
         when(marcaMapper.toResponseDTO(same(primera))).thenReturn(dtoPrimera);
         when(marcaMapper.toResponseDTO(same(segunda))).thenReturn(dtoSegunda);
