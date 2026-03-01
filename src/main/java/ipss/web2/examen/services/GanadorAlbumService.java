@@ -28,7 +28,7 @@ public class GanadorAlbumService {
         albumRepository.findById(albumId)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", "ID", albumId));
 
-        List<GanadorAlbum> ganadores = ganadorAlbumRepository.findByAlbumIdAndActiveTrue(albumId);
+        List<GanadorAlbum> ganadores = ganadorAlbumRepository.findByAlbumIdAndActiveTrueOrderByAnioDesc(albumId);
         return ganadores.stream()
                 .map(ganadorAlbumMapper::toDTO)
                 .collect(Collectors.toList());

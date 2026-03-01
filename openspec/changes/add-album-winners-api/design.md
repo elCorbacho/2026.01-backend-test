@@ -7,7 +7,7 @@ El backend ya expone endpoints para álbumes y láminas, pero no tiene entidad n
 **Goals:**
 - Introducir una entidad `GanadorAlbum` vinculada a un álbum que almacene artista, premio y año.
 - Añadir un repositorio y servicio que expongan una consulta `findByAlbumId` para la colección de ganadores.
-- Implementar un endpoint GET `/api/albumes/{albumId}/ganadores` que devuelva DTOs con nombre del artista, premio y año dentro de `ApiResponseDTO<List<GanadorAlbumDTO>>`.
+- Implementar un endpoint GET `/api/albums/{albumId}/ganadores` que devuelva DTOs con nombre del artista, premio y año dentro de `ApiResponseDTO<List<GanadorAlbumDTO>>`.
 - Crear un mapper manual que convierta entidad a DTO y aplicar validaciones básicas.
 
 **Non-Goals:**
@@ -17,9 +17,9 @@ El backend ya expone endpoints para álbumes y láminas, pero no tiene entidad n
 ## Decisions
 
 1. **Modelo independiente:** Se añadirá `GanadorAlbum` como entidad nueva con `@Entity`, `@ManyToOne` a `Album` y campos `artista`, `premio`, `anio`. Se ajusta la estrategia de auditoría/soft delete si hace falta replicando los campos `active`, `createdAt`, `updatedAt`.
-2. **Repositorio específico:** Un `GanadorAlbumRepository` extenderá `JpaRepository<GanadorAlbum, Long>` y añadirá el método `List<GanadorAlbum> findByAlbumIdAndActiveTrue(Long albumId)` para enfocarse en registros activos.
+2. **Repositorio específico:** Un `GanadorAlbumRepository` extenderá `JpaRepository<GanadorAlbum, Long>` y añadirá el método `List<GanadorAlbum> findByAlbumIdAndActiveTrueOrderByAnioDesc(Long albumId)` para enfocarse en registros activos con orden determinístico por año descendente.
 3. **Servicio + DTO:** Se crea un servicio `GanadorAlbumService` con método `List<GanadorAlbumDTO> obtenerGanadoresPorAlbum(Long albumId)` que lanza `ResourceNotFoundException` si el álbum no existe y usa un mapper (`GanadorAlbumMapper`) para convertir a DTO con los campos de salida.
-4. **Controlador REST:** Se expone un método GET en `AlbumController` o `GanadorAlbumController` que responde a `/api/albumes/{albumId}/ganadores` y retorna `ResponseEntity<ApiResponseDTO<List<GanadorAlbumDTO>>>`, respetando la envoltura `ApiResponseDTO` usada en el sistema.
+4. **Controlador REST:** Se expone un método GET en `AlbumController` o `GanadorAlbumController` que responde a `/api/albums/{albumId}/ganadores` y retorna `ResponseEntity<ApiResponseDTO<List<GanadorAlbumDTO>>>`, respetando la envoltura `ApiResponseDTO` usada en el sistema.
 5. **Respuesta estandarizada:** Se define `GanadorAlbumDTO` con `@Builder`/`@Value` (o `@Data`) que contiene `artista`, `premio`, `anio`. La respuesta incluye `success`, `message`, `data`, `errorCode`, `errors`, `timestamp` mediante `ApiResponseDTO`.
 
 ## Risks / Trade-offs

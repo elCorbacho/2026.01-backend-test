@@ -2,11 +2,16 @@ package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.AlbumRequestDTO;
+import ipss.web2.examen.dtos.AlbumPageResponseDTO;
 import ipss.web2.examen.dtos.AlbumResponseDTO;
 import ipss.web2.examen.dtos.AlbumSummaryDTO;
 import ipss.web2.examen.dtos.GanadorAlbumDTO;
 import ipss.web2.examen.services.AlbumService;
 import ipss.web2.examen.services.GanadorAlbumService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/albums")
 @RequiredArgsConstructor
+@Tag(name = "Albumes", description = "Endpoints para gestionar albumes y sus ganadores")
 public class AlbumController {
     
     private final AlbumService albumService;
@@ -43,10 +49,12 @@ public class AlbumController {
     
     // GET /api/albums - Listar todos los álbumes
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<List<AlbumResponseDTO>>> obtenerTodosLosAlbumes(
+    public ResponseEntity<ApiResponseDTO<AlbumPageResponseDTO>> obtenerTodosLosAlbumes(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Boolean active) {
-        List<AlbumResponseDTO> response = albumService.obtenerAlbumsFiltrados(year, active);
+        AlbumPageResponseDTO response = albumService.obtenerAlbumsPaginados(page, size, year, active);
         return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbumes recuperados exitosamente"));
     }
 
@@ -75,6 +83,14 @@ public class AlbumController {
     }
 
     @GetMapping("/{albumId}/ganadores")
+    @Operation(
+            summary = "Obtener ganadores por album",
+            description = "Retorna los ganadores activos asociados a un album, ordenados de forma descendente por anio."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ganadores recuperados exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Album no encontrado")
+    })
     public ResponseEntity<ApiResponseDTO<List<GanadorAlbumDTO>>> obtenerGanadoresPorAlbum(
             @PathVariable Long albumId) {
         List<GanadorAlbumDTO> ganadores = ganadorAlbumService.obtenerGanadoresPorAlbum(albumId);

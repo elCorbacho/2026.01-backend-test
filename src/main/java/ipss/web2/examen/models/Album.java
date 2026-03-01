@@ -13,7 +13,11 @@ import java.util.List;
 
 // Modelo de entidad para Álbum
 @Entity
-@Table(name = "album")
+@Table(name = "album", indexes = {
+        @Index(name = "idx_album_release_year", columnList = "release_year"),
+        @Index(name = "idx_album_is_active", columnList = "is_active"),
+        @Index(name = "idx_album_nombre", columnList = "nombre")
+})
 @Getter
 @Setter
 @Builder

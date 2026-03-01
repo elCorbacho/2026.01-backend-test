@@ -10,10 +10,16 @@
 
 ## 3. Controller + API
 
-- [x] 3.1 Add the GET `/api/albumes/{albumId}/ganadores` method (in `AlbumController` or a new controller) that calls the service and wraps the list in `ApiResponseDTO` with `success=true`.
+- [x] 3.1 Add the GET `/api/albums/{albumId}/ganadores` method (in `AlbumController` or a new controller) that calls the service and wraps the list in `ApiResponseDTO` with `success=true`.
 - [x] 3.2 Document the endpoint in OpenAPI comments (controller-level annotations) and ensure it returns 404 when the album is not found.
 
 ## 4. Validation + packaging
 
 - [x] 4.1 Run and validate `./mvnw.cmd clean package` (or relevant tests) to confirm the new beans compile and the endpoint is discoverable.
 - [x] 4.2 Update any README or docs if needed (navigation, spec) to mention the new winners endpoint.
+
+## 5. Verification hardening
+
+- [x] 5.1 Reconcile path contract to `/api/albums/{albumId}/ganadores` across spec/design/proposal and implementation.
+- [x] 5.2 Enforce deterministic winners ordering by `anio` descending in repository/service flow.
+- [x] 5.3 Add runtime tests for winners endpoint success, 404 (`RESOURCE_NOT_FOUND`), and descending ordering by `anio`.

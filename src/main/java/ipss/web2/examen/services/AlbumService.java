@@ -1,8 +1,10 @@
 package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.AlbumRequestDTO;
+import ipss.web2.examen.dtos.AlbumPageResponseDTO;
 import ipss.web2.examen.dtos.AlbumResponseDTO;
 import ipss.web2.examen.dtos.AlbumSummaryDTO;
+import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.mappers.AlbumMapper;
 import ipss.web2.examen.models.Album;
@@ -10,6 +12,10 @@ import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
 import ipss.web2.examen.repositories.LaminaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +72,46 @@ public class AlbumService {
         return albums.stream()
                 .map(albumMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Obtener albums paginados aplicando filtros opcionales
+    @Transactional(readOnly = true)
+    public AlbumPageResponseDTO obtenerAlbumsPaginados(Integer page, Integer size, Integer year, Boolean active) {
+        int pageNumber = page == null ? 0 : page;
+        int pageSize = size == null ? 10 : size;
+
+        if (pageNumber < 0) {
+            throw new InvalidOperationException("El parámetro 'page' debe ser mayor o igual a 0", "INVALID_PAGE");
+        }
+
+        if (pageSize < 1 || pageSize > 100) {
+            throw new InvalidOperationException("El parámetro 'size' debe estar entre 1 y 100", "INVALID_SIZE");
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "id"));
+        Page<Album> albumPage;
+
+        if (year == null && active == null) {
+            albumPage = albumRepository.findByActiveTrue(pageable);
+        } else if (year != null && active == null) {
+            albumPage = albumRepository.findByYearAndActiveTrue(year, pageable);
+        } else if (year == null) {
+            albumPage = albumRepository.findByActive(active, pageable);
+        } else {
+            albumPage = albumRepository.findByYearAndActive(year, active, pageable);
+        }
+
+        List<AlbumResponseDTO> content = albumPage.getContent().stream()
+                .map(albumMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return new AlbumPageResponseDTO(
+                content,
+                albumPage.getNumber(),
+                albumPage.getSize(),
+                albumPage.getTotalElements(),
+                albumPage.getTotalPages()
+        );
     }
     
     // Actualizar un album existente

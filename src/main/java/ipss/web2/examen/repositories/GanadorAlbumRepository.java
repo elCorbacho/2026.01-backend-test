@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GanadorAlbumRepository extends JpaRepository<GanadorAlbum, Long> {
-    List<GanadorAlbum> findByAlbumIdAndActiveTrue(Long albumId);
+    List<GanadorAlbum> findByAlbumIdAndActiveTrueOrderByAnioDesc(Long albumId);
 }

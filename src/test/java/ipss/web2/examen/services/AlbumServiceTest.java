@@ -1,7 +1,8 @@
 package ipss.web2.examen.services;
 
-import ipss.web2.examen.dtos.AlbumResponseDTO;
 import ipss.web2.examen.dtos.AlbumSummaryDTO;
+import ipss.web2.examen.dtos.AlbumPageResponseDTO;
+import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.mappers.AlbumMapper;
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.repositories.AlbumRepository;
@@ -16,8 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -46,45 +50,81 @@ class AlbumServiceTest {
     }
 
     @Test
-    @DisplayName("Service debe retornar albums activos por defecto")
-    void obtenerAlbumsFiltradosPorDefectoDebeRetornarActivos() {
-        when(albumRepository.findByActiveTrue())
-                .thenReturn(List.of(
-                        Album.builder()
-                                .id(1L)
-                                .nombre("Historias")
-                                .year(2024)
-                                .descripcion("Album activo")
-                                .active(true)
-                                .build()
-                ));
+    @DisplayName("Service debe retornar pagina por defecto con albums activos")
+    void obtenerAlbumsPaginadosPorDefectoDebeRetornarActivos() {
+        Album album = Album.builder()
+                .id(1L)
+                .nombre("Historias")
+                .year(2024)
+                .descripcion("Album activo")
+                .active(true)
+                .build();
 
-        List<AlbumResponseDTO> resultado = albumService.obtenerAlbumsFiltrados(null, null);
+        when(albumRepository.findByActiveTrue(PageRequest.of(0, 10, org.springframework.data.domain.Sort.by("id").ascending())))
+                .thenReturn(new PageImpl<>(List.of(album), PageRequest.of(0, 10), 1));
 
-        assertEquals(1, resultado.size());
-        assertEquals("Historias", resultado.get(0).getNombre());
-        assertEquals(2024, resultado.get(0).getYear());
+        AlbumPageResponseDTO resultado = albumService.obtenerAlbumsPaginados(null, null, null, null);
+
+        assertEquals(1, resultado.content().size());
+        assertEquals("Historias", resultado.content().get(0).getNombre());
+        assertEquals(0, resultado.page());
+        assertEquals(10, resultado.size());
+        assertEquals(1L, resultado.totalElements());
     }
 
     @Test
-    @DisplayName("Service debe filtrar albums por year y active")
-    void obtenerAlbumsFiltradosConYearYActiveDebeAplicarFiltros() {
-        when(albumRepository.findByYearAndActive(2020, false))
-                .thenReturn(List.of(
-                        Album.builder()
-                                .id(2L)
-                                .nombre("Clasic")
-                                .year(2020)
-                                .descripcion("Album inactivo")
-                                .active(false)
-                                .build()
-                ));
+    @DisplayName("Service debe combinar filtros year y active en la consulta paginada")
+    void obtenerAlbumsPaginadosConYearYActiveDebeAplicarFiltros() {
+        Album album = Album.builder()
+                .id(2L)
+                .nombre("Clasic")
+                .year(2020)
+                .descripcion("Album inactivo")
+                .active(false)
+                .build();
 
-        List<AlbumResponseDTO> resultado = albumService.obtenerAlbumsFiltrados(2020, false);
+        when(albumRepository.findByYearAndActive(2020, false, PageRequest.of(1, 5, org.springframework.data.domain.Sort.by("id").ascending())))
+                .thenReturn(new PageImpl<>(List.of(album), PageRequest.of(1, 5), 6));
 
-        assertEquals(1, resultado.size());
-        assertEquals("Clasic", resultado.get(0).getNombre());
-        assertEquals(2020, resultado.get(0).getYear());
+        AlbumPageResponseDTO resultado = albumService.obtenerAlbumsPaginados(1, 5, 2020, false);
+
+        assertEquals(1, resultado.content().size());
+        assertEquals("Clasic", resultado.content().get(0).getNombre());
+        assertEquals(1, resultado.page());
+        assertEquals(5, resultado.size());
+        assertEquals(6L, resultado.totalElements());
+        assertEquals(2, resultado.totalPages());
+    }
+
+    @Test
+    @DisplayName("Service debe devolver pagina vacia si el indice esta fuera de rango")
+    void obtenerAlbumsPaginadosFueraDeRangoDebeRetornarContenidoVacio() {
+        when(albumRepository.findByActiveTrue(PageRequest.of(9, 10, org.springframework.data.domain.Sort.by("id").ascending())))
+                .thenReturn(new PageImpl<>(List.of(), PageRequest.of(9, 10), 20));
+
+        AlbumPageResponseDTO resultado = albumService.obtenerAlbumsPaginados(9, 10, null, null);
+
+        assertTrue(resultado.content().isEmpty());
+        assertEquals(9, resultado.page());
+        assertEquals(10, resultado.size());
+        assertEquals(20L, resultado.totalElements());
+        assertEquals(2, resultado.totalPages());
+    }
+
+    @Test
+    @DisplayName("Service debe rechazar page negativa")
+    void obtenerAlbumsPaginadosConPageNegativaDebeFallar() {
+        InvalidOperationException ex = assertThrows(InvalidOperationException.class,
+                () -> albumService.obtenerAlbumsPaginados(-1, 10, null, null));
+        assertEquals("INVALID_PAGE", ex.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("Service debe rechazar size fuera de rango")
+    void obtenerAlbumsPaginadosConSizeFueraDeRangoDebeFallar() {
+        InvalidOperationException ex = assertThrows(InvalidOperationException.class,
+                () -> albumService.obtenerAlbumsPaginados(0, 101, null, null));
+        assertEquals("INVALID_SIZE", ex.getErrorCode());
     }
 
     @Test

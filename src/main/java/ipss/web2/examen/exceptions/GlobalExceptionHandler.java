@@ -22,6 +22,9 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final String GENERIC_INTERNAL_ERROR_MESSAGE = "Ocurrió un error interno. Intenta nuevamente más tarde.";
+    private static final String INTERNAL_ERROR_CODE = "INTERNAL_SERVER_ERROR";
     
     /// Maneja excepciones de recurso no encontrado (404)
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -188,33 +191,46 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleRuntimeException(
             RuntimeException ex, WebRequest request) {
-        
-        log.error("RuntimeException no manejada: {}", ex.getMessage(), ex);
-        
+        logUnhandledExceptionSafely("RuntimeException no manejada", ex, request);
+
         ApiResponseDTO<Object> response = ApiResponseDTO.builder()
             .success(false)
-            .message(ex.getMessage() != null ? ex.getMessage() : "Error en tiempo de ejecución")
-            .errorCode("RUNTIME_ERROR")
+            .message(GENERIC_INTERNAL_ERROR_MESSAGE)
+            .errorCode(INTERNAL_ERROR_CODE)
             .timestamp(LocalDateTime.now())
             .build();
-        
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
     
     // Maneja excepciones genéricas no capturadas (500)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleGlobalException(
             Exception ex, WebRequest request) {
-        
-        log.error("Error interno del servidor no manejado", ex);
-        
+        logUnhandledExceptionSafely("Excepción no manejada", ex, request);
+
         ApiResponseDTO<Object> response = ApiResponseDTO.builder()
             .success(false)
-            .message("Error interno del servidor: " + ex.getClass().getSimpleName())
-            .errorCode("INTERNAL_SERVER_ERROR")
+            .message(GENERIC_INTERNAL_ERROR_MESSAGE)
+            .errorCode(INTERNAL_ERROR_CODE)
             .timestamp(LocalDateTime.now())
             .build();
-        
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    private void logUnhandledExceptionSafely(String logPrefix, Exception ex, WebRequest request) {
+        try {
+            writeUnhandledExceptionLog(logPrefix, ex, request);
+        } catch (RuntimeException loggingFailure) {
+            // Evita que un fallo en logging cambie la respuesta saneada al cliente.
+        }
+    }
+
+    protected void writeUnhandledExceptionLog(String logPrefix, Exception ex, WebRequest request) {
+        String requestContext = request != null ? request.getDescription(false) : "N/A";
+        String handlerType = ex.getClass().getSimpleName();
+        log.error("{}. handlerType={}, requestContext={}, message={}",
+                logPrefix, handlerType, requestContext, ex.getMessage(), ex);
     }
 }
