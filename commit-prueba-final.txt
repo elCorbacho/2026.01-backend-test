@@ -1,0 +1,4 @@
+Commit de prueba final
+Rama: nueva-rama-desde-commit
+Fecha: 2026-03-06
+Status: Verificando flujo completo de git
