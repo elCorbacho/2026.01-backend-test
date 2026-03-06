@@ -358,9 +358,9 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("⛏️ Cargando minas representativas de Chile...");
 
         Object[][] minas = {
-                {"Chuquicamata", "Región de Antofagasta", "Cobre", "ACTIVA"},
-                {"Escondida", "Región de Antofagasta", "Cobre", "ACTIVA"},
-                {"El Teniente", "Región del Libertador General Bernardo O’Higgins", "Cobre", "ACTIVA"},
+                {"Chuquicamata", "Región de Antofagasta",                 "Cobre", "INACTIVA"},
+                {"Escondida", "Región de Antofagasta",                 "Cobre", "INACTIVA"},
+                {"El Teniente", "Región del Libertador General Bernardo O’Higgins",                 "Cobre", "INACTIVA"},
                 {"La Disputada de Las Condes", "Región Metropolitana de Santiago", "Cobre", "CERRADA"}
         };
 
