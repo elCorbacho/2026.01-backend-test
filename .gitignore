@@ -9,3 +9,4 @@ target/
 
 # Ignorar preferencias locales de Eclipse/STS
 .settings/org.eclipse.jdt.core.prefs
+.classpath
