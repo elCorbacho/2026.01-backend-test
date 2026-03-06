@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/histo/.opencode-skill-libraries/code-review/**)",
+      "Bash(/tmp/review_analysis.md:*)",
+      "Read(//tmp/**)"
+    ]
+  }
+}
