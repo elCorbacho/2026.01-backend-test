@@ -28,3 +28,6 @@ API REST for managing collectible albums and items.
 Access the API:
 - Base URL: `http://localhost:8080`
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+## Test Commit
+This is a test commit from Claude Code.
