@@ -47,6 +47,11 @@
       	"args": ["server"]
     	},
 
+    	"notebooklm": {
+      	"command": "npx",
+      	"args": ["notebooklm-mcp@latest"]
+    },
+
 
 
 
