@@ -1,6 +1,6 @@
 # 2026.01-backend-test
 
-API REST for managing collectible albums and items..........8888888888888
+API REST for managing collectible albums and items..........8888888888888888888888888888
 
 ## Quick Start
 
