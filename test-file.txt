@@ -1,0 +1,2 @@
+Este es un archivo de prueba para realizar un commit.
+Creado: 2026-03-06
