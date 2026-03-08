@@ -32,85 +32,12 @@
 		}
 	],
 	"servers": {
-
-
-// ==================== OFFICIAL MCP SERVERS ====================
-// ENGRAM MEMORY SERVER
-// gestiona memoria persistente
-    	"engram": {
+		"engram": {
 			"command": "engram",
-			"args": ["mcp"]
-		},
-
-		"memory": {
-      	"command": "memory",
-      	"args": ["server"]
-    	},
-
-    	"notebooklm": {
-      	"command": "npx",
-      	"args": ["notebooklm-mcp@latest"]
-    },
-
-
-
-
-// SEQUENTIAL THINKING SERVER
-// gestiona el pensamiento secuencial, lo que permite a los modelos de lenguaje generar respuestas más coherentes y relevantes al considerar la información en un orden lógico.
-
-		// "sequential-thinking": {
-		// 	"command": "npx",
-		// 	"args": [
-		// 		"-y",
-		// 		"@modelcontextprotocol/server-sequential-thinking"
-		// 	]
-		// },
-
-// CONTEXT 7 SERVER
-// permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas.
-
-		"context7": {
-			"type": "http",
-			"url": "https://mcp.context7.com/mcp",
-			"headers": {
-			"CONTEXT7_API_KEY": "ctx7sk-886f2b65-707a-4755-b844-e6c9e03ea839"
-			}
-		},
-
-
-// AWESOME COPILOT
-// Permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas. Proporciona una API simple para acceder a información contextual, lo que facilita la construcción de aplicaciones inteligentes que pueden proporcionar respuestas más relevantes y precisas.
-		
-		"awesome-copilot": {
-			"command": "docker",
 			"args": [
-				"run",
-				"-i",
-				"--rm",
-				"ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
+				"mcp"
 			],
 			"type": "stdio"
-		},
-
-
-// contextstream server
-// permite a los modelos de lenguaje acceder a información contextual en tiempo real, lo que puede ayudar a mejorar la relevancia y la precisión de las respuestas. Proporciona una API simple para acceder a información contextual, lo que facilita la construcción de aplicaciones inteligentes que pueden proporcionar respuestas más relevantes y precisas.
-
-		// "contextstream": {
-		// 	"type": "stdio",
-		// 	"command": "cmd",
-		// 	"args": [
-		// 		"/c",
-		// 		"npx",
-		// 		"--prefer-online",
-		// 		"-y",
-		// 		"@contextstream/mcp-server@latest"
-		// 	],
-		// 	"env": {
-		// 		"CONTEXTSTREAM_API_URL": "https://api.contextstream.io",
-		// 		"CONTEXTSTREAM_API_KEY": "cbiq_xWiRnYiKMuDX_e4Dr_0m9PLCfGSLMdak4DNrkgV3svI",
-		// 		"CONTEXTSTREAM_CONTEXT_PACK": "false"
-		// 	}
-		// }
+		}
 	}
 }
