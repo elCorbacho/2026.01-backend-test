@@ -29,7 +29,12 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
+import ipss.web2.examen.models.Transportista;
+import ipss.web2.examen.repositories.TransportistaRepository;
+
 public class DataInitializer implements CommandLineRunner {
+
+    private final TransportistaRepository transportistaRepository;
 
     private final AlbumRepository albumRepository;
     private final LaminaRepository laminaRepository;
@@ -70,9 +75,10 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (albumRepository.count() == 0) {
+            poblarTransportistas();
             poblarAlbumes();
         } else {
-            System.out.println("⚠️ Base de datos ya contiene albumes. Saltando seed de albumes.");
+            System.out.println("⚠️ Base de datos ya contiene álbumes o transportistas. Saltando seed inicial.");
         }
 
         if (winnerGuinnessRepository.count() == 0) {
@@ -81,9 +87,29 @@ public class DataInitializer implements CommandLineRunner {
 
         if (marcaAutomovilRepository.count() == 0) {
             poblarMarcasAutomovil();
-        }
     }
 
+    private void poblarTransportistas() {
+        System.out.println("⚙️ Cargando transportistas...");
+        
+        Transportista transportista1 = Transportista.builder()
+                .nombre("Juan Perez")
+                .empresa("Transporte Universal SA")
+                .contacto("+12345678")
+                .build();
+
+        Transportista transportista2 = Transportista.builder()
+                .nombre("Maria Gomez")
+                .empresa("Logística Rápida")
+                .contacto("+87654321")
+                .build();
+
+        transportistaRepository.save(transportista1);
+        transportistaRepository.save(transportista2);
+
+        System.out.println("✅ Transportistas iniciales cargados!");
+    }
+}
     private void poblarAlbumes() {
         System.out.println("🚀 Iniciando poblacion de base de datos con anime populares...");
 
