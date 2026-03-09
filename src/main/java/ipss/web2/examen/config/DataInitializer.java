@@ -1,23 +1,25 @@
 package ipss.web2.examen.config;
 
 import ipss.web2.examen.models.Album;
+import ipss.web2.examen.models.CampeonJockey;
 import ipss.web2.examen.models.GanadorGuinness;
 import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.ListadoOlimpiadas;
-import ipss.web2.examen.models.MinaChile;
 import ipss.web2.examen.models.MarcaAutomovil;
+import ipss.web2.examen.models.MinaChile;
 import ipss.web2.examen.models.RegionChile;
+import ipss.web2.examen.models.Transportista;
 import ipss.web2.examen.repositories.AlbumRepository;
-import ipss.web2.examen.models.CampeonJockey;
-import ipss.web2.examen.repositories.LaminaRepository;
-import ipss.web2.examen.repositories.LaminaCatalogoRepository;
-import ipss.web2.examen.repositories.RegionRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
 import ipss.web2.examen.repositories.GanadorGuinnessRepository;
-import ipss.web2.examen.repositories.MinaChileRepository;
+import ipss.web2.examen.repositories.LaminaCatalogoRepository;
+import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.ListadoOlimpiadasRepository;
 import ipss.web2.examen.repositories.MarcaAutomovilRepository;
+import ipss.web2.examen.repositories.MinaChileRepository;
+import ipss.web2.examen.repositories.RegionRepository;
+import ipss.web2.examen.repositories.TransportistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,15 +29,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Inicializador de datos de desarrollo para la aplicación.
+ * Puebla la base de datos con datos de ejemplo al arrancar en perfil de desarrollo.
+ * Todos los métodos de población comprueban primero si ya existen datos (idempotente).
+ */
 @Component
 @RequiredArgsConstructor
-import ipss.web2.examen.models.Transportista;
-import ipss.web2.examen.repositories.TransportistaRepository;
-
 public class DataInitializer implements CommandLineRunner {
 
     private final TransportistaRepository transportistaRepository;
-
     private final AlbumRepository albumRepository;
     private final LaminaRepository laminaRepository;
     private final LaminaCatalogoRepository laminaCatalogoRepository;
@@ -74,11 +77,15 @@ public class DataInitializer implements CommandLineRunner {
             poblarListadoOlimpiadas();
         }
 
-        if (albumRepository.count() == 0) {
+        // Transportistas se inicializan de forma independiente (no acoplados a álbumes)
+        if (transportistaRepository.count() == 0) {
             poblarTransportistas();
+        }
+
+        if (albumRepository.count() == 0) {
             poblarAlbumes();
         } else {
-            System.out.println("⚠️ Base de datos ya contiene álbumes o transportistas. Saltando seed inicial.");
+            System.out.println("⚠️ Base de datos ya contiene álbumes. Saltando seed inicial de álbumes.");
         }
 
         if (winnerGuinnessRepository.count() == 0) {
@@ -87,29 +94,45 @@ public class DataInitializer implements CommandLineRunner {
 
         if (marcaAutomovilRepository.count() == 0) {
             poblarMarcasAutomovil();
+        }
     }
 
+    // ─── Transportistas ───────────────────────────────────────────────────────
+
+    /**
+     * Puebla la tabla de transportistas con datos iniciales para desarrollo.
+     * Se ejecuta solo si la tabla está vacía.
+     */
     private void poblarTransportistas() {
         System.out.println("⚙️ Cargando transportistas...");
-        
-        Transportista transportista1 = Transportista.builder()
-                .nombre("Juan Perez")
-                .empresa("Transporte Universal SA")
-                .contacto("+12345678")
-                .build();
 
-        Transportista transportista2 = Transportista.builder()
-                .nombre("Maria Gomez")
-                .empresa("Logística Rápida")
-                .contacto("+87654321")
-                .build();
+        List<Transportista> transportistas = List.of(
+                Transportista.builder()
+                        .nombre("Juan Perez")
+                        .empresa("Transporte Universal SA")
+                        .contacto("+12345678")
+                        .active(true)
+                        .build(),
+                Transportista.builder()
+                        .nombre("Maria Gomez")
+                        .empresa("Logística Rápida")
+                        .contacto("+87654321")
+                        .active(true)
+                        .build(),
+                Transportista.builder()
+                        .nombre("Carlos Soto")
+                        .empresa("Distribuciones Norte")
+                        .contacto("+56912345678")
+                        .active(true)
+                        .build()
+        );
 
-        transportistaRepository.save(transportista1);
-        transportistaRepository.save(transportista2);
-
-        System.out.println("✅ Transportistas iniciales cargados!");
+        transportistaRepository.saveAll(transportistas);
+        System.out.println("   ✅ " + transportistaRepository.count() + " transportistas insertados");
     }
-}
+
+    // ─── Álbumes ──────────────────────────────────────────────────────────────
+
     private void poblarAlbumes() {
         System.out.println("🚀 Iniciando poblacion de base de datos con anime populares...");
 
@@ -238,6 +261,8 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("      - Albumes: " + albumCount + ", Laminas en posesion: " + laminaCount);
     }
 
+    // ─── Ganadores Guinness ───────────────────────────────────────────────────
+
     private void poblarGanadorGuinness() {
         System.out.println("🏆 Cargando ganadores Guinness...");
         for (int i = 0; i < TARGET_SEED_COUNT; i++) {
@@ -254,6 +279,8 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("   ✅ " + winnerGuinnessRepository.count() + " ganadores Guinness insertados");
     }
 
+    // ─── Marcas Automóvil ─────────────────────────────────────────────────────
+
     private void poblarMarcasAutomovil() {
         System.out.println("🚗 Cargando marcas de automóviles...");
         for (int i = 0; i < TARGET_MARCA_AUTOMOVIL_COUNT; i++) {
@@ -268,6 +295,8 @@ public class DataInitializer implements CommandLineRunner {
         }
         System.out.println("   ✅ " + marcaAutomovilRepository.count() + " marcas automotrices insertadas");
     }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
 
     private void crearCatalogo(Album album, String[][] laminasData, int year) {
         for (String[] datos : laminasData) {
@@ -324,6 +353,8 @@ public class DataInitializer implements CommandLineRunner {
         albumRepository.save(album);
     }
 
+    // ─── Chile ────────────────────────────────────────────────────────────────
+
     private void poblarRegionesChile() {
         System.out.println("🌎 Cargando regiones oficiales de Chile...");
         String[][] regiones = {
@@ -332,7 +363,7 @@ public class DataInitializer implements CommandLineRunner {
                 {"III", "Región de Atacama"},
                 {"IV", "Región de Coquimbo"},
                 {"V", "Región de Valparaíso"},
-                {"VI", "Región del Libertador General Bernardo O’Higgins"},
+                {"VI", "Región del Libertador General Bernardo O'Higgins"},
                 {"VII", "Región del Maule"},
                 {"VIII", "Región del Biobío"},
                 {"IX", "Región de La Araucanía"},
@@ -384,9 +415,9 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("⛏️ Cargando minas representativas de Chile...");
 
         Object[][] minas = {
-                {"Chuquicamata", "Región de Antofagasta",                 "Cobre", "INACTIVA"},
-                {"Escondida", "Región de Antofagasta",                 "Cobre", "INACTIVA"},
-                {"El Teniente", "Región del Libertador General Bernardo O’Higgins",                 "Cobre", "INACTIVA"},
+                {"Chuquicamata", "Región de Antofagasta", "Cobre", "INACTIVA"},
+                {"Escondida", "Región de Antofagasta", "Cobre", "INACTIVA"},
+                {"El Teniente", "Región del Libertador General Bernardo O'Higgins", "Cobre", "INACTIVA"},
                 {"La Disputada de Las Condes", "Región Metropolitana de Santiago", "Cobre", "CERRADA"}
         };
 

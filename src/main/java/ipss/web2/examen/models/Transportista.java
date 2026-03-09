@@ -2,21 +2,47 @@ package ipss.web2.examen.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Table(name = "transportista")
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EntityListeners(AuditingEntityListener.class)
 public class Transportista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
+    @Column(name = "empresa", nullable = false, length = 200)
     private String empresa;
 
+    @Column(name = "contacto", length = 100)
     private String contacto;
+
+    @Builder.Default
+    @Column(name = "is_active")
+    private Boolean active = true;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
