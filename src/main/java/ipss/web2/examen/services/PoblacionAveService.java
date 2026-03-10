@@ -1,6 +1,7 @@
 package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.PoblacionAveRequestDTO;
+import ipss.web2.examen.dtos.PoblacionAvePageResponseDTO;
 import ipss.web2.examen.dtos.PoblacionAveResponseDTO;
 import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
@@ -16,10 +17,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Gestiona operaciones de registros de poblacion de aves.
  */
-@SuppressWarnings("null")
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -47,7 +50,7 @@ public class PoblacionAveService {
      * Lista poblaciones activas y permite filtrar por tipo de ave de forma opcional.
      */
     @Transactional(readOnly = true)
-    public Page<PoblacionAveResponseDTO> obtenerPoblacionesPaginadas(Integer page, Integer size, Long tipoAveId) {
+    public PoblacionAvePageResponseDTO obtenerPoblacionesPaginadas(Integer page, Integer size, Long tipoAveId) {
         Pageable pageable = construirPageable(page, size);
         Page<PoblacionAve> poblacionPage;
 
@@ -58,7 +61,17 @@ public class PoblacionAveService {
             poblacionPage = poblacionAveRepository.findByTipoAveIdAndActiveTrue(tipoAveId, pageable);
         }
 
-        return poblacionPage.map(poblacionAveMapper::toResponseDTO);
+        List<PoblacionAveResponseDTO> content = poblacionPage.getContent().stream()
+                .map(poblacionAveMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return new PoblacionAvePageResponseDTO(
+                content,
+                poblacionPage.getNumber(),
+                poblacionPage.getSize(),
+                poblacionPage.getTotalElements(),
+                poblacionPage.getTotalPages()
+        );
     }
 
     public PoblacionAveResponseDTO actualizarPoblacionAve(Long id, PoblacionAveRequestDTO requestDTO) {

@@ -1,6 +1,7 @@
 package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.TipoAveRequestDTO;
+import ipss.web2.examen.dtos.TipoAvePageResponseDTO;
 import ipss.web2.examen.dtos.TipoAveResponseDTO;
 import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
@@ -18,11 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Gestiona operaciones del catalogo de tipos de ave.
  */
-@SuppressWarnings("null")
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -46,9 +47,20 @@ public class TipoAveService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TipoAveResponseDTO> obtenerTiposAvePaginados(Integer page, Integer size) {
+    public TipoAvePageResponseDTO obtenerTiposAvePaginados(Integer page, Integer size) {
         Pageable pageable = construirPageable(page, size);
-        return tipoAveRepository.findByActiveTrue(pageable).map(tipoAveMapper::toResponseDTO);
+        Page<TipoAve> tipoAvePage = tipoAveRepository.findByActiveTrue(pageable);
+        List<TipoAveResponseDTO> content = tipoAvePage.getContent().stream()
+                .map(tipoAveMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return new TipoAvePageResponseDTO(
+                content,
+                tipoAvePage.getNumber(),
+                tipoAvePage.getSize(),
+                tipoAvePage.getTotalElements(),
+                tipoAvePage.getTotalPages()
+        );
     }
 
     public TipoAveResponseDTO actualizarTipoAve(Long id, TipoAveRequestDTO requestDTO) {

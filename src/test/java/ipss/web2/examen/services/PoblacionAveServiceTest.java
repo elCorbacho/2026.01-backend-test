@@ -1,6 +1,7 @@
 package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.PoblacionAveRequestDTO;
+import ipss.web2.examen.dtos.PoblacionAvePageResponseDTO;
 import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.mappers.PoblacionAveMapper;
 import ipss.web2.examen.models.PoblacionAve;
@@ -12,11 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -89,5 +94,27 @@ class PoblacionAveServiceTest {
         InvalidOperationException sizeException = assertThrows(InvalidOperationException.class,
                 () -> poblacionAveService.obtenerPoblacionesPaginadas(0, 0, null));
         assertEquals("INVALID_SIZE", sizeException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("Service debe construir respuesta paginada de poblaciones")
+    void obtenerPoblacionesPaginadasDebeRetornarPageResponseDTO() {
+        TipoAve tipoAve = TipoAve.builder().id(1L).nombre("Condor").active(true).build();
+        PoblacionAve poblacionAve = PoblacionAve.builder()
+                .id(11L)
+                .tipoAve(tipoAve)
+                .cantidad(22)
+                .fecha(LocalDate.of(2025, 3, 10))
+                .active(true)
+                .build();
+
+        when(poblacionAveRepository.findByActiveTrue(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(new PageImpl<>(List.of(poblacionAve), PageRequest.of(0, 10), 1));
+
+        PoblacionAvePageResponseDTO response = poblacionAveService.obtenerPoblacionesPaginadas(0, 10, null);
+
+        assertEquals(1, response.content().size());
+        assertEquals(1L, response.totalElements());
+        assertFalse(response.content().isEmpty());
     }
 }

@@ -2,11 +2,11 @@ package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.TipoAveRequestDTO;
+import ipss.web2.examen.dtos.TipoAvePageResponseDTO;
 import ipss.web2.examen.dtos.TipoAveResponseDTO;
 import ipss.web2.examen.services.TipoAveService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@SuppressWarnings("null")
 @RestController
 @RequestMapping("/api/tipos-ave")
 @RequiredArgsConstructor
@@ -42,10 +41,10 @@ public class TipoAveController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<Page<TipoAveResponseDTO>>> obtenerTiposAve(
+    public ResponseEntity<ApiResponseDTO<TipoAvePageResponseDTO>> obtenerTiposAve(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
-        Page<TipoAveResponseDTO> response = tipoAveService.obtenerTiposAvePaginados(page, size);
+        TipoAvePageResponseDTO response = tipoAveService.obtenerTiposAvePaginados(page, size);
         return ResponseEntity.ok(ApiResponseDTO.ok(response, "Tipos de ave recuperados exitosamente"));
     }
 

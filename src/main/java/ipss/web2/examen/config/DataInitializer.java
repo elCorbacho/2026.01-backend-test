@@ -31,7 +31,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Inicializador de datos de desarrollo para la aplicación.
@@ -102,9 +105,7 @@ public class DataInitializer implements CommandLineRunner {
             poblarMarcasAutomovil();
         }
 
-        if (tipoAveRepository.count() == 0 && poblacionAveRepository.count() == 0) {
-            poblarTiposYPoblacionesAve();
-        }
+        asegurarTiposYPoblacionesAve();
     }
 
     // ─── Transportistas ───────────────────────────────────────────────────────
@@ -306,37 +307,51 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("   ✅ " + marcaAutomovilRepository.count() + " marcas automotrices insertadas");
     }
 
-    private void poblarTiposYPoblacionesAve() {
-        System.out.println("🐦 Cargando tipos de ave y poblaciones...");
+    private void asegurarTiposYPoblacionesAve() {
+        System.out.println("🐦 Verificando tipos de ave y poblaciones...");
 
-        TipoAve tipoCondor = tipoAveRepository.save(TipoAve.builder()
-                .nombre("Condor andino")
-                .descripcion("Ave rapaz de alta montana")
-                .active(true)
-                .build());
+        List<TipoAve> tiposActivos = tipoAveRepository.findByActiveTrue();
+        Map<String, TipoAve> tiposPorNombre = tiposActivos.stream()
+                .collect(Collectors.toMap(tipo -> tipo.getNombre().toLowerCase(), Function.identity(), (left, right) -> left));
 
-        TipoAve tipoFlamenco = tipoAveRepository.save(TipoAve.builder()
-                .nombre("Flamenco chileno")
-                .descripcion("Ave acuática de humedales salinos")
-                .active(true)
-                .build());
+        TipoAve tipoCondor = tiposPorNombre.get("condor andino");
+        if (tipoCondor == null) {
+            tipoCondor = tipoAveRepository.save(TipoAve.builder()
+                    .nombre("Condor andino")
+                    .descripcion("Ave rapaz de alta montana")
+                    .active(true)
+                    .build());
+        }
 
-        poblacionAveRepository.save(PoblacionAve.builder()
-                .tipoAve(tipoCondor)
-                .cantidad(120)
-                .fecha(LocalDate.of(2025, 1, 15))
-                .active(true)
-                .build());
+        TipoAve tipoFlamenco = tiposPorNombre.get("flamenco chileno");
+        if (tipoFlamenco == null) {
+            tipoFlamenco = tipoAveRepository.save(TipoAve.builder()
+                    .nombre("Flamenco chileno")
+                    .descripcion("Ave acuática de humedales salinos")
+                    .active(true)
+                    .build());
+        }
 
-        poblacionAveRepository.save(PoblacionAve.builder()
-                .tipoAve(tipoFlamenco)
-                .cantidad(860)
-                .fecha(LocalDate.of(2025, 2, 20))
-                .active(true)
-                .build());
+        if (poblacionAveRepository.findByTipoAveAndActiveTrue(tipoCondor).isEmpty()) {
+            poblacionAveRepository.save(PoblacionAve.builder()
+                    .tipoAve(tipoCondor)
+                    .cantidad(120)
+                    .fecha(LocalDate.of(2025, 1, 15))
+                    .active(true)
+                    .build());
+        }
 
-        System.out.println("   ✅ " + tipoAveRepository.count() + " tipos de ave insertados");
-        System.out.println("   ✅ " + poblacionAveRepository.count() + " poblaciones de ave insertadas");
+        if (poblacionAveRepository.findByTipoAveAndActiveTrue(tipoFlamenco).isEmpty()) {
+            poblacionAveRepository.save(PoblacionAve.builder()
+                    .tipoAve(tipoFlamenco)
+                    .cantidad(860)
+                    .fecha(LocalDate.of(2025, 2, 20))
+                    .active(true)
+                    .build());
+        }
+
+        System.out.println("   ✅ " + tipoAveRepository.count() + " tipos de ave disponibles");
+        System.out.println("   ✅ " + poblacionAveRepository.count() + " poblaciones de ave disponibles");
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
