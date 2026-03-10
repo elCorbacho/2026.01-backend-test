@@ -1,10 +1,10 @@
 schema: spec-driven
 
-# artifact_store:
-#   mode: openspec
-
 artifact_store:
-  mode: engram
+  mode: openspec
+
+#artifact_store:
+#  mode: engram
 
 
 context: |
