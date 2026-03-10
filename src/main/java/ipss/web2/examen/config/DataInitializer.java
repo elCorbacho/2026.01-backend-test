@@ -8,7 +8,9 @@ import ipss.web2.examen.models.LaminaCatalogo;
 import ipss.web2.examen.models.ListadoOlimpiadas;
 import ipss.web2.examen.models.MarcaAutomovil;
 import ipss.web2.examen.models.MinaChile;
+import ipss.web2.examen.models.PoblacionAve;
 import ipss.web2.examen.models.RegionChile;
+import ipss.web2.examen.models.TipoAve;
 import ipss.web2.examen.models.Transportista;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
@@ -18,7 +20,9 @@ import ipss.web2.examen.repositories.LaminaRepository;
 import ipss.web2.examen.repositories.ListadoOlimpiadasRepository;
 import ipss.web2.examen.repositories.MarcaAutomovilRepository;
 import ipss.web2.examen.repositories.MinaChileRepository;
+import ipss.web2.examen.repositories.PoblacionAveRepository;
 import ipss.web2.examen.repositories.RegionRepository;
+import ipss.web2.examen.repositories.TipoAveRepository;
 import ipss.web2.examen.repositories.TransportistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -48,6 +52,8 @@ public class DataInitializer implements CommandLineRunner {
     private final ListadoOlimpiadasRepository listadoOlimpiadasRepository;
     private final GanadorGuinnessRepository winnerGuinnessRepository;
     private final MarcaAutomovilRepository marcaAutomovilRepository;
+    private final TipoAveRepository tipoAveRepository;
+    private final PoblacionAveRepository poblacionAveRepository;
 
     private static final int TARGET_SEED_COUNT = 30;
     private static final int TARGET_MARCA_AUTOMOVIL_COUNT = 2;
@@ -94,6 +100,10 @@ public class DataInitializer implements CommandLineRunner {
 
         if (marcaAutomovilRepository.count() == 0) {
             poblarMarcasAutomovil();
+        }
+
+        if (tipoAveRepository.count() == 0 && poblacionAveRepository.count() == 0) {
+            poblarTiposYPoblacionesAve();
         }
     }
 
@@ -294,6 +304,39 @@ public class DataInitializer implements CommandLineRunner {
             marcaAutomovilRepository.save(Objects.requireNonNull(marca));
         }
         System.out.println("   ✅ " + marcaAutomovilRepository.count() + " marcas automotrices insertadas");
+    }
+
+    private void poblarTiposYPoblacionesAve() {
+        System.out.println("🐦 Cargando tipos de ave y poblaciones...");
+
+        TipoAve tipoCondor = tipoAveRepository.save(TipoAve.builder()
+                .nombre("Condor andino")
+                .descripcion("Ave rapaz de alta montana")
+                .active(true)
+                .build());
+
+        TipoAve tipoFlamenco = tipoAveRepository.save(TipoAve.builder()
+                .nombre("Flamenco chileno")
+                .descripcion("Ave acuática de humedales salinos")
+                .active(true)
+                .build());
+
+        poblacionAveRepository.save(PoblacionAve.builder()
+                .tipoAve(tipoCondor)
+                .cantidad(120)
+                .fecha(LocalDate.of(2025, 1, 15))
+                .active(true)
+                .build());
+
+        poblacionAveRepository.save(PoblacionAve.builder()
+                .tipoAve(tipoFlamenco)
+                .cantidad(860)
+                .fecha(LocalDate.of(2025, 2, 20))
+                .active(true)
+                .build());
+
+        System.out.println("   ✅ " + tipoAveRepository.count() + " tipos de ave insertados");
+        System.out.println("   ✅ " + poblacionAveRepository.count() + " poblaciones de ave insertadas");
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
