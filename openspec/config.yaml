@@ -1,11 +1,8 @@
 schema: spec-driven
 
+# Agent-team storage policy
 artifact_store:
-  mode: openspec
-
-#artifact_store:
-#  mode: engram
-
+  mode: engram    
 
 context: |
   ## Proyecto: Sistema de Gestión de Álbumes y Láminas
