@@ -6,5 +6,6 @@
         }
     },
     "chatgpt.openOnStartup": true,
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "kiroAgent.configureMCP": "Disabled"
 }
