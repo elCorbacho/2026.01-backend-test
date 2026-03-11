@@ -3,9 +3,18 @@
         "/^powershell -Command \"\\$p = \\(netstat -ano \\| Select-String ':8080'\\); if\\(\\$p\\)\\{ \\$line = \\$p\\.Line; \\$pid = \\(\\$line -split '\\\\s\\+'\\)\\[-1\\]; Write-Output \\\\\"Killing PID \\$pid\\\\\"; Stop-Process -Id \\$pid -Force \\} else \\{ Write-Output 'No process en puerto 8080' \\}\"$/": {
             "approve": true,
             "matchCommandLine": true
-        }
+        },
+        ".specify/scripts/bash/": true,
+        ".specify/scripts/powershell/": true
     },
     "chatgpt.openOnStartup": true,
     "java.debug.settings.onBuildFailureProceed": true,
-    "kiroAgent.configureMCP": "Disabled"
+    "kiroAgent.configureMCP": "Disabled",
+    "chat.promptFilesRecommendations": {
+        "speckit.constitution": true,
+        "speckit.specify": true,
+        "speckit.plan": true,
+        "speckit.tasks": true,
+        "speckit.implement": true
+    }
 }
