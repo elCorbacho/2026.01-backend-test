@@ -1,5 +1,9 @@
 package ipss.web2.examen.controllers.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.TipoAveRequestDTO;
 import ipss.web2.examen.dtos.TipoAvePageResponseDTO;
@@ -22,11 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tipos-ave")
 @RequiredArgsConstructor
+@Tag(name = "Tipos de Ave", description = "Endpoints para gestionar tipos de ave")
 public class TipoAveController {
 
     private final TipoAveService tipoAveService;
 
     @PostMapping
+    @Operation(summary = "Crear un nuevo tipo de ave")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tipo de ave creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+    })
     public ResponseEntity<ApiResponseDTO<TipoAveResponseDTO>> crearTipoAve(
             @Valid @RequestBody TipoAveRequestDTO requestDTO) {
         TipoAveResponseDTO response = tipoAveService.crearTipoAve(requestDTO);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ipss.web2.examen.dtos.TipoAveRequestDTO;
 import ipss.web2.examen.dtos.TipoAveResponseDTO;
 import ipss.web2.examen.exceptions.GlobalExceptionHandler;
+import ipss.web2.examen.exceptions.InvalidOperationException;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.services.TipoAveService;
 import org.junit.jupiter.api.DisplayName;
@@ -51,6 +52,8 @@ class TipoAveControllerWebMvcTest {
                         .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Tipo de ave creado correctamente"))
+                .andExpect(jsonPath("$.errorCode").doesNotExist())
                 .andExpect(jsonPath("$.data.id").value(1));
     }
 
@@ -62,7 +65,30 @@ class TipoAveControllerWebMvcTest {
                         .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"));
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
+                .andExpect(jsonPath("$.data").doesNotExist());
+    }
+
+    @Test
+    @DisplayName("POST /api/tipos-ave responde 400 en error de negocio manejado")
+    void crearTipoAveDebeMapearErrorDeNegocio() throws Exception {
+        TipoAveRequestDTO requestDTO = TipoAveRequestDTO.builder()
+                .nombre("Condor")
+                .descripcion("Ave andina")
+                .build();
+
+        when(tipoAveService.crearTipoAve(any(TipoAveRequestDTO.class)))
+                .thenThrow(new InvalidOperationException("Operacion invalida", "INVALID_OPERATION"));
+
+        mockMvc.perform(post("/api/tipos-ave")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Operacion invalida"))
+                .andExpect(jsonPath("$.errorCode").value("INVALID_OPERATION"))
+                .andExpect(jsonPath("$.data").doesNotExist());
     }
 
     @Test
