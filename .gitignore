@@ -6,7 +6,18 @@ AGENTS.md
 # Ignorar archivos de compilación de Java
 target/
 *.class
+*.jar
+build/
+.gradle/
 nul
 
 # Ignorar preferencias locales de Eclipse/STS
 .settings/org.eclipse.jdt.core.prefs
+
+# Ignorar archivos del sistema y editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.idea/
+.vscode/
