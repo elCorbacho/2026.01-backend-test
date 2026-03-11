@@ -16,6 +16,8 @@ public interface PoblacionAveRepository extends JpaRepository<PoblacionAve, Long
 
     List<PoblacionAve> findByTipoAveAndActiveTrue(TipoAve tipoAve);
 
+    List<PoblacionAve> findByActiveTrueOrderByFechaAsc();
+
     @EntityGraph(attributePaths = "tipoAve")
     Page<PoblacionAve> findByActiveTrue(Pageable pageable);
 

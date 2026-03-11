@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 // Repositorio para la entidad Exoplaneta
@@ -13,6 +14,8 @@ import java.util.Optional;
 public interface ExoplanetaRepository extends JpaRepository<Exoplaneta, Long> {
 
     Optional<Exoplaneta> findByIdAndActiveTrue(Long id);
+
+    List<Exoplaneta> findByActiveTrueOrderByNombreAsc();
 
     Page<Exoplaneta> findByActiveTrueOrderByNombreAsc(Pageable pageable);
 }

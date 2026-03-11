@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,9 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class MarcaBicicletaControllerIntegrationTest {
 
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 10;
 
     @Autowired
     private MockMvc mockMvc;
@@ -26,7 +28,7 @@ class MarcaBicicletaControllerIntegrationTest {
     private MarcaBicicletaRepository marcaBicicletaRepository;
 
     @Test
-    @DisplayName("GET /api/marcas-bicicleta devuelve 3 marcas y no duplica data")
+    @DisplayName("GET /api/marcas-bicicleta devuelve 10 marcas activas y no duplica data")
     void listarMarcasActivas() throws Exception {
         mockMvc.perform(get("/api/marcas-bicicleta"))
                 .andExpect(status().isOk())
@@ -37,6 +39,6 @@ class MarcaBicicletaControllerIntegrationTest {
 
         mockMvc.perform(get("/api/marcas-bicicleta")).andExpect(status().isOk());
 
-        assertThat(marcaBicicletaRepository.count()).isEqualTo(EXPECTED_COUNT);
+        assertThat(marcaBicicletaRepository.findByActiveTrueOrderByNombreAsc()).hasSize(EXPECTED_COUNT);
     }
 }

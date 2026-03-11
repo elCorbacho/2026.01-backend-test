@@ -26,3 +26,20 @@ En Linux/macOS:
 - El test de ruta positiva pasa cuando los tres indices requeridos estan presentes.
 - El test de ruta negativa pasa solo si detecta y reporta el indice faltante (simulacion de drift).
 - El script de referencia `docs/db/album_indexes.sql` se mantiene como fuente de verdad para preaplicar indices antes del arranque en modo `validate`.
+
+## Controles para estandar de poblacion nativa
+
+Como control complementario se agrego un normalizador de semillas nativas que garantiza cardinalidad y calidad minima en entidades objetivo.
+
+- Componente: `src/main/java/ipss/web2/examen/config/NativeSeedStandardizationInitializer.java`
+- Regla: cada entidad objetivo queda con exactamente 10 registros activos y validos.
+- Estrategia: remedia faltantes con seeds deterministicos y normaliza excesos con soft delete.
+- Idempotencia: ejecuciones repetidas no generan duplicados ni degradan la calidad minima.
+
+Validacion tecnica de cierre:
+
+```bash
+.\mvnw.cmd -Dtest=NativeSeedStandardizationIntegrationTest test
+```
+
+El test verifica cardinalidad final de 10 activos en cada entidad objetivo incluida en el alcance de estandarizacion.
