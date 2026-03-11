@@ -11,6 +11,7 @@ import ipss.web2.examen.models.MinaChile;
 import ipss.web2.examen.models.PoblacionAve;
 import ipss.web2.examen.models.RegionChile;
 import ipss.web2.examen.models.TipoAve;
+import ipss.web2.examen.models.TipoInsecto;
 import ipss.web2.examen.models.Transportista;
 import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.CampeonJockeyRepository;
@@ -23,6 +24,7 @@ import ipss.web2.examen.repositories.MinaChileRepository;
 import ipss.web2.examen.repositories.PoblacionAveRepository;
 import ipss.web2.examen.repositories.RegionRepository;
 import ipss.web2.examen.repositories.TipoAveRepository;
+import ipss.web2.examen.repositories.TipoInsectoRepository;
 import ipss.web2.examen.repositories.TransportistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -56,6 +58,7 @@ public class DataInitializer implements CommandLineRunner {
     private final GanadorGuinnessRepository winnerGuinnessRepository;
     private final MarcaAutomovilRepository marcaAutomovilRepository;
     private final TipoAveRepository tipoAveRepository;
+    private final TipoInsectoRepository tipoInsectoRepository;
     private final PoblacionAveRepository poblacionAveRepository;
 
     private static final int TARGET_SEED_COUNT = 30;
@@ -106,6 +109,7 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         asegurarTiposYPoblacionesAve();
+        asegurarTiposInsecto();
     }
 
     // ─── Transportistas ───────────────────────────────────────────────────────
@@ -352,6 +356,31 @@ public class DataInitializer implements CommandLineRunner {
 
         System.out.println("   ✅ " + tipoAveRepository.count() + " tipos de ave disponibles");
         System.out.println("   ✅ " + poblacionAveRepository.count() + " poblaciones de ave disponibles");
+    }
+
+    private void asegurarTiposInsecto() {
+        System.out.println("🐜 Verificando tipos de insecto...");
+
+        if (!tipoInsectoRepository.findByActiveTrueOrderByNombreAsc().isEmpty()) {
+            System.out.println("   ✅ " + tipoInsectoRepository.findByActiveTrueOrderByNombreAsc().size() + " tipos de insecto disponibles");
+            return;
+        }
+
+        List<TipoInsecto> tipos = List.of(
+                TipoInsecto.builder().nombre("Abeja").descripcion("Insecto polinizador social").active(true).build(),
+                TipoInsecto.builder().nombre("Abejorro").descripcion("Polinizador robusto de vuelo potente").active(true).build(),
+                TipoInsecto.builder().nombre("Escarabajo").descripcion("Insecto con elytras duros").active(true).build(),
+                TipoInsecto.builder().nombre("Libelula").descripcion("Depredador volador de zonas humedas").active(true).build(),
+                TipoInsecto.builder().nombre("Hormiga").descripcion("Insecto eusocial de colonias complejas").active(true).build(),
+                TipoInsecto.builder().nombre("Mariposa").descripcion("Lepidoptero de alas coloridas").active(true).build(),
+                TipoInsecto.builder().nombre("Mosca").descripcion("Diptero comun de ambientes urbanos y rurales").active(true).build(),
+                TipoInsecto.builder().nombre("Mantis").descripcion("Insecto depredador de patas prensiles").active(true).build(),
+                TipoInsecto.builder().nombre("Saltamontes").descripcion("Ortoptero de patas traseras saltadoras").active(true).build(),
+                TipoInsecto.builder().nombre("Luciiernaga").descripcion("Coleoptero bioluminiscente nocturno").active(true).build()
+        );
+
+        tipoInsectoRepository.saveAll(tipos);
+        System.out.println("   ✅ " + tipoInsectoRepository.findByActiveTrueOrderByNombreAsc().size() + " tipos de insecto disponibles");
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
