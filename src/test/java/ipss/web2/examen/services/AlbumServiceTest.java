@@ -127,6 +127,16 @@ class AlbumServiceTest {
         assertEquals("INVALID_SIZE", ex.getErrorCode());
     }
 
+        @Test
+        @DisplayName("Service debe exponer codigo de negocio deterministico en errores de paginacion")
+        void obtenerAlbumsPaginadosConReglaDeNegocioInvalidaDebeRetornarCodigoDeterministico() {
+                InvalidOperationException ex = assertThrows(InvalidOperationException.class,
+                                () -> albumService.obtenerAlbumsPaginados(-3, 10, null, null));
+
+                assertEquals("INVALID_PAGE", ex.getErrorCode());
+                assertEquals("El parámetro 'page' debe ser mayor o igual a 0", ex.getMessage());
+        }
+
     @Test
     @DisplayName("Service debe construir resumen con conteos de laminas")
     void obtenerResumenAlbumDebeCalcularTotales() {

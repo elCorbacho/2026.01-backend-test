@@ -14,21 +14,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AlbumController.class)
 @Import(GlobalExceptionHandler.class)
-class AlbumControllerWebMvcTest {
+class AlbumControllerWebMvcTest extends ApiResponseEnvelopeTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
+
+        @Autowired
+        private ObjectMapper objectMapper;
 
     @MockBean
     private AlbumService albumService;
@@ -53,22 +60,49 @@ class AlbumControllerWebMvcTest {
                         1
                 ));
 
-        mockMvc.perform(get("/api/albums")
+        assertSuccessEnvelope(mockMvc.perform(get("/api/albums")
                         .param("page", "0")
                         .param("size", "10")
                         .param("year", "2020")
                         .param("active", "false"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Álbumes recuperados exitosamente"))
+                        .andExpect(status().isOk()), "Álbumes recuperados exitosamente")
                 .andExpect(jsonPath("$.data.content[0].id").value(10))
                 .andExpect(jsonPath("$.data.content[0].nombre").value("Clasicos"))
                 .andExpect(jsonPath("$.data.content[0].year").value(2020))
                 .andExpect(jsonPath("$.data.page").value(0))
                 .andExpect(jsonPath("$.data.size").value(10))
                 .andExpect(jsonPath("$.data.totalElements").value(1))
-                .andExpect(jsonPath("$.data.totalPages").value(1))
-                .andExpect(jsonPath("$.timestamp").exists());
+                .andExpect(jsonPath("$.data.totalPages").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/albums debe mantener envelope uniforme con payload paginado")
+    void obtenerAlbumsDebeMantenerEnvelopePaginadoConsistente() throws Exception {
+        when(albumService.obtenerAlbumsPaginados(0, 5, null, null))
+                .thenReturn(new AlbumPageResponseDTO(
+                        List.of(AlbumResponseDTO.builder()
+                                .id(7L)
+                                .nombre("Coleccion 2026")
+                                .year(2026)
+                                .descripcion("Temporada actual")
+                                .build()),
+                        0,
+                        5,
+                        1,
+                        1
+                ));
+
+        assertSuccessEnvelope(mockMvc.perform(get("/api/albums")
+                        .param("page", "0")
+                        .param("size", "5"))
+                        .andExpect(status().isOk()), "Álbumes recuperados exitosamente")
+                .andExpect(jsonPath("$.data").isMap())
+                .andExpect(jsonPath("$.data.content").isArray())
+                .andExpect(jsonPath("$.data.content[0].id").value(7))
+                .andExpect(jsonPath("$.data.page").value(0))
+                .andExpect(jsonPath("$.data.size").value(5))
+                .andExpect(jsonPath("$.data.totalElements").value(1))
+                .andExpect(jsonPath("$.data.totalPages").value(1));
     }
 
     @Test
@@ -78,6 +112,34 @@ class AlbumControllerWebMvcTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errorCode").value("INVALID_PARAMETER_TYPE"));
+    }
+
+    @Test
+    @DisplayName("POST /api/albums con payload invalido debe responder 400 con envelope de validacion")
+    void crearAlbumConPayloadInvalidoDebeResponderValidationErrorEnvelope() throws Exception {
+        mockMvc.perform(post("/api/albums")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of())))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Error de validación en los datos enviados"))
+                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
+                .andExpect(jsonPath("$.errors").isMap())
+                .andExpect(jsonPath("$.errors.nombre").exists())
+                .andExpect(jsonPath("$.errors.year").exists())
+                .andExpect(jsonPath("$.errors.descripcion").exists())
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DisplayName("GET /api/albums/{id} debe responder 404 con envelope uniforme")
+    void obtenerAlbumPorIdNoExistenteDebeResponderNotFoundEnvelope() throws Exception {
+        when(albumService.obtenerAlbumPorId(999L))
+                .thenThrow(new ResourceNotFoundException("Album", "ID", 999L));
+
+        assertErrorEnvelope(mockMvc.perform(get("/api/albums/999"))
+                        .andExpect(status().isNotFound()), "RESOURCE_NOT_FOUND")
+                .andExpect(jsonPath("$.message").value("Album no encontrado con ID: '999'"));
     }
 
     @Test
