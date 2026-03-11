@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify the plan honours all five Core Principles (constitution v1.0.0):
+
+- [ ] **I. Layered Architecture** — No repository injected into a Controller; all business logic in Services.
+- [ ] **II. Soft Delete** — Any delete operation sets `active = false`; no `repository.delete()` / SQL `DELETE`.
+- [ ] **III. Response Envelope & DTOs** — All endpoints return `ResponseEntity<ApiResponseDTO<T>>`; correct DTO type used per operation.
+- [ ] **IV. Test Coverage** — Controller (`@WebMvcTest`), Service (`@ExtendWith(MockitoExtension.class)`), and integration (`@SpringBootTest`) tests are planned.
+- [ ] **V. Custom Exceptions** — Only `ResourceNotFoundException`, `InvalidOperationException`, or `EndpointNotFoundException` are used; no generic exceptions thrown.
+
+> If a check fails, document the justification in the **Complexity Tracking** table below.
 
 ## Project Structure
 
