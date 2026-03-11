@@ -31,13 +31,5 @@
 			"password": true
 		}
 	],
-	"servers": {
-		"engram": {
-			"command": "engram",
-			"args": [
-				"mcp"
-			],
-			"type": "stdio"
-		}
-	}
+	"servers": {}
 }
