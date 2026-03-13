@@ -8,6 +8,8 @@
         ".specify/scripts/powershell/": true
     },
     "chatgpt.openOnStartup": true,
+    "java.autobuild.enabled": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
     "java.debug.settings.onBuildFailureProceed": true,
     "kiroAgent.configureMCP": "Disabled",
     "chat.promptFilesRecommendations": {

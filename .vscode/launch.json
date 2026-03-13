@@ -4,6 +4,7 @@
             "type": "java",
             "name": "Spring Boot-Application<examen>",
             "request": "launch",
+            "preLaunchTask": "Build Spring Boot (Windows, skip tests)",
             "cwd": "${workspaceFolder}",
             "mainClass": "ipss.web2.examen.Application",
             "projectName": "examen",

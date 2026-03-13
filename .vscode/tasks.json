@@ -2,6 +2,23 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Build Spring Boot (Windows, skip tests)",
+			"type": "shell",
+			"command": ".\\mvnw.cmd",
+			"args": [
+				"-DskipTests",
+				"compile"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
 			"label": "Run tests for equipos_futball_espana",
 			"type": "shell",
 			"command": "./mvnw test",

@@ -5,7 +5,9 @@
       "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -50)",
       "Bash(./mvnw clean:*)",
       "Bash(cd C:/Users/histo/OneDrive/Escritorio/2026.01-backend-test && ./mvnw test -Dtest=\"AlbumControllerWebMvcTest\" 2>&1 | grep -A 50 \"Tests run\")",
-      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -30)"
+      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -30)",
+      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && gh pr create --title \"fix\\(security\\): Remove information disclosure in error responses\" --body \"$\\(cat <<'EOF'\n## Summary\n\nThis PR fixes **2 HIGH severity information disclosure vulnerabilities** in API error responses:\n\n1. **Request URL Disclosure \\(CWE-209\\)** - Removed full request URLs from 404 error messages and response bodies\n2. **Entity Field Name Enumeration \\(CWE-215\\)** - Removed all entity field names from validation error messages\n\n## Impact\n\n- ✅ No sensitive data \\(API tokens, session IDs, internal IDs\\) leaked via error responses\n- ✅ No database schema enumeration via field name observation\n- ✅ Server-side logging preserved for debugging and security audits\n- ✅ 100% backward compatible \\(HTTP status codes, error codes unchanged\\)\n\n## Testing\n\n- ✅ All 156 tests passing\n- ✅ 4 test assertions updated to match new secure behavior\n- ✅ No regressions or breaking changes\n\n## Files Changed\n\n- `src/main/java/ipss/web2/examen/exceptions/GlobalExceptionHandler.java` - Fixed 4 exception handlers\n- 4 controller test files - Updated assertions\n\n## Security Details\n\nSee attached security review report for full vulnerability analysis and remediation details.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(find /c/Users/histo/OneDrive/Escritorio/2026.01-backend-test -name \"logback*.xml\" 2>/dev/null | head -5)"
     ]
   }
 }
