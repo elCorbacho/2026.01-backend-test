@@ -10,7 +10,8 @@
     "chatgpt.openOnStartup": true,
     "java.autobuild.enabled": true,
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.debug.settings.onBuildFailureProceed": true,
+    "java.debug.settings.enableRunDebugCodeLens": false,
+    "java.debug.settings.onBuildFailureProceed": false,
     "kiroAgent.configureMCP": "Disabled",
     "chat.promptFilesRecommendations": {
         "speckit.constitution": true,

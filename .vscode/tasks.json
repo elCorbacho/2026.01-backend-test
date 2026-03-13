@@ -7,6 +7,7 @@
 			"command": ".\\mvnw.cmd",
 			"args": [
 				"-DskipTests",
+				"clean",
 				"compile"
 			],
 			"isBackground": false,
@@ -17,6 +18,19 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "Run Spring Boot (Windows, Maven)",
+			"type": "shell",
+			"command": ".\\mvnw.cmd",
+			"args": [
+				"spring-boot:run"
+			],
+			"isBackground": true,
+			"problemMatcher": [
+				"$maven"
+			],
+			"group": "build"
 		},
 		{
 			"label": "Run tests for equipos_futball_espana",
