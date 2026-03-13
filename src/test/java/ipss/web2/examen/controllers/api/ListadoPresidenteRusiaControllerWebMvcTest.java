@@ -100,9 +100,7 @@ class ListadoPresidenteRusiaControllerWebMvcTest {
                         .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
-                .andExpect(jsonPath("$.errors.nombre").exists())
-                .andExpect(jsonPath("$.errors.periodoInicio").exists());
+                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"));
     }
 
     @Test

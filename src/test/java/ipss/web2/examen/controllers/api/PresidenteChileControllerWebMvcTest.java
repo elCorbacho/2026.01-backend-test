@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(PresidenteChileController.class)
 @Import(GlobalExceptionHandler.class)
-class PresidenteChileControllerWebMvcTest {
+class PresidenteChileControllerWebMvcTest extends ApiResponseEnvelopeTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,13 +42,29 @@ class PresidenteChileControllerWebMvcTest {
                         .descripcion("Transición democrática")
                         .build()));
 
-        mockMvc.perform(get("/api/presidentes-chile"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Presidentes de Chile recuperados exitosamente"))
+        assertSuccessEnvelope(mockMvc.perform(get("/api/presidentes-chile"))
+                        .andExpect(status().isOk()), "Presidentes de Chile recuperados exitosamente")
                 .andExpect(jsonPath("$.data[0].nombre").value("Patricio Aylwin"))
-                .andExpect(jsonPath("$.data[0].partido").value("Democracia Cristiana"))
-                .andExpect(jsonPath("$.timestamp").exists());
+                .andExpect(jsonPath("$.data[0].partido").value("Democracia Cristiana"));
+    }
+
+    @Test
+    @DisplayName("GET /api/presidentes-chile/{id} debe responder 200 con envelope uniforme")
+    void obtenerPresidenteChilePorIdDebeResponderEnvelopeExito() throws Exception {
+        when(presidenteChileService.obtenerPresidentesChile())
+                .thenReturn(List.of(PresidenteChileResponseDTO.builder()
+                        .id(1L)
+                        .nombre("Patricio Aylwin")
+                        .periodoInicio(LocalDate.of(1990, 3, 11))
+                        .periodoFin(LocalDate.of(1994, 3, 11))
+                        .partido("Democracia Cristiana")
+                        .descripcion("Transición democrática")
+                        .build()));
+
+        assertSuccessEnvelope(mockMvc.perform(get("/api/presidentes-chile/1"))
+                        .andExpect(status().isOk()), "Presidente de Chile recuperado exitosamente")
+                .andExpect(jsonPath("$.data.id").value(1))
+                .andExpect(jsonPath("$.data.nombre").value("Patricio Aylwin"));
     }
 
     @Test
@@ -56,9 +72,8 @@ class PresidenteChileControllerWebMvcTest {
     void obtenerPresidentesChileListaVacia() throws Exception {
         when(presidenteChileService.obtenerPresidentesChile()).thenReturn(List.of());
 
-        mockMvc.perform(get("/api/presidentes-chile"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
+        assertSuccessEnvelope(mockMvc.perform(get("/api/presidentes-chile"))
+                        .andExpect(status().isOk()), "Presidentes de Chile recuperados exitosamente")
                 .andExpect(jsonPath("$.data").isArray())
                 .andExpect(jsonPath("$.data.length()").value(0));
     }

@@ -9,6 +9,8 @@ import ipss.web2.examen.dtos.GanadorAlbumDTO;
 import ipss.web2.examen.services.AlbumService;
 import ipss.web2.examen.services.GanadorAlbumService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,27 +37,42 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<AlbumResponseDTO>> crearAlbum(
             @Valid @RequestBody AlbumRequestDTO requestDTO) {
         AlbumResponseDTO response = albumService.crearAlbum(requestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponseDTO.created(response, "Álbum creado exitosamente"));
+        return createdResponse(response, "Álbum creado exitosamente");
     }
     
     // GET /api/albums/{id} - Obtener álbum por ID
     @GetMapping("/{id}")
+        @Operation(summary = "Obtener album por id")
+        @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Album recuperado exitosamente",
+                content = @Content(schema = @Schema(implementation = ApiResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Album no encontrado",
+                content = @Content(schema = @Schema(implementation = ApiResponseDTO.class)))
+        })
     public ResponseEntity<ApiResponseDTO<AlbumResponseDTO>> obtenerAlbumPorId(
             @PathVariable Long id) {
         AlbumResponseDTO response = albumService.obtenerAlbumPorId(id);
-        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbum recuperado exitosamente"));
+        return okResponse(response, "Álbum recuperado exitosamente");
     }
     
     // GET /api/albums - Listar todos los álbumes
     @GetMapping
+        @Operation(summary = "Listar albums paginados")
+        @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Albums recuperados exitosamente",
+                content = @Content(schema = @Schema(implementation = ApiResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Parametros de paginacion o filtros invalidos",
+                content = @Content(schema = @Schema(implementation = ApiResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno inesperado",
+                content = @Content(schema = @Schema(implementation = ApiResponseDTO.class)))
+        })
     public ResponseEntity<ApiResponseDTO<AlbumPageResponseDTO>> obtenerTodosLosAlbumes(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Boolean active) {
         AlbumPageResponseDTO response = albumService.obtenerAlbumsPaginados(page, size, year, active);
-        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbumes recuperados exitosamente"));
+        return okResponse(response, "Álbumes recuperados exitosamente");
     }
 
     // GET /api/albums/{id}/summary - Obtener resumen del álbum
@@ -63,7 +80,7 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<AlbumSummaryDTO>> obtenerResumenAlbum(
             @PathVariable Long id) {
         AlbumSummaryDTO summary = albumService.obtenerResumenAlbum(id);
-        return ResponseEntity.ok(ApiResponseDTO.ok(summary, "Resumen del álbum recuperado exitosamente"));
+        return okResponse(summary, "Resumen del álbum recuperado exitosamente");
     }
     
     // PUT /api/albums/{id} - Actualizar álbum
@@ -72,14 +89,14 @@ public class AlbumController {
             @PathVariable Long id,
             @Valid @RequestBody AlbumRequestDTO requestDTO) {
         AlbumResponseDTO response = albumService.actualizarAlbum(id, requestDTO);
-        return ResponseEntity.ok(ApiResponseDTO.ok(response, "Álbum actualizado correctamente"));
+        return okResponse(response, "Álbum actualizado correctamente");
     }
     
     // DELETE /api/albums/{id} - Eliminar álbum (soft delete)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> eliminarAlbum(@PathVariable Long id) {
         albumService.eliminarAlbum(id);
-        return ResponseEntity.ok(ApiResponseDTO.ok("Álbum con ID: " + id + " ha sido marcado como inactivo"));
+        return okMessageResponse("Álbum con ID: " + id + " ha sido marcado como inactivo");
     }
 
     @GetMapping("/{albumId}/ganadores")
@@ -94,6 +111,18 @@ public class AlbumController {
     public ResponseEntity<ApiResponseDTO<List<GanadorAlbumDTO>>> obtenerGanadoresPorAlbum(
             @PathVariable Long albumId) {
         List<GanadorAlbumDTO> ganadores = ganadorAlbumService.obtenerGanadoresPorAlbum(albumId);
-        return ResponseEntity.ok(ApiResponseDTO.ok(ganadores, "Ganadores del álbum recuperados exitosamente"));
+        return okResponse(ganadores, "Ganadores del álbum recuperados exitosamente");
+    }
+
+    private <T> ResponseEntity<ApiResponseDTO<T>> okResponse(T data, String message) {
+        return ResponseEntity.ok(ApiResponseDTO.ok(data, message));
+    }
+
+    private <T> ResponseEntity<ApiResponseDTO<T>> createdResponse(T data, String message) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponseDTO.created(data, message));
+    }
+
+    private ResponseEntity<ApiResponseDTO<Void>> okMessageResponse(String message) {
+        return ResponseEntity.ok(ApiResponseDTO.ok(message));
     }
 }

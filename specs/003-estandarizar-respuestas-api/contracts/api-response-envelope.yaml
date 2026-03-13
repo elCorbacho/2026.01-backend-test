@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: API Response Envelope Standard Contract
+  version: 1.0.0
+  description: Reusable response contract for standardized success and error payloads.
+paths:
+  /api/albums:
+    get:
+      summary: Representative paginated success response
+      operationId: obtenerAlbumsPaginados
+      responses:
+        '200':
+          description: Successful response with standardized envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseAlbumPage'
+        '400':
+          $ref: '#/components/responses/StandardBadRequest'
+        '500':
+          $ref: '#/components/responses/StandardInternalServerError'
+  /api/tipos-ave:
+    post:
+      summary: Representative create endpoint with standardized envelope
+      operationId: crearTipoAve
+      responses:
+        '201':
+          description: Created with standardized success envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTipoAveItem'
+        '400':
+          $ref: '#/components/responses/StandardBadRequest'
+        '500':
+          $ref: '#/components/responses/StandardInternalServerError'
+  /api/presidentes-chile/{id}:
+    get:
+      summary: Representative get-by-id contract for another domain
+      operationId: obtenerPresidenteChilePorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Successful response with standardized envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponsePresidenteChileItem'
+        '404':
+          $ref: '#/components/responses/StandardNotFound'
+        '500':
+          $ref: '#/components/responses/StandardInternalServerError'
+  /api/albums/{id}:
+    get:
+      summary: Representative get-by-id success and not-found contract
+      operationId: obtenerAlbumPorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Successful response with standardized envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseAlbumItem'
+        '404':
+          $ref: '#/components/responses/StandardNotFound'
+        '500':
+          $ref: '#/components/responses/StandardInternalServerError'
+components:
+  responses:
+    StandardBadRequest:
+      description: Validation or invalid operation with standardized envelope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+    StandardNotFound:
+      description: Resource or endpoint not found with standardized envelope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+    StandardInternalServerError:
+      description: Unexpected server error with standardized envelope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorResponse'
+  schemas:
+    ApiResponseBase:
+      type: object
+      required:
+        - success
+        - message
+        - timestamp
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    ApiErrorResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponseBase'
+        - type: object
+          required:
+            - errorCode
+          properties:
+            success:
+              type: boolean
+              example: false
+            errorCode:
+              type: string
+              example: RESOURCE_NOT_FOUND
+            errors:
+              type: object
+              additionalProperties: true
+              nullable: true
+
+    ApiSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponseBase'
+        - type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            data:
+              type: object
+              nullable: true
+
+    AlbumResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        anio:
+          type: integer
+        activo:
+          type: boolean
+
+    AlbumPageResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumResponseDTO'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    TipoAveResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        active:
+          type: boolean
+
+    PresidenteChileResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        partido:
+          type: string
+        descripcion:
+          type: string
+
+    ApiResponseAlbumItem:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/AlbumResponseDTO'
+
+    ApiResponseAlbumPage:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/AlbumPageResponseDTO'
+
+    ApiResponseTipoAveItem:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/TipoAveResponseDTO'
+
+    ApiResponsePresidenteChileItem:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccessResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/PresidenteChileResponseDTO'

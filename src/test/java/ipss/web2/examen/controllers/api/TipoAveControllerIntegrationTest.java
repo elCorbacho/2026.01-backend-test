@@ -59,10 +59,25 @@ class TipoAveControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Tipo de ave creado correctamente"))
+                .andExpect(jsonPath("$.errorCode").doesNotExist())
                 .andExpect(jsonPath("$.data.nombre").value("Zorzal"));
 
         assertThat(tipoAveRepository.count()).isEqualTo(1);
     }
+
+        @Test
+        @DisplayName("POST /api/tipos-ave responde 400 con payload invalido")
+        void crearTipoAveDebeResponderBadRequestConPayloadInvalido() throws Exception {
+                mockMvc.perform(post("/api/tipos-ave")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content("{}"))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.success").value(false))
+                                .andExpect(jsonPath("$.message").exists())
+                                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
+                                .andExpect(jsonPath("$.data").doesNotExist());
+        }
 
     @Test
     @DisplayName("DELETE /api/tipos-ave/{id} aplica soft delete")
@@ -127,4 +142,14 @@ class TipoAveControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.content.length()").value(1))
                 .andExpect(jsonPath("$.data.content[0].nombre").value("Condor"));
     }
+
+        @Test
+        @DisplayName("GET /v3/api-docs documenta POST /api/tipos-ave con respuestas 201 y 400")
+        void openApiDebeDocumentarContratoPostTipoAve() throws Exception {
+                mockMvc.perform(get("/v3/api-docs"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.paths['/api/tipos-ave'].post").exists())
+                                .andExpect(jsonPath("$.paths['/api/tipos-ave'].post.responses['201']").exists())
+                                .andExpect(jsonPath("$.paths['/api/tipos-ave'].post.responses['400']").exists());
+        }
 }
