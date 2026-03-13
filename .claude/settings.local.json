@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -100)",
+      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -50)",
+      "Bash(./mvnw clean:*)",
+      "Bash(cd C:/Users/histo/OneDrive/Escritorio/2026.01-backend-test && ./mvnw test -Dtest=\"AlbumControllerWebMvcTest\" 2>&1 | grep -A 50 \"Tests run\")",
+      "Bash(cd \"C:\\\\Users\\\\histo\\\\OneDrive\\\\Escritorio\\\\2026.01-backend-test\" && ./mvnw test 2>&1 | tail -30)"
+    ]
+  }
+}

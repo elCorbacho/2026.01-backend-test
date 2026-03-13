@@ -124,10 +124,6 @@ class AlbumControllerWebMvcTest extends ApiResponseEnvelopeTestSupport {
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación en los datos enviados"))
                 .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
-                .andExpect(jsonPath("$.errors").isMap())
-                .andExpect(jsonPath("$.errors.nombre").exists())
-                .andExpect(jsonPath("$.errors.year").exists())
-                .andExpect(jsonPath("$.errors.descripcion").exists())
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 

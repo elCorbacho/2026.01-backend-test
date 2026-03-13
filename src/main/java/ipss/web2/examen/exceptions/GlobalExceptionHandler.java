@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, WebRequest request) {
-        
+
         Map<String, Object> errorDetails = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String errorName;
@@ -73,14 +73,14 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errorDetails.put(errorName, errorMessage);
         });
-        
+
         log.warn("Error de validación: {}", errorDetails);
-        
+
         return buildErrorResponse(
             HttpStatus.BAD_REQUEST,
             "Error de validación en los datos enviados",
             VALIDATION_ERROR_CODE,
-            errorDetails
+            null
         );
     }
     
@@ -128,19 +128,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleNoHandlerFound(
             NoHandlerFoundException ex, WebRequest request) {
-        
+
         log.warn("Endpoint no encontrado: {} {}", ex.getHttpMethod(), ex.getRequestURL());
-        
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("metodo", ex.getHttpMethod());
-        errorDetails.put("ruta", ex.getRequestURL());
-        errorDetails.put("tipo", "Endpoint no existe");
-        
+
         return buildErrorResponse(
             HttpStatus.NOT_FOUND,
-            "Endpoint inválido: " + ex.getHttpMethod() + " " + ex.getRequestURL(),
-            ENDPOINT_NOT_FOUND_ERROR_CODE,
-            errorDetails
+            "El endpoint solicitado no existe",
+            ENDPOINT_NOT_FOUND_ERROR_CODE
         );
     }
 
@@ -151,15 +145,10 @@ public class GlobalExceptionHandler {
 
         log.warn("Recurso no encontrado por handler estatico: {}", ex.getResourcePath());
 
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("ruta", ex.getResourcePath());
-        errorDetails.put("tipo", "Endpoint no existe");
-
         return buildErrorResponse(
             HttpStatus.NOT_FOUND,
-            "Endpoint inválido: " + ex.getResourcePath(),
-            ENDPOINT_NOT_FOUND_ERROR_CODE,
-            errorDetails
+            "El recurso solicitado no fue encontrado",
+            ENDPOINT_NOT_FOUND_ERROR_CODE
         );
     }
     
@@ -167,23 +156,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EndpointNotFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleEndpointNotFoundException(
             EndpointNotFoundException ex, WebRequest request) {
-        
+
         log.warn("Endpoint personalizado no encontrado: {}", ex.getMessage());
-        
-        Map<String, Object> errorDetails = new HashMap<>();
-        if (ex.getMethod() != null) {
-            errorDetails.put("metodo", ex.getMethod());
-        }
-        if (ex.getPath() != null) {
-            errorDetails.put("ruta", ex.getPath());
-        }
-        errorDetails.put("tipo", "Endpoint inválido o no soportado");
-        
+
         return buildErrorResponse(
             HttpStatus.NOT_FOUND,
             ex.getMessage(),
-            ENDPOINT_NOT_FOUND_ERROR_CODE,
-            errorDetails
+            ENDPOINT_NOT_FOUND_ERROR_CODE
         );
     }
     

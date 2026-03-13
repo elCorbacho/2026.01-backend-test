@@ -136,9 +136,7 @@ class TransportistaControllerWebMvcTest {
                         .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
-                .andExpect(jsonPath("$.errors.nombre").exists())
-                .andExpect(jsonPath("$.errors.empresa").exists());
+                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"));
 
         verify(transportistaService, never()).crear(any());
     }

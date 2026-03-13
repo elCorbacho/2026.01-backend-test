@@ -83,8 +83,7 @@ class PoblacionAveControllerWebMvcTest {
                         .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"))
-                .andExpect(jsonPath("$.errors.cantidad").exists());
+                .andExpect(jsonPath("$.errorCode").value("VALIDATION_ERROR"));
     }
 
     @Test
