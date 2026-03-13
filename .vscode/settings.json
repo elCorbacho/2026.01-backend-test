@@ -11,7 +11,7 @@
     "java.autobuild.enabled": true,
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.debug.settings.enableRunDebugCodeLens": false,
-    "java.debug.settings.onBuildFailureProceed": false,
+    "java.debug.settings.onBuildFailureProceed": true,
     "kiroAgent.configureMCP": "Disabled",
     "chat.promptFilesRecommendations": {
         "speckit.constitution": true,

@@ -16,9 +16,10 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 // Manejador global de excepciones para la aplicación
-@SuppressWarnings("null")
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     private static final String DATA_INTEGRITY_ERROR_CODE = "DATA_INTEGRITY_VIOLATION";
     private static final String ENDPOINT_NOT_FOUND_ERROR_CODE = "ENDPOINT_NOT_FOUND";
     
-    /// Maneja excepciones de recurso no encontrado (404)
+    // Maneja excepciones de recurso no encontrado (404)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -90,9 +91,10 @@ public class GlobalExceptionHandler {
             MethodArgumentTypeMismatchException ex, WebRequest request) {
         
         String fieldName = ex.getName();
-        String expectedType = ex.getRequiredType() != null ? 
-            ex.getRequiredType().getSimpleName() : "unknown";
-        String receivedValue = ex.getValue() != null ? ex.getValue().toString() : "null";
+        Class<?> requiredType = ex.getRequiredType();
+        Object rawValue = ex.getValue();
+        String expectedType = requiredType != null ? requiredType.getSimpleName() : "unknown";
+        String receivedValue = Objects.toString(rawValue, "null");
         
         Map<String, Object> errorDetails = new HashMap<>();
         errorDetails.put(fieldName, String.format(
@@ -215,3 +217,4 @@ public class GlobalExceptionHandler {
                 logPrefix, handlerType, requestContext, ex.getMessage(), ex);
     }
 }
+

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 // Controlador REST para listado de olimpiadas - /api/listado-olimpiadas
-@SuppressWarnings("null")
+
 @RestController
 @RequestMapping("/api/listado-olimpiadas")
 @RequiredArgsConstructor
@@ -62,3 +62,4 @@ public class ListadoOlimpiadasController {
                 "Listado de olimpiadas con ID: " + id + " ha sido marcado como inactivo"));
     }
 }
+

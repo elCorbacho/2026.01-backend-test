@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 // Controlador REST para presidentes de Rusia - /api/listado-presidente-rusia
-@SuppressWarnings("null")
+
 @RestController
 @RequestMapping("/api/listado-presidente-rusia")
 @RequiredArgsConstructor
@@ -82,3 +82,4 @@ public class ListadoPresidenteRusiaController {
         return ResponseEntity.ok(ApiResponseDTO.ok("Presidente de Rusia eliminado correctamente"));
     }
 }
+

@@ -519,15 +519,15 @@ public class NativeSeedStandardizationInitializer {
     private void normalizeEquiposFutbolEspana() {
         normalizeEntity(
                 "equipo_futbol_espana",
-                equipoFutbolEspanaRepository.findByActivoTrue(),
+                equipoFutbolEspanaRepository.findByActiveTrue(),
                 index -> EquipoFutbolEspana.builder()
                         .nombre("Equipo Seed " + index)
                         .ciudad("Ciudad Seed " + index)
                         .fundacion(1900 + index)
                         .estadio("Estadio Seed " + index)
-                        .activo(true)
+                        .active(true)
                         .build(),
-                entity -> entity.setActivo(false),
+                entity -> entity.setActive(false),
                 entity -> notBlank(entity.getNombre()),
                 entity -> {
                     if (!notBlank(entity.getNombre())) {

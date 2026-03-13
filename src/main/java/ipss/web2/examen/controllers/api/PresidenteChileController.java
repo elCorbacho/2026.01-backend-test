@@ -2,7 +2,6 @@ package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.ApiResponseDTO;
 import ipss.web2.examen.dtos.PresidenteChileResponseDTO;
-import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.services.PresidenteChileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 // Controlador REST para presidentes de Chile - /api/presidentes-chile
-@SuppressWarnings("null")
+
 @RestController
 @RequestMapping("/api/presidentes-chile")
 @RequiredArgsConstructor
@@ -53,11 +52,8 @@ public class PresidenteChileController {
                 content = @Content(schema = @Schema(implementation = ApiResponseDTO.class)))
         })
     public ResponseEntity<ApiResponseDTO<PresidenteChileResponseDTO>> obtenerPresidenteChilePorId(@PathVariable Long id) {
-        PresidenteChileResponseDTO presidente = presidenteChileService.obtenerPresidentesChile()
-                .stream()
-                .filter(item -> item.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("PresidenteChile", "ID", id));
+        PresidenteChileResponseDTO presidente = presidenteChileService.obtenerPresidenteChilePorId(id);
         return ResponseEntity.ok(ApiResponseDTO.ok(presidente, "Presidente de Chile recuperado exitosamente"));
     }
 }
+

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,10 +37,10 @@ class AlbumControllerWebMvcTest extends ApiResponseEnvelopeTestSupport {
         @Autowired
         private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockitoBean
     private AlbumService albumService;
 
-    @MockBean
+    @MockitoBean
     private GanadorAlbumService ganadorAlbumService;
 
     @Test
@@ -227,3 +227,4 @@ class AlbumControllerWebMvcTest extends ApiResponseEnvelopeTestSupport {
                 .andExpect(jsonPath("$.data[2].anio").value(2019));
     }
 }
+

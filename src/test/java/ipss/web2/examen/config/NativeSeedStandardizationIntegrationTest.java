@@ -88,7 +88,7 @@ class NativeSeedStandardizationIntegrationTest {
         assertThat(marcaCamionRepository.findByActiveTrueOrderByNombreAsc()).hasSize(TARGET);
         assertThat(marcaBicicletaRepository.findByActiveTrueOrderByNombreAsc()).hasSize(TARGET);
         assertThat(exoplanetaRepository.findByActiveTrueOrderByNombreAsc()).hasSize(TARGET);
-        assertThat(equipoFutbolEspanaRepository.findByActivoTrue()).hasSize(TARGET);
+        assertThat(equipoFutbolEspanaRepository.findByActiveTrue()).hasSize(TARGET);
         assertThat(ciudadChileRepository.findByActiveTrueOrderByNombreAsc()).hasSize(TARGET);
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -60,10 +61,11 @@ class ListadoPresidenteRusiaControllerIntegrationTest {
                 request,
                 new ParameterizedTypeReference<>() {
                 });
+        ApiResponseDTO<ListadoPresidenteRusiaResponseDTO> body = Objects.requireNonNull(response.getBody());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getData().getDescripcion()).isEqualTo("Primer presidente ruso");
+        assertThat(body.getData()).isNotNull();
+        assertThat(Objects.requireNonNull(body.getData()).getDescripcion()).isEqualTo("Primer presidente ruso");
         assertThat(repository.findById(presidente.getId())).isPresent()
                 .get()
                 .extracting(ListadoPresidenteRusia::getPartido)

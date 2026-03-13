@@ -1,5 +1,7 @@
 package ipss.web2.examen.services;
 
+import ipss.web2.examen.dtos.EquipoFutbolEspanaResponseDTO;
+import ipss.web2.examen.mappers.EquipoFutbolEspanaMapper;
 import ipss.web2.examen.models.EquipoFutbolEspana;
 import ipss.web2.examen.repositories.EquipoFutbolEspanaRepository;
 import org.junit.jupiter.api.Test;
@@ -12,14 +14,16 @@ class EquipoFutbolEspanaServiceTest {
     @Test
     void obtenerEquiposActivos_devuelveSoloActivos() {
         EquipoFutbolEspanaRepository repo = Mockito.mock(EquipoFutbolEspanaRepository.class);
-        EquipoFutbolEspanaService service = new EquipoFutbolEspanaService(repo);
+        EquipoFutbolEspanaMapper mapper = new EquipoFutbolEspanaMapper();
+        EquipoFutbolEspanaService service = new EquipoFutbolEspanaService(repo, mapper);
         List<EquipoFutbolEspana> mockList = Arrays.asList(
-            EquipoFutbolEspana.builder().nombre("Real Madrid").activo(true).build(),
-            EquipoFutbolEspana.builder().nombre("FC Barcelona").activo(true).build()
+            EquipoFutbolEspana.builder().nombre("Real Madrid").active(true).build(),
+            EquipoFutbolEspana.builder().nombre("FC Barcelona").active(true).build()
         );
-        Mockito.when(repo.findByActivoTrue()).thenReturn(mockList);
-        List<EquipoFutbolEspana> result = service.obtenerEquiposActivos();
+        Mockito.when(repo.findByActiveTrue()).thenReturn(mockList);
+        List<EquipoFutbolEspanaResponseDTO> result = service.obtenerEquiposActivos();
         assertEquals(2, result.size());
-        assertTrue(result.stream().allMatch(EquipoFutbolEspana::getActivo));
+        assertEquals("Real Madrid", result.get(0).getNombre());
+        assertEquals("FC Barcelona", result.get(1).getNombre());
     }
 }

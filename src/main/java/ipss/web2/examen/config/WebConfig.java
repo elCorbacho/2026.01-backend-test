@@ -53,9 +53,9 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<OncePerRequestFilter> contentLanguageFilter() {
         OncePerRequestFilter filter = new OncePerRequestFilter() {
             @Override
-            protected void doFilterInternal(HttpServletRequest request,
-                                            HttpServletResponse response,
-                                            FilterChain filterChain) throws ServletException, IOException {
+            protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                            @NonNull HttpServletResponse response,
+                                            @NonNull FilterChain filterChain) throws ServletException, IOException {
                 if (!response.containsHeader("Content-Language")) {
                     response.setHeader("Content-Language", "es-CL");
                 }

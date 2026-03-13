@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,8 +50,7 @@ class RegionControllerIntegrationTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        ApiResponseDTO<List<RegionResponseDTO>> body = response.getBody();
+        ApiResponseDTO<List<RegionResponseDTO>> body = Objects.requireNonNull(response.getBody());
         assertThat(body.getSuccess()).isTrue();
         assertThat(body.getData()).hasSize(1);
         assertThat(body.getData().get(0).getCodigo()).isEqualTo("III");

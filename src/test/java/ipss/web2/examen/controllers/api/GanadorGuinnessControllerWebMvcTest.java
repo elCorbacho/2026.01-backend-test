@@ -1,12 +1,14 @@
 package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.GanadorGuinnessResponseDTO;
+import ipss.web2.examen.exceptions.GlobalExceptionHandler;
 import ipss.web2.examen.services.GanadorGuinnessService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -17,12 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(GanadorGuinnessController.class)
+@Import(GlobalExceptionHandler.class)
 class GanadorGuinnessControllerWebMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private GanadorGuinnessService ganadorGuinnessService;
 
     @Test
@@ -47,3 +50,4 @@ class GanadorGuinnessControllerWebMvcTest {
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 }
+

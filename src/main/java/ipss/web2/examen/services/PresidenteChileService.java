@@ -1,6 +1,7 @@
 package ipss.web2.examen.services;
 
 import ipss.web2.examen.dtos.PresidenteChileResponseDTO;
+import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.mappers.PresidenteChileMapper;
 import ipss.web2.examen.models.PresidenteChile;
 import ipss.web2.examen.repositories.PresidenteChileRepository;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("null")
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,4 +29,12 @@ public class PresidenteChileService {
                 .map(presidenteChileMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public PresidenteChileResponseDTO obtenerPresidenteChilePorId(Long id) {
+        PresidenteChile presidente = presidenteChileRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PresidenteChile", "id", id));
+        return presidenteChileMapper.toDTO(presidente);
+    }
 }
+

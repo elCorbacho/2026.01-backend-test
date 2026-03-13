@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 // Controlador REST para minas de Chile - /api/minas-chile
-@SuppressWarnings("null")
+
 @RestController
 @RequestMapping("/api/minas-chile")
 @RequiredArgsConstructor
@@ -55,4 +55,5 @@ public class MinaChileController {
                 .body(ApiResponseDTO.created(creada, "Mina de Chile creada correctamente"));
     }
 }
+
 

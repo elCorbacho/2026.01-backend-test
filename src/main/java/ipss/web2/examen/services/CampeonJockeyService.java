@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("null")
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -29,4 +29,5 @@ public class CampeonJockeyService {
                 .collect(Collectors.toList());
     }
 }
+
 

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,12 +24,12 @@ class GlobalExceptionHandlerTest {
 
         ResponseEntity<ApiResponseDTO<Object>> response =
                 handler.handleRuntimeException(new RuntimeException("detalle interno"), request);
+        ApiResponseDTO<Object> body = Objects.requireNonNull(response.getBody());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getSuccess()).isFalse();
-        assertThat(response.getBody().getErrorCode()).isEqualTo("INTERNAL_SERVER_ERROR");
-        assertThat(response.getBody().getMessage())
+        assertThat(body.getSuccess()).isFalse();
+        assertThat(body.getErrorCode()).isEqualTo("INTERNAL_SERVER_ERROR");
+        assertThat(body.getMessage())
                 .isEqualTo("Ocurrió un error interno. Intenta nuevamente más tarde.");
     }
 
@@ -40,12 +42,12 @@ class GlobalExceptionHandlerTest {
 
         ResponseEntity<ApiResponseDTO<Object>> response =
                 handler.handleGlobalException(new Exception("detalle interno"), request);
+        ApiResponseDTO<Object> body = Objects.requireNonNull(response.getBody());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getSuccess()).isFalse();
-        assertThat(response.getBody().getErrorCode()).isEqualTo("INTERNAL_SERVER_ERROR");
-        assertThat(response.getBody().getMessage())
+        assertThat(body.getSuccess()).isFalse();
+        assertThat(body.getErrorCode()).isEqualTo("INTERNAL_SERVER_ERROR");
+        assertThat(body.getMessage())
                 .isEqualTo("Ocurrió un error interno. Intenta nuevamente más tarde.");
     }
 

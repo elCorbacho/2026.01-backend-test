@@ -27,6 +27,7 @@ public class EquipoFutbolEspana {
     @Column(name = "estadio", length = 100)
     private String estadio;
 
-    @Column(name = "activo")
-    private Boolean activo = true;
+    @Column(name = "active")
+    @Builder.Default
+    private boolean active = true;
 }
